@@ -3,6 +3,8 @@ package com.example.healthtracker.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -10,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.healthtracker.R;
 import com.firebase.ui.auth.AuthUI;
@@ -27,6 +30,12 @@ import java.util.List;
 
 public class FirebaseUIActivity extends AppCompatActivity {
 
+    private static final String TAG = "FirebaseUIActivity";
+    Context context;
+    CardView googleLoginButton;
+    ConstraintLayout loadingOverlay;
+    // Flag to prevent multiple authentication attempts
+    private boolean isAuthInProgress = false;
     // See: https://developer.android.com/training/basics/intents/result
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -37,8 +46,6 @@ public class FirebaseUIActivity extends AppCompatActivity {
                 }
             }
     );
-    Context context;
-    CardView googleLoginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
         setContentView(R.layout.activity_firebase_uiactivity);
 
         googleLoginButton = findViewById(R.id.googleLoginButton);
+        loadingOverlay = findViewById(R.id.loadingOverlay);
 
         googleLoginButton.setOnClickListener(v -> {
             createSignInIntent();
@@ -56,6 +64,17 @@ public class FirebaseUIActivity extends AppCompatActivity {
     // [END auth_fui_create_launcher]
 
     public void createSignInIntent() {
+        // Prevent multiple authentication attempts
+        if (isAuthInProgress) {
+            Log.d(TAG, "Authentication already in progress, ignoring request");
+            return;
+        }
+
+        isAuthInProgress = true;
+        // Show loading overlay
+        showLoading(true);
+        Log.d(TAG, "Starting Google authentication flow");
+
         // [START auth_fui_create_intent]
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = List.of(
@@ -65,6 +84,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
+                // We can't use Smart Lock disabling, so let's handle the auth flow manually
                 .build();
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]
@@ -72,28 +92,54 @@ public class FirebaseUIActivity extends AppCompatActivity {
 
     // [START auth_fui_result]
     private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        // Reset the auth flag regardless of outcome
+        isAuthInProgress = false;
+        // Hide loading overlay
+        showLoading(false);
+
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            Toast.makeText(this, "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-            //back to main activity
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish(); // Finish this activity to prevent returning to it
+            if (user != null) {
+                Log.d(TAG, "Successfully signed in: " + user.getEmail());
+                Toast.makeText(this, "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
+                
+                // Just go back to main activity immediately to avoid credential save activity
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish(); // Finish this activity to prevent returning to it
+            } else {
+                Log.e(TAG, "User is null despite successful sign-in");
+                Toast.makeText(this, "Sign in failed: User is null", Toast.LENGTH_LONG).show();
+            }
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check
             // response.getError().getErrorCode() and handle the error.
-            // restart the sign-in flow
             if (response == null) {
                 // User pressed back button
+                Log.d(TAG, "Sign in canceled by user");
                 Toast.makeText(this, "Sign in canceled", Toast.LENGTH_LONG).show();
             } else {
                 // Sign-in failed
+                Log.e(TAG, "Sign in failed: " + response.getError());
                 Toast.makeText(this, "Sign in failed: " + response.getError().getErrorCode(), Toast.LENGTH_LONG).show();
             }
+        }
+    }
+    // [END auth_fui_result]
+
+    /**
+     * Show or hide the loading overlay
+     * @param show True to show loading, false to hide
+     */
+    private void showLoading(boolean show) {
+        loadingOverlay.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (show) {
+            loadingOverlay.bringToFront();
+            loadingOverlay.setElevation(1000f); // Set very high elevation to ensure it's on top
         }
     }
 
@@ -109,7 +155,6 @@ public class FirebaseUIActivity extends AppCompatActivity {
                 });
         // [END auth_fui_signout]
     }
-    // [END auth_fui_result]
 
     public void delete() {
         // [START auth_fui_delete]
@@ -200,5 +245,5 @@ public class FirebaseUIActivity extends AppCompatActivity {
         // [END auth_fui_email_link_catch]
     }
 
-
 }
+

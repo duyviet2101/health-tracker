@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_primary"
+    android:background="?attr/colorSurface"
     tools:context=".activities.MainActivity">
 
     <!-- Header -->
@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/barlow_bold"
                     android:text="mydaily"
-                    android:textColor="@color/text_primary"
+                    android:textColor="?attr/colorOnSurface"
                     android:textSize="28sp" />
             </LinearLayout>
 
@@ -54,7 +54,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="@color/gray_medium_dark"
+                app:cardBackgroundColor="?attr/colorSurfaceVariant"
                 app:cardCornerRadius="25dp">
 
                 <ImageView
@@ -183,9 +183,9 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/circle_outline"
                 android:drawablePadding="4dp"
-                android:drawableTint="@color/text_primary"
+                android:drawableTint="?attr/colorOnSurface"
                 android:text="2302"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -193,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="move"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -210,9 +210,9 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/triangle_shape"
                 android:drawablePadding="4dp"
-                android:drawableTint="@color/text_primary"
+                android:drawableTint="?attr/colorOnSurface"
                 android:text="2302"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -220,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="exercise"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -237,17 +237,17 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/square_shape"
                 android:drawablePadding="4dp"
-                android:drawableTint="@color/text_primary"
                 android:text="2302"
-                android:textColor="@color/text_primary"
+                android:textColor="?attr/colorOnSurface"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:drawableTint="?attr/colorOnSurface" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="stand"
-                android:textColor="@color/text_secondary"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
@@ -270,16 +270,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingVertical="5dp">
 
             <!-- Steps Card -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/stepsCard"
                 android:layout_width="150dp"
-                android:layout_height="180dp"
+                android:layout_height="200dp"
                 android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="@color/background_dark"
-                app:cardCornerRadius="16dp">
+                app:cardBackgroundColor="?attr/colorOnSurface"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -306,7 +309,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="300"
-                        android:textColor="@color/text_light"
+                        android:textColor="?attr/colorSurface"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -314,7 +317,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="steps"
-                        android:textColor="@color/text_tertiary"
+                        android:textColor="@color/text_secondary"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -338,7 +341,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="Thống kê"
-                            android:textColor="@color/text_light"
+                            android:textColor="?attr/colorSurface"
                             android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -348,11 +351,12 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/waterCard"
                 android:layout_width="150dp"
-                android:layout_height="180dp"
+                android:layout_height="200dp"
                 android:layout_marginStart="16dp"
-                app:cardBackgroundColor="@color/background_secondary"
+                app:cardBackgroundColor="?attr/colorSurfaceContainer"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
+                app:cardElevation="4dp"
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -379,7 +383,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="300"
-                        android:textColor="@color/text_primary"
+                        android:textColor="?attr/colorOnSurface"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -404,14 +408,14 @@
                             android:backgroundTint="@color/white"
                             android:contentDescription="Add button"
                             android:padding="4dp"
-                            android:src="@android:drawable/ic_menu_add" />
+                            android:src="@drawable/add_24px" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="Thêm"
-                            android:textColor="@color/text_primary"
+                            android:textColor="?attr/colorOnSurface"
                             android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
