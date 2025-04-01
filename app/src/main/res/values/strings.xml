@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">HealthTracker</string>
+    <string name="app_name">Health Tracker</string>
+    <string name="txtGreeting">good morning</string>
+    <string name="avatar">avatar</string>
 </resources>
