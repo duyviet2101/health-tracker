@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/background_primary"
     tools:context=".activities.MainActivity">
 
     <!-- Header -->
@@ -34,7 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/barlow_medium"
-                    android:text="morning"
+                    android:text="@string/txtGreeting"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
                 <TextView
@@ -43,21 +43,22 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/barlow_bold"
                     android:text="mydaily"
-                    android:textColor="#000000"
+                    android:textColor="@color/text_primary"
                     android:textSize="28sp" />
             </LinearLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/avatarCard"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="#E0E0E0"
+                app:cardBackgroundColor="@color/gray_medium_dark"
                 app:cardCornerRadius="25dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
+                    android:id="@+id/imgAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/avatar"
@@ -79,7 +80,7 @@
             android:layout_width="280dp"
             android:layout_height="280dp"
             android:background="@drawable/circle_shape"
-            android:backgroundTint="#F2F2F2"
+            android:backgroundTint="@color/gray_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +91,7 @@
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:background="@drawable/circle_shape"
-            android:backgroundTint="#F5F5F5"
+            android:backgroundTint="@color/gray_lighter"
             app:layout_constraintBottom_toBottomOf="@id/outerRing4"
             app:layout_constraintEnd_toEndOf="@id/outerRing4"
             app:layout_constraintStart_toStartOf="@id/outerRing4"
@@ -101,7 +102,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="@drawable/circle_shape"
-            android:backgroundTint="#F8F8F8"
+            android:backgroundTint="@color/gray_lightest"
             app:layout_constraintBottom_toBottomOf="@id/outerRing3"
             app:layout_constraintEnd_toEndOf="@id/outerRing3"
             app:layout_constraintStart_toStartOf="@id/outerRing3"
@@ -112,7 +113,7 @@
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:background="@drawable/circle_shape"
-            android:backgroundTint="#ECECEC"
+            android:backgroundTint="@color/gray_medium"
             app:layout_constraintBottom_toBottomOf="@id/outerRing2"
             app:layout_constraintEnd_toEndOf="@id/outerRing2"
             app:layout_constraintStart_toStartOf="@id/outerRing2"
@@ -122,7 +123,7 @@
             android:id="@+id/innerCircle"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:cardBackgroundColor="#121212"
+            app:cardBackgroundColor="@color/background_dark"
             app:cardCornerRadius="60dp"
             app:layout_constraintBottom_toBottomOf="@id/outerRing1"
             app:layout_constraintEnd_toEndOf="@id/outerRing1"
@@ -141,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
                     android:text="8,903"
-                    android:textColor="#FFFFFF"
+                    android:textColor="@color/text_light"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
@@ -151,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
                     android:text="steps"
-                    android:textColor="#AAAAAA"
+                    android:textColor="@color/text_tertiary"
                     android:textSize="16sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -182,9 +183,9 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/circle_outline"
                 android:drawablePadding="4dp"
-                android:drawableTint="#000000"
+                android:drawableTint="@color/text_primary"
                 android:text="2302"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -192,7 +193,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="move"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -209,9 +210,9 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/triangle_shape"
                 android:drawablePadding="4dp"
-                android:drawableTint="#000000"
+                android:drawableTint="@color/text_primary"
                 android:text="2302"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -219,7 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="exercise"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -236,9 +237,9 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/square_shape"
                 android:drawablePadding="4dp"
-                android:drawableTint="#000000"
+                android:drawableTint="@color/text_primary"
                 android:text="2302"
-                android:textColor="#000000"
+                android:textColor="@color/text_primary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -246,7 +247,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="stand"
-                android:textColor="#666666"
+                android:textColor="@color/text_secondary"
                 android:textSize="16sp" />
         </LinearLayout>
     </LinearLayout>
@@ -277,7 +278,7 @@
                 android:layout_width="150dp"
                 android:layout_height="180dp"
                 android:layout_marginEnd="16dp"
-                app:cardBackgroundColor="#121212"
+                app:cardBackgroundColor="@color/background_dark"
                 app:cardCornerRadius="16dp">
 
                 <LinearLayout
@@ -305,7 +306,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="300"
-                        android:textColor="#FFFFFF"
+                        android:textColor="@color/text_light"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -313,7 +314,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="steps"
-                        android:textColor="#AAAAAA"
+                        android:textColor="@color/text_tertiary"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -327,7 +328,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:background="@drawable/circle_shape"
-                            android:backgroundTint="#333333"
+                            android:backgroundTint="@color/gray_darkest"
                             android:contentDescription="Play button"
                             android:padding="4dp"
                             android:src="@drawable/analytics_24px" />
@@ -337,7 +338,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="Thống kê"
-                            android:textColor="#FFFFFF"
+                            android:textColor="@color/text_light"
                             android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -349,7 +350,7 @@
                 android:layout_width="150dp"
                 android:layout_height="180dp"
                 android:layout_marginStart="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="@color/background_secondary"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp">
 
@@ -378,7 +379,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="300"
-                        android:textColor="#000000"
+                        android:textColor="@color/text_primary"
                         android:textSize="28sp"
                         android:textStyle="bold" />
 
@@ -386,7 +387,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="water"
-                        android:textColor="#666666"
+                        android:textColor="@color/text_secondary"
                         android:textSize="16sp" />
 
                     <LinearLayout
@@ -400,7 +401,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:background="@drawable/circle_shape"
-                            android:backgroundTint="#FFFFFF"
+                            android:backgroundTint="@color/white"
                             android:contentDescription="Add button"
                             android:padding="4dp"
                             android:src="@android:drawable/ic_menu_add" />
@@ -410,7 +411,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="Thêm"
-                            android:textColor="#000000"
+                            android:textColor="@color/text_primary"
                             android:textSize="16sp" />
                     </LinearLayout>
                 </LinearLayout>

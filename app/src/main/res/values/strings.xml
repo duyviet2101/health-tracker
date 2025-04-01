@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">Health Tracker</string>
-    <string name="txtGreeting">good morning</string>
-    <string name="avatar">avatar</string>
+    <string name="txtGreeting">hi,</string>
+    <string name="avatar" translatable="false">avatar</string>
+    <string name="title_activity_login">Login</string>
+    <string name="google_icon" translatable="false">Google icon</string>
+    <string name="txtGoogleLogin">Sign in with Google</string>
+    <string name="default_web_client_id" translatable="false">593116051394-7ua73utplpl7a59eb710r62p5fs3q4jr.apps.googleusercontent.com</string>
+    <string name="alt_sign_in_text">Or try alternative sign-in method</string>
+    <string name="loading_auth">Loading authentication...</string>
 </resources>

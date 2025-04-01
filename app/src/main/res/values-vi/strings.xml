@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Theo dõi sức khoẻ</string>
-    <string name="txtGreeting">chào buổi sáng</string>
-    <string name="avatar">avatar</string>
+    <string name="txtGreeting">xin chào,</string>
+    <string name="title_activity_login">Đăng nhập</string>
+    <string name="txtGoogleLogin">Đăng nhập bằng Google</string>
 </resources>

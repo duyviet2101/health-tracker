@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.HealthTracker" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
@@ -9,7 +9,7 @@
     </style>
 
     <style name="Theme.HealthTracker" parent="Base.Theme.HealthTracker" />
-    
+
     <style name="CustomTextViewStyle" parent="Widget.MaterialComponents.TextView">
         <item name="android:fontFamily">@font/barlow</item>
         <item name="fontFamily">@font/barlow</item>
