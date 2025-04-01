@@ -15,13 +15,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.healthtracker.R;
+import com.example.healthtracker.fragments.MenuAccountFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
-    private CardView cardView;
+    private CardView avatarCard;
     private FirebaseUser currentUser;
     private ImageView imgAvatar;
     private TextView txtName;
@@ -39,20 +40,14 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        cardView = findViewById(R.id.avatarCard);
+        avatarCard = findViewById(R.id.avatarCard);
         imgAvatar = findViewById(R.id.imgAvatar);
         txtName = findViewById(R.id.txtName);
 
-        cardView.setOnClickListener(v -> {
+        avatarCard.setOnClickListener(v -> {
             // Show a logout option when the avatar is clicked
-            android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
-            builder.setTitle("Account Options")
-                    .setItems(new CharSequence[]{"Sign Out"}, (dialog, which) -> {
-                        if (which == 0) {
-                            signOut();
-                        }
-                    })
-                    .show();
+            MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
+            menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
     }
 

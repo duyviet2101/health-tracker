@@ -79,8 +79,9 @@ public class FirebaseUIActivity extends AppCompatActivity {
             Toast.makeText(this, "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
             //back to main activity
             Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish(); // Finish this activity to prevent returning to it
         } else {
             // Sign in failed. If response is null the user canceled the
             // sign-in flow using the back button. Otherwise check

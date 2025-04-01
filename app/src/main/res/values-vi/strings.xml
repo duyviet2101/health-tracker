@@ -4,4 +4,5 @@
     <string name="txtGreeting">xin chào,</string>
     <string name="title_activity_login">Đăng nhập</string>
     <string name="txtGoogleLogin">Đăng nhập bằng Google</string>
+    <string name="sign_out">Đăng xuất</string>
 </resources>
