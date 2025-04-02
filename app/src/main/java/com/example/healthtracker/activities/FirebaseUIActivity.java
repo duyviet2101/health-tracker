@@ -84,8 +84,9 @@ public class FirebaseUIActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                // We can't use Smart Lock disabling, so let's handle the auth flow manually
+                .setLogo(R.drawable.app_logo) // Set logo drawable
                 .build();
+
         signInLauncher.launch(signInIntent);
         // [END auth_fui_create_intent]
     }
@@ -104,7 +105,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
             if (user != null) {
                 Log.d(TAG, "Successfully signed in: " + user.getEmail());
                 Toast.makeText(this, "Welcome " + user.getDisplayName(), Toast.LENGTH_LONG).show();
-                
+
                 // Just go back to main activity immediately to avoid credential save activity
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -133,6 +134,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
 
     /**
      * Show or hide the loading overlay
+     *
      * @param show True to show loading, false to hide
      */
     private void showLoading(boolean show) {
@@ -177,7 +179,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
         Intent signInIntent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setLogo(R.drawable.google)      // Set logo drawable
+                .setLogo(R.drawable.app_logo)      // Set logo drawable
 //                .setTheme(R.style.the)      // Set theme
                 .build();
         signInLauncher.launch(signInIntent);
