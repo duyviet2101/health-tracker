@@ -12,11 +12,14 @@ import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.healthtracker.R;
 import com.example.healthtracker.fragments.MenuAccountFragment;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private ImageView imgAvatar;
     private TextView txtName;
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +47,45 @@ public class MainActivity extends AppCompatActivity {
         avatarCard = findViewById(R.id.avatarCard);
         imgAvatar = findViewById(R.id.imgAvatar);
         txtName = findViewById(R.id.txtName);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         avatarCard.setOnClickListener(v -> {
             // Show a logout option when the avatar is clicked
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                // Đã ở trang chủ, không cần làm gì
+                return true;
+            } else if (itemId == R.id.navigation_steps) {
+                startActivity(new Intent(this, StepCounterActivity.class));
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        //Check auth
-        currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            startActivity(new Intent(this, FirebaseUIActivity.class));
-        } else {
-            Log.d("MainActivity", "User is signed in: " + currentUser.getEmail());
-            // Use Glide to load the image instead of setImageURI
-            if (currentUser.getPhotoUrl() != null) {
-                Glide.with(this)
-                        .load(currentUser.getPhotoUrl())
-                        .circleCrop()
-                        .into(imgAvatar);
-            }
-            txtName.setText(currentUser.getDisplayName());
-        }
+        // Tạm thời bỏ qua kiểm tra đăng nhập
+        // currentUser = mAuth.getCurrentUser();
+        // if (currentUser == null) {
+        //     Log.d("MainActivity", "No user signed in, redirecting to login");
+        //     startActivity(new Intent(this, FirebaseUIActivity.class));
+        // } else {
+            Log.d("MainActivity", "Skipping login check for testing");
+            // Set default values for testing
+            txtName.setText("Test User");
+            // Use a default avatar
+            Glide.with(this)
+                    .load(R.drawable.ic_avatar)
+                    .circleCrop()
+                    .into(imgAvatar);
+        // }
     }
 
     public void signOut() {

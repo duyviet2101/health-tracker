@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Trang chủ" />
+
+    <item
+        android:id="@+id/navigation_steps"
+        android:icon="@drawable/ic_walk"
+        android:title="Bước chân" />
+</menu> 
