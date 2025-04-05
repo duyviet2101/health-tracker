@@ -8,26 +8,28 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
+
 import androidx.appcompat.app.AlertDialog;
 
 public class BatteryOptimizationHelper {
 
     public static boolean isManufacturerWithRestrictions() {
         String manufacturer = Build.MANUFACTURER.toLowerCase();
-        return manufacturer.contains("xiaomi") || 
-               manufacturer.contains("oppo") || 
-               manufacturer.contains("vivo") || 
-               manufacturer.contains("huawei") || 
-               manufacturer.contains("honor") || 
-               manufacturer.contains("meizu") || 
-               manufacturer.contains("oneplus");
+//        return manufacturer.contains("xiaomi") ||
+//               manufacturer.contains("oppo") ||
+//               manufacturer.contains("vivo") ||
+//               manufacturer.contains("huawei") ||
+//               manufacturer.contains("honor") ||
+//               manufacturer.contains("meizu") ||
+//               manufacturer.contains("oneplus");
+        return true;
     }
 
     public static void requestBatteryOptimizationPermission(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
             String packageName = context.getPackageName();
-            
+
             if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
                 showBatteryOptimizationDialog(context);
             }
@@ -51,7 +53,7 @@ public class BatteryOptimizationHelper {
     private static void openBatterySettings(Context context) {
         String manufacturer = Build.MANUFACTURER.toLowerCase();
         Intent intent = null;
-        
+
         if (manufacturer.contains("xiaomi")) {
             intent = getXiaomiIntent(context);
         } else if (manufacturer.contains("oppo")) {
@@ -65,7 +67,7 @@ public class BatteryOptimizationHelper {
             intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
             intent.setData(Uri.parse("package:" + context.getPackageName()));
         }
-        
+
         try {
             context.startActivity(intent);
         } catch (Exception e) {
@@ -81,32 +83,32 @@ public class BatteryOptimizationHelper {
             }
         }
     }
-    
+
     private static Intent getXiaomiIntent(Context context) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.miui.securitycenter", 
-            "com.miui.permcenter.autostart.AutoStartManagementActivity"));
+        intent.setComponent(new ComponentName("com.miui.securitycenter",
+                "com.miui.permcenter.autostart.AutoStartManagementActivity"));
         return intent;
     }
-    
+
     private static Intent getOppoIntent(Context context) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.coloros.safecenter", 
-            "com.coloros.safecenter.permission.startup.StartupAppListActivity"));
+        intent.setComponent(new ComponentName("com.coloros.safecenter",
+                "com.coloros.safecenter.permission.startup.StartupAppListActivity"));
         return intent;
     }
-    
+
     private static Intent getVivoIntent(Context context) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.vivo.permissionmanager", 
-            "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"));
+        intent.setComponent(new ComponentName("com.vivo.permissionmanager",
+                "com.vivo.permissionmanager.activity.BgStartUpManagerActivity"));
         return intent;
     }
-    
+
     private static Intent getHuaweiIntent(Context context) {
         Intent intent = new Intent();
-        intent.setComponent(new ComponentName("com.huawei.systemmanager", 
-            "com.huawei.systemmanager.optimize.process.ProtectActivity"));
+        intent.setComponent(new ComponentName("com.huawei.systemmanager",
+                "com.huawei.systemmanager.optimize.process.ProtectActivity"));
         return intent;
     }
 } 

@@ -5,4 +5,9 @@
     <string name="title_activity_login">Đăng nhập</string>
     <string name="txtGoogleLogin">Đăng nhập bằng Google</string>
     <string name="sign_out">Đăng xuất</string>
+    <string name="tell_weight">Hãy cho chúng tôi biết cân nặng của bạn?</string>
+    <string name="register_info_note">Cung cấp thêm thông tin cho phần mềm có thể hoạt động hiệu quả.</string>
+    <string name="continue_button">Tiếp tục</string>
+    <string name="tell_height">Hãy cho chúng tôi biết chiều cao của bạn?</string>
+    <string name="save_button">Lưu</string>
 </resources>
