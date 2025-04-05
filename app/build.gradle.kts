@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.google.firebase.auth)
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
+    implementation(libs.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.firebase.ui.auth)
 
