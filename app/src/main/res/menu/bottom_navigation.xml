@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="Nhập" />
+    <item
+        android:id="@+id/navigation_calendar"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="Lịch sử" />
+    <item
+        android:id="@+id/navigation_steps"
+        android:icon="@drawable/steps_24px"
+        android:title="Báo cáo" />
+    <item
+        android:id="@+id/navigation_weight"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Cân nặng" />
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Cài đặt" />
+</menu> 

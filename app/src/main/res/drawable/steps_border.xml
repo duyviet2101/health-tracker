@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Base shape with gray background -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/gray_darkest" />
-            <corners android:radius="8dp" />
-        </shape>
-    </item>
-    
-    <!-- White border overlay -->
-    <item>
-        <shape android:shape="rectangle">
-            <solid android:color="@color/transparent" />
-            <stroke
-                android:width="1.5dp"
-                android:color="@color/text_light" />
-            <corners android:radius="8dp" />
-        </shape>
-    </item>
-</layer-list> 
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/input_background" />
+    <corners android:radius="8dp" />
+    <stroke
+        android:width="1dp"
+        android:color="@color/input_border" />
+    <padding
+        android:bottom="2dp"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="2dp" />
+</shape> 

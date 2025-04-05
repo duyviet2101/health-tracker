@@ -27,4 +27,33 @@
     <color name="background_primary">#FFFFFF</color>
     <color name="background_secondary">#F5F5F5</color>
     <color name="background_dark">#121212</color>
+
+    <!-- Màu nền mới cho text và input fields -->
+    <color name="input_background">#F5F5F5</color>
+    <color name="input_border">#E0E0E0</color>
+    <color name="progress_blue">#64B5F6</color>
+    
+    <!-- Màu sắc cho trạng thái -->
+    <color name="green_500">#4CAF50</color>
+    <color name="red_500">#F44336</color>
+    <color name="purple_500">#6200EE</color>
+
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryDark">#388E3C</color>
+    <color name="colorAccent">#FF5722</color>
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="colorText">#212121</color>
+    <color name="colorTextSecondary">#757575</color>
+    <color name="colorDivider">#BDBDBD</color>
+    <color name="colorButton">#4CAF50</color>
+    <color name="colorButtonPressed">#388E3C</color>
+    
+    <!-- Màu tiến trình -->
+    <color name="progressLow">#F44336</color>
+    <color name="progressMedium">#FF9800</color>
+    <color name="progressHigh">#4CAF50</color>
+    
+    <!-- Màu nút bắt đầu/dừng -->
+    <color name="colorStartGreen">#4CAF50</color>
+    <color name="colorStopRed">#E53935</color>
 </resources>
