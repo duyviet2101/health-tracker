@@ -7,16 +7,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import com.example.healthtracker.R;
 import com.example.healthtracker.activities.MainActivity;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MenuAccountFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MenuAccountFragment extends DialogFragment {
 
     public MenuAccountFragment() {
@@ -46,7 +40,7 @@ public class MenuAccountFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu_account, container, false);
-        
+
         // Find the sign out option
         LinearLayout signOutOption = view.findViewById(R.id.signOutOption);
         signOutOption.setOnClickListener(v -> {
