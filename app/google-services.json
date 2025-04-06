@@ -1,33 +1,41 @@
 {
   "project_info": {
-    "project_number": "443675347056",
-    "project_id": "health-tracker-neu",
-    "storage_bucket": "health-tracker-neu.firebasestorage.app"
+    "project_number": "721571634364",
+    "project_id": "health-tracker-39f27",
+    "storage_bucket": "health-tracker-39f27.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443675347056:android:2f73eef762e4d585e6ccb5",
+        "mobilesdk_app_id": "1:721571634364:android:454fc6020353fd4f42c4b9",
         "android_client_info": {
           "package_name": "com.example.healthtracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443675347056-qtrpgpru2u27dsmqd1epkmt109vtd2ng.apps.googleusercontent.com",
+          "client_id": "721571634364-5sh19uh4ojlksrec7efup96punflv5u0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthtracker",
+            "certificate_hash": "c10aedbd2c880abd0019f841c63b68ad1f25245c"
+          }
+        },
+        {
+          "client_id": "721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJkC3ev3IzR5Urw1PkxGCO23gi3LU5350"
+          "current_key": "AIzaSyCnPa9vSakLiHViYwZvbgblo6TDUGGWI68"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "443675347056-qtrpgpru2u27dsmqd1epkmt109vtd2ng.apps.googleusercontent.com",
+              "client_id": "721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
