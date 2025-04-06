@@ -15,14 +15,13 @@ public class BatteryOptimizationHelper {
 
     public static boolean isManufacturerWithRestrictions() {
         String manufacturer = Build.MANUFACTURER.toLowerCase();
-//        return manufacturer.contains("xiaomi") ||
-//               manufacturer.contains("oppo") ||
-//               manufacturer.contains("vivo") ||
-//               manufacturer.contains("huawei") ||
-//               manufacturer.contains("honor") ||
-//               manufacturer.contains("meizu") ||
-//               manufacturer.contains("oneplus");
-        return true;
+        return manufacturer.contains("xiaomi") ||
+                manufacturer.contains("oppo") ||
+                manufacturer.contains("vivo") ||
+                manufacturer.contains("huawei") ||
+                manufacturer.contains("honor") ||
+                manufacturer.contains("meizu") ||
+                manufacturer.contains("oneplus");
     }
 
     public static void requestBatteryOptimizationPermission(Context context) {
