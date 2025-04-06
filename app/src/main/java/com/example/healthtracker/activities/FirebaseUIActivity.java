@@ -30,8 +30,6 @@ public class FirebaseUIActivity extends AppCompatActivity {
 
     private static final String TAG = "FirebaseUIActivity";
     private static final int RC_SIGN_IN = 9001;
-    // Web client ID từ file google-services.json
-    private static final String WEB_CLIENT_ID = "721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com";
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -46,9 +44,9 @@ public class FirebaseUIActivity extends AppCompatActivity {
         // Khởi tạo Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Cấu hình Google Sign In
+        // Cấu hình Google Sign In - Sử dụng requestIdToken với DEFAULT_WEB_CLIENT_ID để lấy tự động
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(WEB_CLIENT_ID)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 

@@ -7,5 +7,4 @@
     <string name="txtGoogleLogin">Sign in with Google</string>
     <string name="sign_out">Sign Out</string>
     <string name="textMenuTitle" translatable="false">Menu</string>
-    <string name="default_web_client_id" translatable="false">721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com</string>
 </resources>

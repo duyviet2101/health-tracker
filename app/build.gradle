@@ -40,6 +40,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.firebaseui:firebase-ui-auth:8.0.2'
     
+    // Firebase App Check
+    implementation 'com.google.firebase:firebase-appcheck-playintegrity'
+    
     // GoogleID authentication
     implementation 'com.google.android.libraries.identity.googleid:googleid:1.1.0'
     
