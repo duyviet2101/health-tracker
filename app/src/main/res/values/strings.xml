@@ -1,10 +1,55 @@
 <resources>
     <string name="app_name">Health Tracker</string>
-    <string name="txtGreeting">hi,</string>
+    <string name="txtGreeting">Xin chào,</string>
     <string name="avatar" translatable="false">avatar</string>
-    <string name="title_activity_login">Login</string>
+    <string name="title_activity_login">Đăng nhập</string>
     <string name="google_icon" translatable="false">Google icon</string>
-    <string name="txtGoogleLogin">Sign in with Google</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="txtGoogleLogin">Đăng nhập với Google</string>
+    <string name="sign_out">Đăng xuất</string>
     <string name="textMenuTitle" translatable="false">Menu</string>
+    
+    <!-- Đăng nhập -->
+    <string name="login_failed">Đăng nhập không thành công</string>
+    <string name="auth_failed">Xác thực không thành công</string>
+    <string name="no_google_token">Không có token ID Google</string>
+    
+    <!-- Cài đặt -->
+    <string name="settings">Cài đặt</string>
+    <string name="language_title">Chọn ngôn ngữ</string>
+    <string name="language_english">Tiếng Anh</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_korean">Tiếng Hàn</string>
+    <string name="save_language">Lưu thay đổi</string>
+    <string name="language_changed">Đã thay đổi ngôn ngữ</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Nhập</string>
+    <string name="nav_history">Lịch sử</string>
+    <string name="nav_report">Báo cáo</string>
+    <string name="nav_weight">Cân nặng</string>
+    <string name="nav_settings">Cài đặt</string>
+    
+    <!-- Lịch sử bước chân -->
+    <string name="no_data">Không có dữ liệu</string>
+    <string name="loading_error">Đã xảy ra lỗi khi tải dữ liệu</string>
+    <string name="steps_unit">bước</string>
+    <string name="time_label">Thời gian:</string>
+    <string name="goal_completed_100">Hoàn thành 100%% (Mục tiêu: %.2f km)</string>
+    <string name="goal_completed_partial">Hoàn thành %d%% (Mục tiêu: %.2f km)</string>
+    <string name="km_unit">km</string>
+    <string name="kcal_unit">kcal</string>
+    <string name="hour_format">%d giờ %d phút</string>
+    <string name="minute_format">%d phút %d giây</string>
+    <string name="daily_goal_completion">Hoàn thành %.1f km / %.1f km (%d%%)</string>
+    <string name="no_daily_goal">Chưa đặt mục tiêu hằng ngày</string>
+    
+    <!-- Mục tiêu chạy -->
+    <string name="current_daily_goal">%s mét</string>
+    <string name="error_label">Lỗi:</string>
+    
+    <!-- Mục tiêu hằng ngày -->
+    <string name="current_step_goal">Mục tiêu hiện tại: %d mét</string>
+    <string name="save_success">Đã lưu mục tiêu mới: %d mét</string>
+    <string name="goal_range_error">Mục tiêu phải từ 1 đến 50,000 mét</string>
+    <string name="invalid_number">Vui lòng nhập một số hợp lệ</string>
 </resources>

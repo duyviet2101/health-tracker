@@ -37,9 +37,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class StepCounterFragment extends Fragment implements SensorEventListener {
+public class StepExerciseFragment extends Fragment implements SensorEventListener {
 
-    private static final String TAG = "StepCounterFragment";
+    private static final String TAG = "StepExerciseFragment";
     
     // UI Components
     private TextView tvSteps;
@@ -48,12 +48,11 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
     private TextView tvCalories;
     private TextView tvTime;
     private TextView tvStepGoalRemaining;
-    private TextView tvCurrentDate;
     private ArcProgress circleProgress;
     private EditText etWeight;
-    private Button btnViewHistory;
-    private Button btnExercise;
-    private ImageButton btnPreviousDay, btnNextDay, btnRefresh;
+    private Button btnStopRun;
+    private ImageButton btnBack;
+    private ImageButton btnRefresh;
 
     // Đếm bước chân
     private int currentSteps = 0;
@@ -81,20 +80,27 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
     
     // Database
     private DBHelper dbHelper;
-    
-    // Calendar
-    private Calendar displayedDate = Calendar.getInstance();
 
     // Interface để giao tiếp với MainActivity
     private MainActivity.OnStepCounterStateListener stateListener;
     
-    private static final int STEPS_PER_SECOND = 1; // 1 bước/giây cho máy ảo
+    private static final int STEPS_PER_SECOND = 2; // Tốc độ đếm giả lập: 2 bước/giây
     private boolean isEmulatorMode = false; // Cờ cho biết đang dùng chế độ giả lập
     private Handler simulationHandler = new Handler(Looper.getMainLooper());
     private Runnable simulationRunnable;
     
-    // Manager cho SharedPreferences của ứng dụng
-    private SharedPreferencesManager prefsManager;
+    public StepExerciseFragment() {
+        // Required empty public constructor
+    }
+    
+    // Tạo instance mới với target distance
+    public static StepExerciseFragment newInstance(double targetDistance) {
+        StepExerciseFragment fragment = new StepExerciseFragment();
+        Bundle args = new Bundle();
+        args.putDouble("targetDistance", targetDistance);
+        fragment.setArguments(args);
+        return fragment;
+    }
     
     public void setStateListener(MainActivity.OnStepCounterStateListener listener) {
         this.stateListener = listener;
@@ -107,13 +113,10 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
         // Khởi tạo SharedPreferences
         prefs = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         
-        // Khởi tạo SharedPreferencesManager
-        prefsManager = new SharedPreferencesManager(requireContext());
-        
         // Khởi tạo DBHelper
         dbHelper = new DBHelper(requireContext());
         
-        // Đọc target distance từ arguments nếu có
+        // Đọc target distance từ arguments
         Bundle args = getArguments();
         if (args != null && args.containsKey("targetDistance")) {
             targetDistance = (float) args.getDouble("targetDistance", 2.75);
@@ -129,14 +132,24 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             // Load state từ SharedPreferences
             loadStateFromPrefs();
         }
+        
+        // Ẩn thanh navigation khi hiển thị màn hình exercise
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).hideBottomNavigation();
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_step_counter, container, false);
+        View view = inflater.inflate(R.layout.fragment_step_exercise, container, false);
         
         try {
+            // Ẩn thanh navigation khi hiển thị màn hình exercise
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).hideBottomNavigation();
+            }
+            
             // Khởi tạo các view
             tvSteps = view.findViewById(R.id.tvSteps);
             tvPercentage = view.findViewById(R.id.tvPercentage);
@@ -146,12 +159,9 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             tvStepGoalRemaining = view.findViewById(R.id.tvStepGoalRemaining);
             circleProgress = view.findViewById(R.id.circleProgress);
             etWeight = view.findViewById(R.id.etWeight);
-            btnViewHistory = view.findViewById(R.id.btnViewHistory);
+            btnStopRun = view.findViewById(R.id.btnStopRun);
+            btnBack = view.findViewById(R.id.btnBack);
             btnRefresh = view.findViewById(R.id.btnRefresh);
-            btnExercise = view.findViewById(R.id.btnExercise);
-            
-            // Ẩn nút xem lịch sử
-            btnViewHistory.setVisibility(View.GONE);
             
             // Khởi tạo SensorManager
             sensorManager = (SensorManager) requireActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -163,9 +173,6 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             
             // Thiết lập listeners cho các nút
             setupButtons();
-            
-            // Cập nhật UI cho nút xem lịch sử
-            updateButtonColors(true);
             
             // Cập nhật UI
             updateUI();
@@ -188,46 +195,73 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
     }
     
     private void setupButtons() {
-        // Thiết lập sự kiện cho nút bài tập
-        btnExercise.setOnClickListener(v -> {
-            // Lưu trạng thái hiện tại
-            saveStateToPrefs();
-            
-            // Chuyển đến màn hình bài tập (RunTargetFragment)
-            navigateToRunTargetFragment();
+        // Nút dừng/bắt đầu
+        btnStopRun.setOnClickListener(v -> {
+            if (isRunning) {
+                // Dừng đếm bước chân
+                stopStepCounter();
+                
+                // Chuyển sang màn hình kết quả
+                showRunResult();
+            } else {
+                // Bắt đầu đếm bước
+                startStepCounter();
+            }
         });
         
-        // Sự kiện nút làm mới
-        btnRefresh.setOnClickListener(v -> {
-            // Reset ngày về hiện tại
-            displayedDate = Calendar.getInstance();
-            
-            // Nếu đang chạy thì dừng lại
+        // Nút quay lại
+        btnBack.setOnClickListener(v -> {
+            // Dừng đếm bước chân
             if (isRunning) {
                 stopStepCounter();
             }
             
-            // Reset lại số bước
+            // Hiển thị dialog xác nhận nếu có dữ liệu
+            if (currentSteps > 0) {
+                // Hiển thị dialog xác nhận
+                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+                builder.setTitle("Xác nhận")
+                       .setMessage("Bạn có muốn lưu kết quả trước khi thoát không?")
+                       .setPositiveButton("Lưu", (dialog, id) -> {
+                           showRunResult();
+                       })
+                       .setNegativeButton("Huỷ bỏ", (dialog, id) -> {
+                           resetStepCounter();
+                           navigateBack();
+                       });
+                builder.create().show();
+            } else {
+                // Không có dữ liệu, quay về màn hình trước
+                navigateBack();
+            }
+        });
+        
+        // Nút làm mới
+        btnRefresh.setOnClickListener(v -> {
+            // Reset bước đếm
             resetStepCounter();
             
             // Bắt đầu đếm lại ngay lập tức
             startStepCounter();
             
-            // Cập nhật UI
-            updateUI();
-            
             // Thông báo
             Toast.makeText(requireContext(), "Đã làm mới số bước", Toast.LENGTH_SHORT).show();
         });
-        
-        // Thêm sự kiện long click để xem kết quả nếu cần
-        btnRefresh.setOnLongClickListener(v -> {
-            if (currentSteps > 0) {
-                showRunResult();
-                return true;
+    }
+    
+    private void navigateBack() {
+        // Quay về màn hình trước
+        if (getActivity() != null) {
+            // Đảm bảo thanh navigation được hiển thị khi quay về StepCounterFragment
+            if (getActivity() instanceof MainActivity) {
+                // Thông báo cho MainActivity hiển thị lại thanh navigation
+                // nếu fragment tiếp theo là StepCounterFragment
+                ((MainActivity) getActivity()).showBottomNavigation();
             }
-            return false;
-        });
+            
+            // Quay lại fragment trước đó
+            getActivity().getSupportFragmentManager().popBackStack();
+        }
     }
     
     private void startStepCounter() {
@@ -235,7 +269,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             // Kiểm tra xem có cảm biến bước không
             if (stepSensor == null) {
                 // Thiết bị không hỗ trợ đếm bước chân, chuyển sang chế độ giả lập
-                Toast.makeText(requireContext(), "Đang dùng chế độ giả lập (1 bước/giây)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Đang dùng chế độ giả lập (2 bước/giây)", Toast.LENGTH_SHORT).show();
                 isEmulatorMode = true;
             } else {
                 // Có cảm biến bước chân, đăng ký lắng nghe
@@ -256,7 +290,8 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             
             // Cập nhật UI
             isRunning = true;
-            updateButtonColors(true);
+            btnStopRun.setText("Dừng lại");
+            btnStopRun.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorStopRed));
             
             // Lưu trạng thái
             saveRunningState(true);
@@ -274,7 +309,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             @Override
             public void run() {
                 if (isRunning && isEmulatorMode) {
-                    // Tăng 1 bước mỗi giây
+                    // Tăng 2 bước mỗi giây
                     currentSteps += STEPS_PER_SECOND;
                     
                     // Cập nhật UI
@@ -310,7 +345,8 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             
             // Cập nhật UI
             isRunning = false;
-            updateButtonColors(false);
+            btnStopRun.setText("Tiếp tục");
+            btnStopRun.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.colorStartGreen));
             
             // Lưu trạng thái
             saveRunningState(false);
@@ -336,7 +372,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
         int percentage = calculatePercentage(distanceKm);
         long elapsedTimeMillis = calculateElapsedTime();
         
-        // Lưu dữ liệu vào database - không tự động lưu, chỉ lưu khi hiển thị kết quả
+        // Lưu dữ liệu vào database
         try {
             // Định dạng ngày và thời gian đúng chuẩn
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -351,7 +387,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
                       ", bước=" + currentSteps + ", khoảng cách=" + distanceKm + 
                       ", calories=" + calories + ", thời gian chạy=" + elapsedTimeMillis);
             
-            // Lưu vào cơ sở dữ liệu với mục tiêu từ SharedPreferencesManager
+            // Lưu vào cơ sở dữ liệu
             dbHelper.addStepHistory(
                 currentDate,
                 currentTime,
@@ -359,7 +395,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
                 distanceKm,
                 calories,
                 elapsedTimeMillis,
-                prefsManager.getDailyGoalMeters() / 1000f,  // Mục tiêu hằng ngày (km)
+                targetDistance,  // Sử dụng mục tiêu khoảng cách đã đặt
                 percentage       // Phần trăm hoàn thành tính toán
             );
             
@@ -376,7 +412,7 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
                 calories,
                 elapsedTimeMillis,
                 percentage,
-                prefsManager.getDailyGoalMeters() / 1000f  // Sử dụng mục tiêu hằng ngày (km)
+                targetDistance
         );
         
         // Reset state cho lần sau
@@ -389,8 +425,8 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
     }
     
     private float calculateDistance(int steps) {
-        // Lấy độ dài sải chân từ SharedPreferencesManager
-        float strideLength = prefsManager.getStrideLength(); // Đơn vị mét
+        // Lấy độ dài sải chân từ SharedPreferences
+        float strideLength = prefs.getFloat("stride_length", STEP_LENGTH_METERS);
         return (steps * strideLength) / 1000f; // Chuyển từ m sang km
     }
     
@@ -405,12 +441,8 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
     }
     
     private int calculatePercentage(float distanceKm) {
-        // Lấy mục tiêu hằng ngày từ SharedPreferencesManager (chuyển từ m sang km)
-        float dailyGoalKm = prefsManager.getDailyGoalMeters() / 1000f;
-        
-        // Sử dụng mục tiêu hằng ngày thay cho targetDistance cố định
-        if (dailyGoalKm <= 0) return 0;
-        int percentage = (int) (distanceKm / dailyGoalKm * 100);
+        if (targetDistance <= 0) return 0;
+        int percentage = (int) (distanceKm / targetDistance * 100);
         return Math.min(percentage, 100);
     }
     
@@ -445,15 +477,13 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             String timeText = formatTime(elapsedTimeMillis);
             tvTime.setText(timeText + " phút");
             
-            // Lấy mục tiêu khoảng cách từ SharedPreferencesManager
-            int targetDistanceMeters = prefsManager.getDailyGoalMeters(); // Đã là mét
-            int distanceMeters = (int)(distanceKm * 1000); // Chuyển km sang m
-            int remainingMeters = Math.max(0, targetDistanceMeters - distanceMeters);
+            // Hiển thị mục tiêu khoảng cách
+            float remainingDistance = Math.max(0, targetDistance - distanceKm);
             
             // Hiển thị cả mục tiêu và khoảng cách còn lại
             tvStepGoalRemaining.setText(String.format(Locale.getDefault(), 
-                    "Mục tiêu: %,d mét (còn %,d mét)", 
-                    targetDistanceMeters, remainingMeters));
+                    "Mục tiêu: %.2f km (còn %.2f km)", 
+                    targetDistance, remainingDistance));
             
         } catch (Exception e) {
             Log.e(TAG, "Lỗi khi cập nhật UI: " + e.getMessage());
@@ -465,15 +495,6 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
         long minutes = millis / 60000;
         long seconds = (millis % 60000) / 1000;
         return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds);
-    }
-    
-    private void updateButtonColors(boolean isRunning) {
-        if (btnViewHistory != null) {
-            btnViewHistory.setBackgroundColor(
-                ContextCompat.getColor(requireContext(), 
-                    R.color.colorPrimaryDark) // Luôn dùng màu chính
-            );
-        }
     }
     
     private void resetStepCounter() {
@@ -581,6 +602,11 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
         if (stateListener != null) {
             stateListener.onStepCounterStarted();
         }
+        
+        // Đảm bảo thanh navigation bị ẩn khi quay lại fragment
+        if (getActivity() instanceof MainActivity) {
+            ((MainActivity) getActivity()).hideBottomNavigation();
+        }
     }
     
     @Override
@@ -621,20 +647,4 @@ public class StepCounterFragment extends Fragment implements SensorEventListener
             simulationHandler.removeCallbacks(simulationRunnable);
         }
     }
-    
-    private void navigateToRunTargetFragment() {
-        RunTargetFragment runTargetFragment = new RunTargetFragment();
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, runTargetFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-    
-    private void navigateToStepHistoryFragment() {
-        StepHistoryFragment stepHistoryFragment = new StepHistoryFragment();
-        FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_container, stepHistoryFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
-}
+} 

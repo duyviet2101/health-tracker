@@ -37,9 +37,7 @@ public class DailyGoalFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_daily_goal, container, false);
         
         // Ẩn thanh navigation khi hiển thị màn hình mục tiêu hằng ngày
-        if (getActivity() instanceof MainActivity) {
-            ((MainActivity) getActivity()).hideBottomNavigation();
-        }
+        hideNavigationBar();
 
         // Khởi tạo các thành phần giao diện
         tvCurrentStepGoal = rootView.findViewById(R.id.tvCurrentStepGoal);
@@ -78,15 +76,18 @@ public class DailyGoalFragment extends Fragment {
                     prefsManager.setDailyGoalMeters(newGoal);
                     
                     // Hiển thị thông báo
-                    Toast.makeText(requireContext(), "Đã lưu mục tiêu mới: " + newGoal + " bước", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), 
+                        getString(R.string.save_success, newGoal), Toast.LENGTH_SHORT).show();
                     
                     // Quay lại màn hình trước
                     getParentFragmentManager().popBackStack();
                 } else {
-                    Toast.makeText(requireContext(), "Mục tiêu phải từ 1 đến 50,000 bước", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), 
+                        getString(R.string.goal_range_error), Toast.LENGTH_SHORT).show();
                 }
             } catch (NumberFormatException e) {
-                Toast.makeText(requireContext(), "Vui lòng nhập một số hợp lệ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), 
+                    getString(R.string.invalid_number), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -118,19 +119,44 @@ public class DailyGoalFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // Đảm bảo thanh navigation vẫn bị ẩn khi quay lại fragment
+        hideNavigationBar();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Ẩn thanh navigation khi fragment bắt đầu
+        hideNavigationBar();
+    }
+    
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && getActivity() != null) {
+            // Khi fragment hiển thị, ẩn thanh navigation
+            hideNavigationBar();
+        }
+    }
+
+    /**
+     * Phương thức ẩn thanh điều hướng
+     */
+    private void hideNavigationBar() {
         if (getActivity() instanceof MainActivity) {
             ((MainActivity) getActivity()).hideBottomNavigation();
+            // Sử dụng phương thức cưỡng chế để đảm bảo thanh điều hướng bị ẩn
+            ((MainActivity) getActivity()).enforceHiddenNavigation();
         }
     }
 
     private void updateUI(int currentGoal) {
-        tvCurrentStepGoal.setText("Mục tiêu hiện tại: " + currentGoal + " bước");
+        tvCurrentStepGoal.setText(getString(R.string.current_step_goal, currentGoal));
         tvStepGoalValue.setText(String.valueOf(currentGoal));
         etCustomStepGoal.setText(String.valueOf(currentGoal));
     }
     
     private void setupSeekBar(int currentGoal) {
-        // Thiết lập giới hạn tối đa cho seekbar (10,000 bước)
+        // Thiết lập giới hạn tối đa cho seekbar (10,000 mét)
         seekBarStepGoal.setMax(10000);
         
         // Thiết lập giá trị hiện tại cho seekbar
@@ -141,7 +167,7 @@ public class DailyGoalFragment extends Fragment {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    // Làm tròn đến 100 bước
+                    // Làm tròn đến 100 mét
                     int roundedProgress = Math.max(100, Math.round(progress / 100f) * 100);
                     tvStepGoalValue.setText(String.valueOf(roundedProgress));
                     etCustomStepGoal.setText(String.valueOf(roundedProgress));

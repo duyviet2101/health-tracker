@@ -192,9 +192,12 @@ public class RunResultFragment extends Fragment {
     
     private void setupBackButton() {
         btnBack.setOnClickListener(v -> {
-            // Quay lại màn hình trước đó (không mở RunTargetFragment)
+            // Chuyển trực tiếp về màn hình đếm bước chân chính (StepCounterFragment)
             if (getActivity() != null) {
-                getActivity().getSupportFragmentManager().popBackStack();
+                StepCounterFragment stepCounterFragment = new StepCounterFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, stepCounterFragment)
+                    .commit();
             }
         });
     }
@@ -336,7 +339,7 @@ public class RunResultFragment extends Fragment {
     private void shareResult() {
         String resultMessage = String.format(
                 "Tôi đã hoàn thành %d%% mục tiêu chạy bộ %s km!\n" +
-                "- Số bước: %,d bước\n" +
+                "- Số bước: %,d\n" +
                 "- Quãng đường: %.2f km\n" +
                 "- Thời gian: %s\n" +
                 "- Calories: %d kcal",

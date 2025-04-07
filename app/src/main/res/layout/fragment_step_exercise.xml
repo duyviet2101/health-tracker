@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSurface">
 
-    <!-- Header với nút bài tập ở góc trái và refresh ở góc phải -->
+    <!-- Header với tiêu đề exercise -->
     <LinearLayout
         android:id="@+id/dateNavigation"
         android:layout_width="match_parent"
@@ -14,38 +14,27 @@
         android:orientation="horizontal"
         android:padding="16dp"
         android:gravity="center_vertical"
+        android:background="#4CAF50"
         app:layout_constraintTop_toTopOf="parent">
 
-        <!-- Nút bài tập chạy bộ ở góc trái -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/exerciseButtonCard"
-            android:layout_width="wrap_content"
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
             android:layout_height="48dp"
-            app:cardCornerRadius="24dp"
-            app:cardBackgroundColor="#707070"
-            app:cardElevation="6dp">
-            
-            <Button
-                android:id="@+id/btnExercise"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Bài tập"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:drawableStart="@android:drawable/ic_menu_directions"
-                android:drawablePadding="10dp"
-                android:paddingStart="18dp"
-                android:paddingEnd="22dp"
-                android:gravity="center" />
-        </androidx.cardview.widget.CardView>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Quay lại"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="#FFFFFF" />
 
-        <View
+        <TextView
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="BÀI TẬP CHẠY BỘ"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center" />
 
         <ImageButton
             android:id="@+id/btnRefresh"
@@ -53,21 +42,9 @@
             android:layout_height="48dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Làm mới"
-            android:src="@android:drawable/ic_menu_rotate" />
+            android:src="@android:drawable/ic_menu_rotate"
+            android:tint="#FFFFFF" />
     </LinearLayout>
-
-    <!-- Tiêu đề chương trình -->
-    <TextView
-        android:id="@+id/tvStepTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="BỘ ĐẾM BƯỚC CHÂN"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textColor="?attr/colorOnSurface"
-        app:layout_constraintTop_toBottomOf="@id/dateNavigation"/>
 
     <!-- Nội dung chính trong ScrollView -->
     <ScrollView
@@ -75,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/tvStepTitle"
+        app:layout_constraintTop_toBottomOf="@id/dateNavigation"
         app:layout_constraintBottom_toTopOf="@id/btnStopRunContainer">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,25 +71,13 @@
 
                 <TextView
                     android:id="@+id/tvStepGoalRemaining"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Mục tiêu còn lại 934 bước"
+                    android:text="Mục tiêu: 2.00 km (còn 1.50 km)"
                     android:textColor="?attr/colorOnSurface"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/btnSetNewGoal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Đặt mục tiêu mới"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/step_button_background"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="8dp"
-                    android:visibility="gone"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <RelativeLayout
@@ -127,9 +92,9 @@
                     android:layout_width="280dp"
                     android:layout_height="280dp"
                     android:layout_centerInParent="true"
-                    app:arc_progress="53"
+                    app:arc_progress="25"
                     app:arc_unfinished_color="#DDDDDD"
-                    app:arc_finished_color="#64B5F6"
+                    app:arc_finished_color="#4CAF50"
                     app:arc_stroke_width="24dp"
                     app:arc_text_color="?attr/colorOnSurface"
                     app:arc_text_size="0sp"
@@ -147,7 +112,7 @@
                         android:id="@+id/tvSteps"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1,066"
+                        android:text="523"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="48sp"
                         android:textStyle="bold" />
@@ -156,8 +121,8 @@
                         android:id="@+id/tvPercentage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="53%"
-                        android:textColor="#64B5F6"
+                        android:text="25%"
+                        android:textColor="#4CAF50"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
@@ -207,7 +172,7 @@
                         android:id="@+id/tvDistance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.83 km"
+                        android:text="0.42 km"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -241,7 +206,7 @@
                         android:id="@+id/tvCalories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="57 kcal"
+                        android:text="34 kcal"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -275,7 +240,7 @@
                         android:id="@+id/tvTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0:12 phút"
+                        android:text="4:23 phút"
                         android:textColor="?attr/colorOnSurface"
                         android:textSize="24sp"
                         android:textStyle="bold"
@@ -287,8 +252,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:layout_marginBottom="16dp">
+                    android:padding="16dp">
 
                     <ImageView
                         android:layout_width="32dp"
@@ -334,7 +298,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <!-- Container cho nút "Xem lịch sử" - Luôn ở dưới cùng -->
+    <!-- Container cho nút "Dừng lại" - Luôn ở dưới cùng -->
     <FrameLayout
         android:id="@+id/btnStopRunContainer"
         android:layout_width="match_parent"
@@ -351,15 +315,15 @@
             app:cardElevation="6dp">
             
             <Button
-                android:id="@+id/btnViewHistory"
+                android:id="@+id/btnStopRun"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:text="Xem lịch sử hoạt động"
+                android:text="Dừng lại"
                 android:textSize="18sp"
                 android:textAllCaps="false"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:background="#3F51B5"
+                android:background="#E53935"
                 android:foreground="?attr/selectableItemBackground"/>
         </androidx.cardview.widget.CardView>
     </FrameLayout>
