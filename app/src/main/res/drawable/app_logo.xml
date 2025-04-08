@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Circle background -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,12m-10,0a10,10 0,1 1,20 0a10,10 0,1 1,-20 0" />
+
+    <!-- Footprint icon -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M9,6C7.9,6 7,6.9 7,8C7,9.1 7.9,10 9,10C10.1,10 11,9.1 11,8C11,6.9 10.1,6 9,6M3,7L1,12L3,17L6,17L8,12L6,7L3,7M9,14C7.9,14 7,14.9 7,16C7,17.1 7.9,18 9,18C10.1,18 11,17.1 11,16C11,14.9 10.1,14 9,14M17,6C15.9,6 15,6.9 15,8C15,9.1 15.9,10 17,10C18.1,10 19,9.1 19,8C19,6.9 18.1,6 17,6M18,14C16.9,14 16,14.9 16,16C16,17.1 16.9,18 18,18C19.1,18 20,17.1 20,16C20,14.9 19.1,14 18,14M18,3C18.55,3 19,3.45 19,4C19,4.55 18.55,5 18,5C17.45,5 17,4.55 17,4C17,3.45 17.45,3 18,3Z" />
+
+    <!-- Pulse animation circle -->
+    <path
+        android:fillColor="#33000000"
+        android:pathData="M12,12m-8,0a8,8 0,1 1,16 0a8,8 0,1 1,-16 0" />
+</vector> 

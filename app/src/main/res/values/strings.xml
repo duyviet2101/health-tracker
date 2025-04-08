@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">StepsApp</string>
+    <string name="title_activity_login">Đăng nhập</string>
+    <string name="google_icon">Google icon</string>
+    <string name="txtGoogleLogin">Đăng nhập với Google</string>
+    <string name="default_web_client_id" translatable="false">918035870495-u87sgnnfmkrtuc3dc8sflili4ov8t2fh.apps.googleusercontent.com</string>
+</resources>

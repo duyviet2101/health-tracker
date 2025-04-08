@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Outer ring with gradient -->
+    <item>
+        <shape android:shape="ring"
+               android:innerRadius="155dp"
+               android:thickness="20dp"
+               android:useLevel="false">
+            <gradient
+                android:type="sweep"
+                android:startColor="#28CCCCCC"
+                android:endColor="#18CCCCCC" />
+        </shape>
+    </item>
+    <!-- Inner ring with gradient -->
+    <item>
+        <shape android:shape="ring"
+               android:innerRadius="115dp"
+               android:thickness="20dp"
+               android:useLevel="false">
+            <gradient
+                android:type="sweep"
+                android:startColor="#30AAAAAA"
+                android:endColor="#20AAAAAA" />
+        </shape>
+    </item>
+</layer-list> 
