@@ -53,5 +53,5 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.glide)
     annotationProcessor(libs.lombok)
-    compileOnly("org.projectlombok:lombok:1.18.38")
+    compileOnly(libs.lombok)
 }

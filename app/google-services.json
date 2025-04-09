@@ -1,41 +1,73 @@
 {
   "project_info": {
-    "project_number": "443675347056",
-    "project_id": "health-tracker-neu",
-    "storage_bucket": "health-tracker-neu.firebasestorage.app"
+    "project_number": "721571634364",
+    "project_id": "health-tracker-39f27",
+    "storage_bucket": "health-tracker-39f27.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:443675347056:android:2f73eef762e4d585e6ccb5",
+        "mobilesdk_app_id": "1:721571634364:android:454fc6020353fd4f42c4b9",
         "android_client_info": {
           "package_name": "com.example.healthtracker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "443675347056-jb0hk51a0d4a3tofpogolb41frclcvb6.apps.googleusercontent.com",
+          "client_id": "721571634364-4cnoceaqcui0mvj2f6mu4hf1238ui8me.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.healthtracker",
-            "certificate_hash": "2e8d12e6b5d0f28e90f5e1a5025e35aa420ce77b"
+            "certificate_hash": "0eeafe953fd00d5d525b7154f4444b5bd7cf9b75"
           }
         },
         {
-          "client_id": "443675347056-qtrpgpru2u27dsmqd1epkmt109vtd2ng.apps.googleusercontent.com",
+          "client_id": "721571634364-5sh19uh4ojlksrec7efup96punflv5u0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthtracker",
+            "certificate_hash": "c10aedbd2c880abd0019f841c63b68ad1f25245c"
+          }
+        },
+        {
+          "client_id": "721571634364-cc522svr9n21do4cmbsn97a9h925idgf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthtracker",
+            "certificate_hash": "41bef5993ad81b659a8501e89a7f7f8652557d85"
+          }
+        },
+        {
+          "client_id": "721571634364-hsa3bk76o11f4kq7cuiji2i0tb2m38n6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthtracker",
+            "certificate_hash": "7243af65dad9e8ad75dd15ac73dc60aa03fcdb0f"
+          }
+        },
+        {
+          "client_id": "721571634364-mkq2qqjdfkojnrhmj3k9tp9rnn77ho28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.healthtracker",
+            "certificate_hash": "e5307bb4bb2e37f69ee61d429342fc046a9ea68e"
+          }
+        },
+        {
+          "client_id": "721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJkC3ev3IzR5Urw1PkxGCO23gi3LU5350"
+          "current_key": "AIzaSyCnPa9vSakLiHViYwZvbgblo6TDUGGWI68"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "443675347056-qtrpgpru2u27dsmqd1epkmt109vtd2ng.apps.googleusercontent.com",
+              "client_id": "721571634364-3bm6u5forrv4me9c8htjbba8lqqqkuuq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
