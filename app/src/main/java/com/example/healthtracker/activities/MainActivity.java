@@ -4,11 +4,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -23,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    
+
     private FirebaseAuth mAuth;
     private CardView avatarCard;
     private FirebaseUser currentUser;
@@ -58,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
         initStepCountViews();
 
         // Khởi tạo receiver để nhận cập nhật bước chân
-        setupStepUpdateReceiver();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setupStepUpdateReceiver();
+        }
 
         avatarCard = findViewById(R.id.avatarCard);
         imgAvatar = findViewById(R.id.imgAvatar);
@@ -87,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
             // Hiển thị giá trị ban đầu
             if (stepCountText != null) stepCountText.setText(String.format("%,d", initialSteps));
             if (timeValue != null) timeValue.setText(formatTime(initialTime));
-            if (caloriesValue != null) caloriesValue.setText(String.format("%.0f", initialCalories));
+            if (caloriesValue != null)
+                caloriesValue.setText(String.format("%.0f", initialCalories));
             if (distanceValue != null) {
                 if (initialDistance >= 1000) {
                     distanceValue.setText(String.format("%.2f km", initialDistance / 1000));
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void setupStepUpdateReceiver() {
         try {
             // Hủy đăng ký receiver cũ nếu đã tồn tại
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "Error unregistering existing receiver: ", e);
                 }
             }
-            
+
             stepUpdateReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
@@ -123,17 +129,17 @@ public class MainActivity extends AppCompatActivity {
 
             // Đăng ký receiver với action chính xác
             IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEPS_UPDATED);
-            
+
             // Thêm high priority để đảm bảo receiver được gọi nhanh
             filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-            
+
             // Đăng ký receiver
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
                 registerReceiver(stepUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
             } else {
-                registerReceiver(stepUpdateReceiver, filter);
+                registerReceiver(stepUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
             }
-            
+
             Log.d(TAG, "Đã đăng ký broadcast receiver với action: " + StepCounterService.ACTION_STEPS_UPDATED);
         } catch (Exception e) {
             Log.e(TAG, "Error setting up step update receiver: ", e);
@@ -145,16 +151,16 @@ public class MainActivity extends AppCompatActivity {
             // Log toàn bộ intent để kiểm tra
             Log.d(TAG, "Nhận được intent cập nhật bước: " + intent.toString());
             Log.d(TAG, "Intent có extras: " + (intent.getExtras() != null ? "Có" : "Không"));
-            
+
             if (intent.getExtras() != null) {
                 // Lấy dữ liệu từ intent
                 lastSteps = intent.getIntExtra(StepCounterService.EXTRA_STEPS, lastSteps);
                 lastDistance = intent.getDoubleExtra(StepCounterService.EXTRA_DISTANCE, lastDistance);
                 lastCalories = intent.getDoubleExtra(StepCounterService.EXTRA_CALORIES, lastCalories);
                 lastActiveTime = intent.getLongExtra(StepCounterService.EXTRA_TIME, lastActiveTime);
-                
+
                 Log.d(TAG, "Cập nhật UI với số bước: " + lastSteps);
-                
+
                 // Cập nhật giao diện
                 if (stepCountText != null) {
                     stepCountText.setText(String.format("%,d", lastSteps));
@@ -213,8 +219,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // Đăng ký lại receiver để đảm bảo nhận broadcast
-        setupStepUpdateReceiver();
-        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            setupStepUpdateReceiver();
+        }
+
         // Nếu đã đăng nhập, đảm bảo service đang chạy
         if (mAuth.getCurrentUser() != null) {
             startStepCounterService();
@@ -238,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
                         .into(imgAvatar);
             }
             txtName.setText(currentUser.getDisplayName());
-            
+
             // Chỉ khởi động service đếm bước sau khi đăng nhập thành công
             startStepCounterService();
         }
@@ -263,13 +271,13 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     // Dừng service đếm bước chân trước khi chuyển đến màn hình đăng nhập
                     stopStepCounterService();
-                    
+
                     // Start the auth flow after sign out
                     startActivity(new Intent(MainActivity.this, FirebaseUIActivity.class));
                     finish();
                 });
     }
-    
+
     private void stopStepCounterService() {
         try {
             // Dừng service đếm bước chân
