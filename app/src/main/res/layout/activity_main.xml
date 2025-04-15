@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@color/white"
+    android:padding="16dp"
     tools:context=".activities.MainActivity">
 
     <!-- Top Bar with Name and Greeting -->
@@ -14,11 +14,11 @@
         android:id="@+id/topBarLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/avatarCard"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginEnd="16dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/txtGreeting"
@@ -41,12 +41,12 @@
         android:id="@+id/shareButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/ic_share"
         android:contentDescription="Share"
+        android:src="@drawable/ic_share"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topBarLayout"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintTop_toBottomOf="@id/topBarLayout" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/avatarCard"
@@ -68,83 +68,91 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/stepCounterContainer"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toBottomOf="@id/shareButton"
-        app:layout_constraintBottom_toTopOf="@id/statsContainer"
-        app:layout_constraintHeight_percent="0.40">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarLayout">
 
-        <!-- Lớp ngoài cùng trắng mờ - to nhất -->
         <View
             android:id="@+id/outerRing4"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/white_ring"
-            app:layout_constraintWidth_percent="0.95"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/gray_light"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="1dp"/>
-        
-        <!-- Lớp giữa xám nhạt -->
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/outerRing3"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/gray_lighter"
+            app:layout_constraintBottom_toBottomOf="@id/outerRing4"
+            app:layout_constraintEnd_toEndOf="@id/outerRing4"
+            app:layout_constraintStart_toStartOf="@id/outerRing4"
+            app:layout_constraintTop_toTopOf="@id/outerRing4" />
+
         <View
             android:id="@+id/outerRing2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/grey_circle"
-            app:layout_constraintWidth_percent="0.75"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="2dp"/>
-        
-        <!-- Vòng tròn đen thật sự ở trong cùng - to hơn -->
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/gray_lightest"
+            app:layout_constraintBottom_toBottomOf="@id/outerRing3"
+            app:layout_constraintEnd_toEndOf="@id/outerRing3"
+            app:layout_constraintStart_toStartOf="@id/outerRing3"
+            app:layout_constraintTop_toTopOf="@id/outerRing3" />
+
         <View
+            android:id="@+id/outerRing1"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:background="@drawable/circle_shape"
+            android:backgroundTint="@color/gray_medium"
+            app:layout_constraintBottom_toBottomOf="@id/outerRing2"
+            app:layout_constraintEnd_toEndOf="@id/outerRing2"
+            app:layout_constraintStart_toStartOf="@id/outerRing2"
+            app:layout_constraintTop_toTopOf="@id/outerRing2" />
+
+        <androidx.cardview.widget.CardView
             android:id="@+id/innerCircle"
-            android:layout_width="0dp" 
-            android:layout_height="0dp"
-            android:background="@drawable/black_circle"
-            app:layout_constraintWidth_percent="0.5"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:elevation="3dp"/>
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            app:cardBackgroundColor="@color/background_dark"
+            app:cardCornerRadius="60dp"
+            app:layout_constraintBottom_toBottomOf="@id/outerRing1"
+            app:layout_constraintEnd_toEndOf="@id/outerRing1"
+            app:layout_constraintStart_toStartOf="@id/outerRing1"
+            app:layout_constraintTop_toTopOf="@id/outerRing1">
 
-        <!-- Số bước chân và nhãn -->
-        <TextView
-            android:id="@+id/stepCountText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="8,903"
-            android:textSize="46sp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toTopOf="@id/innerCircle"
-            app:layout_constraintBottom_toBottomOf="@id/innerCircle"
-            app:layout_constraintStart_toStartOf="@id/innerCircle"
-            app:layout_constraintEnd_toEndOf="@id/innerCircle"
-            app:layout_constraintVertical_bias="0.4"
-            android:elevation="4dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/stepsLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="steps"
-            android:textSize="18sp"
-            android:textColor="#B0FFFFFF"
-            app:layout_constraintTop_toBottomOf="@id/stepCountText"
-            app:layout_constraintStart_toStartOf="@id/innerCircle"
-            app:layout_constraintEnd_toEndOf="@id/innerCircle"
-            android:layout_marginTop="2dp"
-            android:elevation="4dp"/>
+                <TextView
+                    android:id="@+id/stepCountText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="8,903"
+                    android:textColor="@color/text_light"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/stepsLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="steps"
+                    android:textColor="@color/text_tertiary"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Stats Container -->
@@ -152,95 +160,95 @@
         android:id="@+id/statsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="48dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/stepCounterContainer">
 
         <!-- Time Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/stats_background"
-            android:layout_marginBottom="8dp">
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_time"/>
+                android:src="@drawable/ic_time" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Time"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/timeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2h 30m"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Calories Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/stats_background"
-            android:layout_marginBottom="8dp">
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_fire"
-                android:tint="#D32F2F"/>
+                android:tint="#D32F2F" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Calories"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/caloriesValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="423"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
 
         <!-- Distance Stats -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@drawable/stats_background">
+            android:background="@drawable/stats_background"
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_distance"/>
+                android:src="@drawable/ic_distance" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginStart="16dp"
+                android:layout_weight="1"
                 android:text="Distance"
-                android:textSize="16sp"/>
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/distanceValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4500 m"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 
@@ -250,51 +258,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="40dp"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statsContainer">
 
         <!-- Steps Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/stepsCard"
             android:layout_width="0dp"
-            android:layout_height="72dp"
-            android:layout_weight="1"
+            android:layout_height="100dp"
             android:layout_marginEnd="8dp"
-            app:cardCornerRadius="16dp"
+            android:layout_weight="1"
             app:cardBackgroundColor="#1A1A1A"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="12dp">
 
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/ic_footsteps"
                     android:layout_marginEnd="8dp"
-                    android:tint="#FFFFFF"/>
+                    android:src="@drawable/ic_footsteps"
+                    app:tint="#FFFFFF" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thống kê"
                         android:textColor="@color/white"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="steps"
                         android:textColor="#B0FFFFFF"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -303,43 +314,47 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/waterCard"
             android:layout_width="0dp"
-            android:layout_height="72dp"
-            android:layout_weight="1"
+            android:layout_height="100dp"
             android:layout_marginStart="8dp"
-            app:cardCornerRadius="16dp"
+            android:layout_weight="1"
             app:cardBackgroundColor="#F5F5F5"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:cardPreventCornerOverlap="true"
+            app:cardUseCompatPadding="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="12dp">
 
                 <ImageView
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/ic_water"
                     android:layout_marginEnd="8dp"
-                    android:tint="#2196F3"/>
+                    android:src="@drawable/ic_water"
+                    android:tint="#2196F3" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thêm"
                         android:textColor="#000000"
-                        android:textSize="16sp"/>
+                        android:textSize="16sp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="water"
                         android:textColor="#707070"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
