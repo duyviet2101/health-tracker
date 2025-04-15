@@ -7,4 +7,9 @@
     <string name="txtGoogleLogin">Sign in with Google</string>
     <string name="sign_out">Sign Out</string>
     <string name="textMenuTitle" translatable="false">Menu</string>
+    <string name="tell_weight">Tell us your weight?</string>
+    <string name="register_info_note">Telling more about your self will allow us to understand your health.</string>
+    <string name="continue_button">Continue</string>
+    <string name="tell_height">Tell us your height?</string>
+    <string name="save_button">Save</string>
 </resources>

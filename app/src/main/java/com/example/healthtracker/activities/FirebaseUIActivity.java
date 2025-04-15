@@ -93,18 +93,18 @@ public class FirebaseUIActivity extends AppCompatActivity {
                                                 }
 
                                                 // Check if user has complete profile data
-//                                                if (existingUser.getWeight() == null || existingUser.getHeight() == null
-//                                                        || existingUser.getWeight().isEmpty() || existingUser.getHeight().isEmpty()) {
-//                                                    // Incomplete profile, go to RegisterInfo
-//                                                    Intent intent = new Intent(FirebaseUIActivity.this, RegisterInfo.class);
-//                                                    startActivity(intent);
-//                                                } else {
-//                                                    // Complete profile, go to MainActivity
-//                                                    Intent intent = new Intent(FirebaseUIActivity.this, MainActivity.class);
-//                                                    startActivity(intent);
-//                                                }
-                                                Intent intent = new Intent(FirebaseUIActivity.this, MainActivity.class);
-                                                startActivity(intent);
+                                                if (existingUser.getWeight() == null || existingUser.getHeight() == null
+                                                        || existingUser.getWeight().isEmpty() || existingUser.getHeight().isEmpty()) {
+                                                    // Incomplete profile, go to RegisterInfo
+                                                    Intent intent = new Intent(FirebaseUIActivity.this, RegisterInfo.class);
+                                                    startActivity(intent);
+                                                } else {
+                                                    // Complete profile, go to MainActivity
+                                                    Intent intent = new Intent(FirebaseUIActivity.this, MainActivity.class);
+                                                    startActivity(intent);
+                                                }
+//                                                Intent intent = new Intent(FirebaseUIActivity.this, MainActivity.class);
+//                                                startActivity(intent);
                                                 finish();
                                             });
                                         }

@@ -1,13 +1,18 @@
 package com.example.healthtracker.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.healthtracker.R;
+import com.example.healthtracker.activities.MainActivity;
 
 public class HeightRegisterInfo extends Fragment {
     public HeightRegisterInfo() {
@@ -33,5 +38,23 @@ public class HeightRegisterInfo extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_height_register_info, container, false);
+    }
+    
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        // Find the save button
+        Button saveButton = view.findViewById(R.id.button1);
+        
+        // Set click listener to navigate to MainActivity
+        saveButton.setOnClickListener(v -> {
+            // Create intent to MainActivity
+            Intent intent = new Intent(requireActivity(), MainActivity.class);
+            startActivity(intent);
+            
+            // Finish current activity to prevent going back to register screens
+            requireActivity().finish();
+        });
     }
 }
