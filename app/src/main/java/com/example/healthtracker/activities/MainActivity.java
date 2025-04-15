@@ -1,44 +1,64 @@
 package com.example.healthtracker.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.healthtracker.R;
+import com.example.healthtracker.StepCounterData;
+import com.example.healthtracker.StepCounterService;
 import com.example.healthtracker.fragments.MenuAccountFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MainActivity";
+    
     private FirebaseAuth mAuth;
     private CardView avatarCard;
     private FirebaseUser currentUser;
     private ImageView imgAvatar;
     private TextView txtName;
 
+    // Đếm bước chân
+    private TextView stepCountText;
+    private TextView timeValue;
+    private TextView caloriesValue;
+    private TextView distanceValue;
+    private StepCounterData stepData;
+
+    // Để nhận cập nhật từ StepCounterService
+    private BroadcastReceiver stepUpdateReceiver;
+    private int lastSteps = 0;
+    private double lastDistance = 0.0;
+    private double lastCalories = 0.0;
+    private long lastActiveTime = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         mAuth = FirebaseAuth.getInstance();
+
+        // Khởi tạo quản lý dữ liệu bước chân
+        stepData = StepCounterData.getInstance(this);
+
+        // Khởi tạo các view đếm bước chân
+        initStepCountViews();
+
+        // Khởi tạo receiver để nhận cập nhật bước chân
+        setupStepUpdateReceiver();
 
         avatarCard = findViewById(R.id.avatarCard);
         imgAvatar = findViewById(R.id.imgAvatar);
@@ -49,6 +69,156 @@ public class MainActivity extends AppCompatActivity {
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
+    }
+
+    private void initStepCountViews() {
+        try {
+            stepCountText = findViewById(R.id.stepCountText);
+            timeValue = findViewById(R.id.timeValue);
+            caloriesValue = findViewById(R.id.caloriesValue);
+            distanceValue = findViewById(R.id.distanceValue);
+
+            // Khởi tạo giá trị ban đầu
+            int initialSteps = stepData.getSteps();
+            double initialDistance = stepData.calculateDistance(initialSteps);
+            double initialCalories = stepData.calculateCalories(initialSteps);
+            long initialTime = stepData.calculateActiveTime();
+
+            // Hiển thị giá trị ban đầu
+            if (stepCountText != null) stepCountText.setText(String.format("%,d", initialSteps));
+            if (timeValue != null) timeValue.setText(formatTime(initialTime));
+            if (caloriesValue != null) caloriesValue.setText(String.format("%.0f", initialCalories));
+            if (distanceValue != null) {
+                if (initialDistance >= 1000) {
+                    distanceValue.setText(String.format("%.2f km", initialDistance / 1000));
+                } else {
+                    distanceValue.setText(String.format("%.0f m", initialDistance));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing step count views: ", e);
+        }
+    }
+
+    private void setupStepUpdateReceiver() {
+        try {
+            // Hủy đăng ký receiver cũ nếu đã tồn tại
+            if (stepUpdateReceiver != null) {
+                try {
+                    unregisterReceiver(stepUpdateReceiver);
+                } catch (Exception e) {
+                    // Có thể receiver chưa được đăng ký
+                    Log.e(TAG, "Error unregistering existing receiver: ", e);
+                }
+            }
+            
+            stepUpdateReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    Log.d(TAG, "Đã nhận broadcast với action: " + intent.getAction());
+                    // Cập nhật UI ngay lập tức, không cần runOnUiThread vì BroadcastReceiver đã chạy trên main thread
+                    updateStepCountUI(intent);
+                }
+            };
+
+            // Đăng ký receiver với action chính xác
+            IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEPS_UPDATED);
+            
+            // Thêm high priority để đảm bảo receiver được gọi nhanh
+            filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+            
+            // Đăng ký receiver
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                registerReceiver(stepUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+            } else {
+                registerReceiver(stepUpdateReceiver, filter);
+            }
+            
+            Log.d(TAG, "Đã đăng ký broadcast receiver với action: " + StepCounterService.ACTION_STEPS_UPDATED);
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting up step update receiver: ", e);
+        }
+    }
+
+    private void updateStepCountUI(Intent intent) {
+        try {
+            // Log toàn bộ intent để kiểm tra
+            Log.d(TAG, "Nhận được intent cập nhật bước: " + intent.toString());
+            Log.d(TAG, "Intent có extras: " + (intent.getExtras() != null ? "Có" : "Không"));
+            
+            if (intent.getExtras() != null) {
+                // Lấy dữ liệu từ intent
+                lastSteps = intent.getIntExtra(StepCounterService.EXTRA_STEPS, lastSteps);
+                lastDistance = intent.getDoubleExtra(StepCounterService.EXTRA_DISTANCE, lastDistance);
+                lastCalories = intent.getDoubleExtra(StepCounterService.EXTRA_CALORIES, lastCalories);
+                lastActiveTime = intent.getLongExtra(StepCounterService.EXTRA_TIME, lastActiveTime);
+                
+                Log.d(TAG, "Cập nhật UI với số bước: " + lastSteps);
+                
+                // Cập nhật giao diện
+                if (stepCountText != null) {
+                    stepCountText.setText(String.format("%,d", lastSteps));
+                }
+                if (timeValue != null) {
+                    timeValue.setText(formatTime(lastActiveTime));
+                }
+                if (caloriesValue != null) {
+                    caloriesValue.setText(String.format("%.0f", lastCalories));
+                }
+                if (distanceValue != null) {
+                    if (lastDistance >= 1000) {
+                        distanceValue.setText(String.format("%.2f km", lastDistance / 1000));
+                    } else {
+                        distanceValue.setText(String.format("%.0f m", lastDistance));
+                    }
+                }
+            } else {
+                Log.e(TAG, "Intent không có extra");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error updating step count UI: ", e);
+        }
+    }
+
+    private String formatTime(long minutes) {
+        try {
+            if (minutes < 60) {
+                return minutes + " m";
+            } else {
+                long hours = minutes / 60;
+                long mins = minutes % 60;
+                return hours + "h " + mins + "m";
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error formatting time: ", e);
+            return "0m";
+        }
+    }
+
+    private void startStepCounterService() {
+        try {
+            Intent serviceIntent = new Intent(this, StepCounterService.class);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent);
+            } else {
+                startService(serviceIntent);
+            }
+            Log.d(TAG, "Step counter service started");
+        } catch (Exception e) {
+            Log.e(TAG, "Error starting step counter service: ", e);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Đăng ký lại receiver để đảm bảo nhận broadcast
+        setupStepUpdateReceiver();
+        
+        // Nếu đã đăng nhập, đảm bảo service đang chạy
+        if (mAuth.getCurrentUser() != null) {
+            startStepCounterService();
+        }
     }
 
     @Override
@@ -68,6 +238,22 @@ public class MainActivity extends AppCompatActivity {
                         .into(imgAvatar);
             }
             txtName.setText(currentUser.getDisplayName());
+            
+            // Chỉ khởi động service đếm bước sau khi đăng nhập thành công
+            startStepCounterService();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Hủy đăng ký receiver
+        try {
+            if (stepUpdateReceiver != null) {
+                unregisterReceiver(stepUpdateReceiver);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error unregistering step update receiver: ", e);
         }
     }
 
@@ -75,9 +261,23 @@ public class MainActivity extends AppCompatActivity {
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(task -> {
+                    // Dừng service đếm bước chân trước khi chuyển đến màn hình đăng nhập
+                    stopStepCounterService();
+                    
                     // Start the auth flow after sign out
                     startActivity(new Intent(MainActivity.this, FirebaseUIActivity.class));
                     finish();
                 });
+    }
+    
+    private void stopStepCounterService() {
+        try {
+            // Dừng service đếm bước chân
+            Intent serviceIntent = new Intent(this, StepCounterService.class);
+            boolean stopped = stopService(serviceIntent);
+            Log.d(TAG, "Dừng service đếm bước chân: " + (stopped ? "thành công" : "thất bại"));
+        } catch (Exception e) {
+            Log.e(TAG, "Lỗi khi dừng service đếm bước chân: ", e);
+        }
     }
 }
