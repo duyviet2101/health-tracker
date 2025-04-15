@@ -12,4 +12,8 @@
     <string name="continue_button">Continue</string>
     <string name="tell_height">Tell us your height?</string>
     <string name="save_button">Save</string>
+    <string name="weight_hint" translatable="false">XX kg</string>
+    <string name="weight_icon" translatable="false">weight_icon</string>
+    <string name="height_hint" translatable="false">XXX cm</string>
+    <string name="height_icon" translatable="false">height_icon</string>
 </resources>

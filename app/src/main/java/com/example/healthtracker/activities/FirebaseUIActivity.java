@@ -16,7 +16,6 @@ import androidx.cardview.widget.CardView;
 import com.example.healthtracker.R;
 import com.example.healthtracker.models.User;
 import com.example.healthtracker.services.UserService;
-import com.example.healthtracker.utils.BatteryOptimizationHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -153,11 +152,6 @@ public class FirebaseUIActivity extends AppCompatActivity {
 
         FirebaseApp.initializeApp(this);
 
-        // Check for battery optimization settings on problematic devices
-        if (BatteryOptimizationHelper.isManufacturerWithRestrictions()) {
-            BatteryOptimizationHelper.requestBatteryOptimizationPermission(this);
-        }
-
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -172,25 +166,6 @@ public class FirebaseUIActivity extends AppCompatActivity {
             Intent intent = googleSignInClient.getSignInIntent();
             activityResultLauncher.launch(intent);
         });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // This can help with "activityResumeTrigger" issues on certain devices
-        if (BatteryOptimizationHelper.isManufacturerWithRestrictions()) {
-            // Additional workaround for certain devices
-            try {
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.MAIN");
-                intent.addCategory("android.intent.category.LAUNCHER");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                getPackageManager().getLaunchIntentForPackage(getPackageName());
-            } catch (Exception e) {
-                Log.e(TAG, "Error in onResume workaround: " + e.getMessage());
-            }
-        }
     }
 }
 

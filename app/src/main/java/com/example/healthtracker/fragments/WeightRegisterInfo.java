@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,11 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.healthtracker.R;
+import com.example.healthtracker.activities.RegisterInfo;
 
 
 public class WeightRegisterInfo extends Fragment {
 
     private ViewPager2 viewPager;
+    private EditText editTextWeight;
 
     public WeightRegisterInfo() {
         // Required empty public constructor
@@ -50,11 +54,28 @@ public class WeightRegisterInfo extends Fragment {
         // Get reference to the ViewPager2 from parent activity
         viewPager = requireActivity().findViewById(R.id.viewPager);
         
+        // Find the EditText for weight input
+        editTextWeight = view.findViewById(R.id.editTextWeight);
+        
         // Find the continue button
         Button continueButton = view.findViewById(R.id.button1);
         
         // Set click listener to navigate to the next fragment
         continueButton.setOnClickListener(v -> {
+            // Get the weight value
+            String weight = editTextWeight.getText().toString().trim();
+            
+            // Validate the weight input
+            if (weight.isEmpty()) {
+                Toast.makeText(requireContext(), "Vui lòng nhập cân nặng của bạn", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // Save the weight in the parent activity
+            if (getActivity() instanceof RegisterInfo) {
+                ((RegisterInfo) getActivity()).setUserWeight(weight);
+            }
+            
             // Navigate to the next page (Height fragment)
             if (viewPager != null) {
                 viewPager.setCurrentItem(1, true);

@@ -40,4 +40,12 @@ public class UserService {
                 "height", user.getHeight()
         );
     }
+    
+    // Method to update only weight and height fields
+    public Task<Void> updateUserInfo(String userId, String weight, String height) {
+        return db.collection("users").document(userId).update(
+                "weight", weight,
+                "height", height
+        );
+    }
 }
