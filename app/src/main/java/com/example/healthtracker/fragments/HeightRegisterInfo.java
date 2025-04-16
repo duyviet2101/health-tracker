@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.healthtracker.R;
 import com.example.healthtracker.activities.MainActivity;
 import com.example.healthtracker.activities.RegisterInfo;
+import com.example.healthtracker.models.User;
 import com.example.healthtracker.services.UserService;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -88,9 +89,13 @@ public class HeightRegisterInfo extends Fragment {
 
         // Get current user ID
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        User user = new User();
+        user.setId(userId);
+        user.setWeight(weight);
+        user.setHeight(height);
 
         // Update user data in Firestore
-        userService.updateUserInfo(userId, weight, height)
+        userService.updateUserInfo(user)
                 .addOnSuccessListener(aVoid -> {
                     Log.d(TAG, "User data updated successfully");
 

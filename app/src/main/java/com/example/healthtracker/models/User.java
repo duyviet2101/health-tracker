@@ -11,6 +11,7 @@ public class User {
     private String id;
     private String displayName;
     private String email;
+    private String dob;
     private String photoUrl;
     private String weight;
     private String height;

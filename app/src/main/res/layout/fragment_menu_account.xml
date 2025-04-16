@@ -35,6 +35,32 @@
                 android:background="?attr/colorSurfaceVariant" />
 
             <LinearLayout
+                android:id="@+id/profileOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="Profile icon"
+                    android:src="@drawable/manage_accounts_24px" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/profile"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/languageOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
-                    android:text="Sign Out"
+                    android:text="@string/sign_out"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp" />
             </LinearLayout>

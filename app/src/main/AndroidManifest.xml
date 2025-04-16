@@ -3,18 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <!-- Required permissions for step counting -->
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> <!-- Required permissions for step counting -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" 
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"
         android:minSdkVersion="33" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <!-- Declare that the app uses step sensors but they're not required -->
-    <uses-feature android:name="android.hardware.sensor.stepcounter" android:required="false" />
-    <uses-feature android:name="android.hardware.sensor.stepdetector" android:required="false" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Declare that the app uses step sensors but they're not required -->
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepdetector"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +28,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealthTracker"
         tools:targetApi="31">
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.RegisterInfo"
             android:exported="false" />
@@ -42,17 +47,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        
-        <!-- Step counter service -->
+        </activity> <!-- Step counter service -->
         <service
             android:name=".StepCounterService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="dataSync"
-            tools:targetApi="33" />
-            
-        <!-- Receiver to start service on boot -->
+            tools:targetApi="33" /> <!-- Receiver to start service on boot -->
         <receiver
             android:name=".BootCompletedReceiver"
             android:enabled="true"
@@ -62,11 +63,10 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
                 <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </receiver>
-        
-        <!-- Khai báo cho broadcast steps -->
+        </receiver> <!-- Khai báo cho broadcast steps -->
         <receiver
             android:name=".StepCountReceiver"
             android:exported="false">

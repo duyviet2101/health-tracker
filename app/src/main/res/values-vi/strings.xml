@@ -10,4 +10,11 @@
     <string name="continue_button">Tiếp tục</string>
     <string name="tell_height">Hãy cho chúng tôi biết chiều cao của bạn?</string>
     <string name="save_button">Lưu</string>
+    <string name="profile">Thông tin người dùng</string>
+    <string name="back">Trở về</string>
+    <string name="name">Họ tên</string>
+    <string name="dob">Ngày sinh</string>
+    <string name="weight_hint">Cân nặng (kg)</string>
+    <string name="height_hint">Height (cm)</string>
+    <string name="save">Lưu</string>
 </resources>

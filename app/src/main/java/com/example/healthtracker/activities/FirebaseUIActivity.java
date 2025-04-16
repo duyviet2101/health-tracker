@@ -60,6 +60,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
                                                     userId,
                                                     signInAccount.getDisplayName(),
                                                     signInAccount.getEmail(),
+                                                    null,
                                                     signInAccount.getPhotoUrl() != null ? signInAccount.getPhotoUrl().toString() : null,
                                                     null,
                                                     null
@@ -81,6 +82,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
                                                     userId,
                                                     signInAccount.getDisplayName(),
                                                     signInAccount.getEmail(),
+                                                    null,
                                                     signInAccount.getPhotoUrl() != null ? signInAccount.getPhotoUrl().toString() : null,
                                                     existingUser.getWeight(),
                                                     existingUser.getHeight()
@@ -114,6 +116,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
                                                 userId,
                                                 signInAccount.getDisplayName(),
                                                 signInAccount.getEmail(),
+                                                null,
                                                 signInAccount.getPhotoUrl() != null ? signInAccount.getPhotoUrl().toString() : null,
                                                 null,
                                                 null

@@ -19,6 +19,7 @@ import com.example.healthtracker.R;
 import com.example.healthtracker.StepCounterData;
 import com.example.healthtracker.StepCounterService;
 import com.example.healthtracker.fragments.MenuAccountFragment;
+import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private ImageView imgAvatar;
     private TextView txtName;
+
+    private UserService userService;
 
     // Đếm bước chân
     private TextView stepCountText;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        userService = new UserService();
 
         // Khởi tạo quản lý dữ liệu bước chân
         stepData = StepCounterData.getInstance(this);
@@ -246,6 +250,19 @@ public class MainActivity extends AppCompatActivity {
                         .into(imgAvatar);
             }
             txtName.setText(currentUser.getDisplayName());
+
+            userService.getUser(currentUser.getUid())
+                    .addOnSuccessListener(user -> {
+                        if (user != null) {
+                            txtName.setText(user.getDisplayName());
+                        } else {
+                            Log.w(TAG, "User document does not exist");
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        txtName.setText(currentUser.getDisplayName());
+                        Log.e(TAG, "Error loading user profile", e);
+                    });
 
             // Chỉ khởi động service đếm bước sau khi đăng nhập thành công
             startStepCounterService();

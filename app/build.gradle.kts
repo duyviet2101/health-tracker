@@ -54,4 +54,7 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
+
+    // CircleImageView for circular profile images
+    implementation(libs.circleimageview)
 }

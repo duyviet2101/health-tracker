@@ -1,5 +1,6 @@
 package com.example.healthtracker.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.healthtracker.R;
 import com.example.healthtracker.activities.MainActivity;
+import com.example.healthtracker.activities.ProfileActivity;
 
 public class MenuAccountFragment extends DialogFragment {
 
@@ -48,6 +50,14 @@ public class MenuAccountFragment extends DialogFragment {
             if (getActivity() instanceof MainActivity) {
                 ((MainActivity) getActivity()).signOut();
             }
+            dismiss(); // Close the dialog
+        });
+
+        LinearLayout profileOption = view.findViewById(R.id.profileOption);
+        profileOption.setOnClickListener(v -> {
+            // Navigate to ProfileActivity
+            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+            startActivity(intent);
             dismiss(); // Close the dialog
         });
 
