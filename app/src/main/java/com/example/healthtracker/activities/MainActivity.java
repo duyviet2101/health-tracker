@@ -4,11 +4,18 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +31,9 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity implements SensorEventListener{
     private static final String TAG = "MainActivity";
 
     private FirebaseAuth mAuth;
@@ -40,7 +49,20 @@ public class MainActivity extends AppCompatActivity {
     private TextView timeValue;
     private TextView caloriesValue;
     private TextView distanceValue;
-    private StepCounterData stepData;
+
+    //Cảm biến
+    private SensorManager sensorManager;
+    private Sensor stepCounterSensor;
+
+    // Giá trị ban đầu của biến đếm bước chân
+    private int stepCount = 0;
+
+    // Độ dài 1 bước chân
+    private double stepLengthInMeter = 0.4f;
+
+    // Thời gian bắt đầu đi
+    private long startTime;
+
 
     // Để nhận cập nhật từ StepCounterService
     private BroadcastReceiver stepUpdateReceiver;
@@ -49,19 +71,42 @@ public class MainActivity extends AppCompatActivity {
     private double lastCalories = 0.0;
     private long lastActiveTime = 0;
 
+    private Handler timerHandler = new Handler();
+
+    private Runnable timerRunnable = new Runnable() {
+        @Override
+        public void run() {
+            long milis = System.currentTimeMillis() - startTime;
+            int seconds = (int)(milis/1000);
+            int mins = seconds/60;
+            int hours = mins/60;
+            timeValue.setText(String.format(Locale.getDefault(), "%02d:%02d", hours, mins));
+            timerHandler.postDelayed(this, 1000);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        stepCountText = findViewById(R.id.stepCountText);
+        distanceValue = findViewById(R.id.distanceValue);
+        timeValue = findViewById(R.id.timeValue);
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        stepCounterSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+        startTime = System.currentTimeMillis();
+
+        if (stepCounterSensor == null) {
+            Toast.makeText(this, "Không có cảm biến đếm bước chân", Toast.LENGTH_LONG).show();
+        }
+
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
 
-        // Khởi tạo quản lý dữ liệu bước chân
-        stepData = StepCounterData.getInstance(this);
 
-        // Khởi tạo các view đếm bước chân
-        initStepCountViews();
 
         // Khởi tạo receiver để nhận cập nhật bước chân
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -77,36 +122,6 @@ public class MainActivity extends AppCompatActivity {
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
-    }
-
-    private void initStepCountViews() {
-        try {
-            stepCountText = findViewById(R.id.stepCountText);
-            timeValue = findViewById(R.id.timeValue);
-            caloriesValue = findViewById(R.id.caloriesValue);
-            distanceValue = findViewById(R.id.distanceValue);
-
-            // Khởi tạo giá trị ban đầu
-            int initialSteps = stepData.getSteps();
-            double initialDistance = stepData.calculateDistance(initialSteps);
-            double initialCalories = stepData.calculateCalories(initialSteps);
-            long initialTime = stepData.calculateActiveTime();
-
-            // Hiển thị giá trị ban đầu
-            if (stepCountText != null) stepCountText.setText(String.format("%,d", initialSteps));
-            if (timeValue != null) timeValue.setText(formatTime(initialTime));
-            if (caloriesValue != null)
-                caloriesValue.setText(String.format("%.0f", initialCalories));
-            if (distanceValue != null) {
-                if (initialDistance >= 1000) {
-                    distanceValue.setText(String.format("%.2f km", initialDistance / 1000));
-                } else {
-                    distanceValue.setText(String.format("%.0f m", initialDistance));
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error initializing step count views: ", e);
-        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
@@ -222,9 +237,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Đăng ký lại receiver để đảm bảo nhận broadcast
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            setupStepUpdateReceiver();
+        // Nếu có cảm biến đếm bước chân thì nghe hành động từ cảm biến
+        if (stepCounterSensor != null) {
+            sensorManager.registerListener((SensorEventListener) this, stepCounterSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            timerHandler.postDelayed(timerRunnable, 0);
         }
 
         // Nếu đã đăng nhập, đảm bảo service đang chạy
@@ -265,7 +281,16 @@ public class MainActivity extends AppCompatActivity {
                     });
 
             // Chỉ khởi động service đếm bước sau khi đăng nhập thành công
-            startStepCounterService();
+//            startStepCounterService();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (stepCounterSensor != null) {
+            sensorManager.unregisterListener((SensorEventListener) this);
+            timerHandler.removeCallbacks(timerRunnable);
         }
     }
 
@@ -304,5 +329,30 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Lỗi khi dừng service đếm bước chân: ", e);
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (sensorEvent.sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
+            stepCount = (int) sensorEvent.values[0];
+            stepCountText.setText(stepCount);
+
+            double distanceInMeters = stepCount * stepLengthInMeter;
+
+            double calories = stepCount * 0.045;    // Mỗi bước tiêu tốn 0.045 calo
+            caloriesValue.setText(String.format(Locale.getDefault(), "%.2f", calories));
+
+            if (distanceInMeters >= 1000) {
+                distanceValue.setText(String.format(Locale.getDefault(), "%.2f km", distanceInMeters/1000));
+            }
+            else {
+                distanceValue.setText(String.format(Locale.getDefault(), "%.2f m", distanceInMeters));
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

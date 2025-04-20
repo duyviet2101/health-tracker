@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" /> <!-- Required permissions for step counting -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -13,10 +14,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Declare that the app uses step sensors but they're not required -->
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
-        android:required="false" />
+        android:required="true" />
     <uses-feature
         android:name="android.hardware.sensor.stepdetector"
-        android:required="false" />
+        android:required="true" />
 
     <application
         android:allowBackup="true"
