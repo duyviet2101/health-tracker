@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +63,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Khởi tạo các view đếm bước chân
         initStepCountViews();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (checkSelfPermission(android.Manifest.permission.ACTIVITY_RECOGNITION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.ACTIVITY_RECOGNITION}, 1001);
+            }
+        }
+
 
         // Khởi tạo receiver để nhận cập nhật bước chân
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -303,6 +312,19 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "Dừng service đếm bước chân: " + (stopped ? "thành công" : "thất bại"));
         } catch (Exception e) {
             Log.e(TAG, "Lỗi khi dừng service đếm bước chân: ", e);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1001) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "Đã được cấp quyền ACTIVITY_RECOGNITION");
+                startStepCounterService(); // Khởi động lại nếu cần
+            } else {
+                Log.w(TAG, "Bị từ chối quyền ACTIVITY_RECOGNITION");
+            }
         }
     }
 }
