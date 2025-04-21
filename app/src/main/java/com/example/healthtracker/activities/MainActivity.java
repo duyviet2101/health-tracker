@@ -11,11 +11,15 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+//import com.example.healthtracker.Manifest;
+import android.Manifest;
 import com.example.healthtracker.R;
 import com.example.healthtracker.StepCounterData;
 import com.example.healthtracker.StepCounterService;
@@ -27,6 +31,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private static final int REQUEST_ACTIVITY_RECOGNITION = 1001;
 
     private FirebaseAuth mAuth;
     private CardView avatarCard;
@@ -64,18 +69,6 @@ public class MainActivity extends AppCompatActivity {
         // Khởi tạo các view đếm bước chân
         initStepCountViews();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (checkSelfPermission(android.Manifest.permission.ACTIVITY_RECOGNITION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{android.Manifest.permission.ACTIVITY_RECOGNITION}, 1001);
-            }
-        }
-
-
-        // Khởi tạo receiver để nhận cập nhật bước chân
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            setupStepUpdateReceiver();
-        }
 
         avatarCard = findViewById(R.id.avatarCard);
         imgAvatar = findViewById(R.id.imgAvatar);
@@ -86,7 +79,44 @@ public class MainActivity extends AppCompatActivity {
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
+
+        checkAndRequestPermission();
+        setupStepUpdateReceiver(); //Đăng ký receiver realtime
     }
+
+    private void checkAndRequestPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (checkSelfPermission(Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACTIVITY_RECOGNITION}, REQUEST_ACTIVITY_RECOGNITION);
+            } else {
+                startStepCounterService();
+            }
+        } else {
+            startStepCounterService();
+        }
+    }
+
+    private void setupStepUpdateReceiver() {
+        stepUpdateReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int steps = intent.getIntExtra(StepCounterService.EXTRA_STEPS, 0);
+                double distance = intent.getDoubleExtra(StepCounterService.EXTRA_DISTANCE, 0);
+                double calories = intent.getDoubleExtra(StepCounterService.EXTRA_CALORIES, 0);
+                long activeTime = intent.getLongExtra(StepCounterService.EXTRA_TIME, 0);
+
+                stepCountText.setText(String.format("%,d", steps));
+                caloriesValue.setText(String.format("%.0f", calories));
+                timeValue.setText(formatTime(activeTime));
+                distanceValue.setText(distance >= 1000 ?
+                        String.format("%.2f km", distance / 1000) :
+                        String.format("%.0f m", distance));
+            }
+        };
+        IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEPS_UPDATED);
+        LocalBroadcastManager.getInstance(this).registerReceiver(stepUpdateReceiver, filter); // LocalBroadcast đảm bảo realtime
+    }
+
 
     private void initStepCountViews() {
         try {
@@ -118,86 +148,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-    private void setupStepUpdateReceiver() {
-        try {
-            // Hủy đăng ký receiver cũ nếu đã tồn tại
-            if (stepUpdateReceiver != null) {
-                try {
-                    unregisterReceiver(stepUpdateReceiver);
-                } catch (Exception e) {
-                    // Có thể receiver chưa được đăng ký
-                    Log.e(TAG, "Error unregistering existing receiver: ", e);
-                }
-            }
-
-            stepUpdateReceiver = new BroadcastReceiver() {
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    Log.d(TAG, "Đã nhận broadcast với action: " + intent.getAction());
-                    // Cập nhật UI ngay lập tức, không cần runOnUiThread vì BroadcastReceiver đã chạy trên main thread
-                    updateStepCountUI(intent);
-                }
-            };
-
-            // Đăng ký receiver với action chính xác
-            IntentFilter filter = new IntentFilter(StepCounterService.ACTION_STEPS_UPDATED);
-
-            // Thêm high priority để đảm bảo receiver được gọi nhanh
-            filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
-
-            // Đăng ký receiver
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                registerReceiver(stepUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
-            } else {
-                registerReceiver(stepUpdateReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
-            }
-
-            Log.d(TAG, "Đã đăng ký broadcast receiver với action: " + StepCounterService.ACTION_STEPS_UPDATED);
-        } catch (Exception e) {
-            Log.e(TAG, "Error setting up step update receiver: ", e);
+    private void startStepCounterService() {
+        Intent serviceIntent = new Intent(this, StepCounterService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent);
+        } else {
+            startService(serviceIntent);
         }
     }
 
-    private void updateStepCountUI(Intent intent) {
-        try {
-            // Log toàn bộ intent để kiểm tra
-            Log.d(TAG, "Nhận được intent cập nhật bước: " + intent.toString());
-            Log.d(TAG, "Intent có extras: " + (intent.getExtras() != null ? "Có" : "Không"));
 
-            if (intent.getExtras() != null) {
-                // Lấy dữ liệu từ intent
-                lastSteps = intent.getIntExtra(StepCounterService.EXTRA_STEPS, lastSteps);
-                lastDistance = intent.getDoubleExtra(StepCounterService.EXTRA_DISTANCE, lastDistance);
-                lastCalories = intent.getDoubleExtra(StepCounterService.EXTRA_CALORIES, lastCalories);
-                lastActiveTime = intent.getLongExtra(StepCounterService.EXTRA_TIME, lastActiveTime);
-
-                Log.d(TAG, "Cập nhật UI với số bước: " + lastSteps);
-
-                // Cập nhật giao diện
-                if (stepCountText != null) {
-                    stepCountText.setText(String.format("%,d", lastSteps));
-                }
-                if (timeValue != null) {
-                    timeValue.setText(formatTime(lastActiveTime));
-                }
-                if (caloriesValue != null) {
-                    caloriesValue.setText(String.format("%.0f", lastCalories));
-                }
-                if (distanceValue != null) {
-                    if (lastDistance >= 1000) {
-                        distanceValue.setText(String.format("%.2f km", lastDistance / 1000));
-                    } else {
-                        distanceValue.setText(String.format("%.0f m", lastDistance));
-                    }
-                }
-            } else {
-                Log.e(TAG, "Intent không có extra");
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error updating step count UI: ", e);
-        }
-    }
 
     private String formatTime(long minutes) {
         try {
@@ -214,27 +174,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startStepCounterService() {
-        try {
-            Intent serviceIntent = new Intent(this, StepCounterService.class);
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent);
-            } else {
-                startService(serviceIntent);
-            }
-            Log.d(TAG, "Step counter service started");
-        } catch (Exception e) {
-            Log.e(TAG, "Error starting step counter service: ", e);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
         // Đăng ký lại receiver để đảm bảo nhận broadcast
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            setupStepUpdateReceiver();
-        }
+        setupStepUpdateReceiver();
 
         // Nếu đã đăng nhập, đảm bảo service đang chạy
         if (mAuth.getCurrentUser() != null) {
@@ -281,15 +225,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        // Hủy đăng ký receiver
-        try {
-            if (stepUpdateReceiver != null) {
-                unregisterReceiver(stepUpdateReceiver);
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Error unregistering step update receiver: ", e);
+        if (stepUpdateReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(stepUpdateReceiver); // ✅ Gỡ đúng cách
         }
     }
+
 
     public void signOut() {
         AuthUI.getInstance()
@@ -316,15 +256,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1001) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(TAG, "Đã được cấp quyền ACTIVITY_RECOGNITION");
-                startStepCounterService(); // Khởi động lại nếu cần
-            } else {
-                Log.w(TAG, "Bị từ chối quyền ACTIVITY_RECOGNITION");
-            }
+        if (requestCode == REQUEST_ACTIVITY_RECOGNITION && grantResults.length > 0
+                && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startStepCounterService();
         }
     }
 }

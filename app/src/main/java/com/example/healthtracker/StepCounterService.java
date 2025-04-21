@@ -18,6 +18,8 @@ import android.os.Looper;
 import android.os.PowerManager;
 import android.util.Log;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import androidx.core.app.NotificationCompat;
 
 import com.example.healthtracker.activities.MainActivity;
@@ -424,10 +426,13 @@ public class StepCounterService extends Service implements SensorEventListener {
             
             // Đảm bảo broadcast chỉ được gửi trong ứng dụng để tăng tốc độ
             intent.setPackage(getPackageName());
-            
-            // Gửi broadcast
+
+            // Gửi tới StepCountReceiver
             sendBroadcast(intent);
-            
+
+            // Gửi broadcast
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
             // Log chi tiết để debug
             Log.d(TAG, "Đã gửi broadcast với FLAG_RECEIVER_FOREGROUND và setPackage");
             Log.d(TAG, "Nội dung broadcast: Bước=" + currentSteps + ", khoảng cách=" + 
