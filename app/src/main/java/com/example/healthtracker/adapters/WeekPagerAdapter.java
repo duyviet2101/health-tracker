@@ -1,3 +1,4 @@
+// WeekPagerAdapter.java
 package com.example.healthtracker.adapters;
 
 import androidx.annotation.NonNull;
@@ -13,16 +14,21 @@ import java.util.List;
 public class WeekPagerAdapter extends FragmentStateAdapter {
 
     private List<WeekStepData> weekDataList;
+    private WeekChartFragment.OnBarSelectedListener barSelectedListener;
 
-    public WeekPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<WeekStepData> weekDataList) {
+    public WeekPagerAdapter(@NonNull FragmentActivity fragmentActivity, List<WeekStepData> weekDataList,
+                            WeekChartFragment.OnBarSelectedListener listener) {
         super(fragmentActivity);
         this.weekDataList = weekDataList;
+        this.barSelectedListener = listener;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return WeekChartFragment.newInstance(weekDataList.get(position));
+        WeekChartFragment fragment = WeekChartFragment.newInstance(weekDataList.get(position));
+        fragment.setOnBarSelectedListener(barSelectedListener);
+        return fragment;
     }
 
     @Override
@@ -30,4 +36,3 @@ public class WeekPagerAdapter extends FragmentStateAdapter {
         return weekDataList.size();
     }
 }
-

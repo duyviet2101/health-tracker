@@ -1,11 +1,13 @@
+// StepsDataHelper.java
 package com.example.healthtracker.models;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.example.healthtracker.models.StepsDataResponse;
 import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -22,9 +24,13 @@ public class StepsDataHelper {
         List<StepsDataResponse.DayData> sortedList = new ArrayList<>();
 
         try {
-            // Đọc dữ liệu JSON từ file
-            InputStream inputStream = context.getResources().openRawResource(
-                    context.getResources().getIdentifier("activity_data", "raw", context.getPackageName()));
+            File file = new File(context.getFilesDir(), "activity_data.json");
+            if (!file.exists()) {
+                Log.e("StepsDataHelper", "File activity_data.json không tồn tại trong internal storage!");
+                return new LinkedHashMap<>();
+            }
+
+            InputStream inputStream = new FileInputStream(file);
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
             inputStream.close();
@@ -33,7 +39,6 @@ public class StepsDataHelper {
             Gson gson = new Gson();
             StepsDataResponse dataResponse = gson.fromJson(json, StepsDataResponse.class);
 
-            // Sắp xếp các ngày theo thứ tự
             sortedList = dataResponse.getStepsData();
             Collections.sort(sortedList, Comparator.comparing(StepsDataResponse.DayData::getDate));
 
@@ -41,7 +46,6 @@ public class StepsDataHelper {
             Log.e("StepsDataHelper", "Lỗi đọc dữ liệu: " + e.getMessage());
         }
 
-        // Lập lịch cho các tuần
         List<String> currentWeekData = new ArrayList<>();
         int weekIndex = 0;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -50,20 +54,16 @@ public class StepsDataHelper {
 
         for (StepsDataResponse.DayData dayData : sortedList) {
             try {
-                // Phân tích ngày và chuẩn bị tuần mới
                 Date currentDate = dateFormat.parse(dayData.getDate());
                 calendar.setTime(currentDate);
 
-                // Tìm ngày thứ 2 gần nhất của tuần này
                 Calendar weekStart = (Calendar) calendar.clone();
                 int currentDayOfWeek = weekStart.get(Calendar.DAY_OF_WEEK);
-                int daysFromMonday = (currentDayOfWeek + 5) % 7; // CN=1, T2=2,... => T2 là 0
+                int daysFromMonday = (currentDayOfWeek + 5) % 7;
                 weekStart.add(Calendar.DAY_OF_MONTH, -daysFromMonday);
 
-                // Kiểm tra xem tuần này đã được thêm chưa
                 String weekKey = "week" + weekIndex;
 
-                // Đảm bảo dữ liệu không bị lặp
                 if (!processedDates.contains(dayData.getDate())) {
                     processedDates.add(dayData.getDate());
 
@@ -72,7 +72,6 @@ public class StepsDataHelper {
                     currentWeekData.add(dayLabel + " " + dayData.getDate() + " " + steps);
                 }
 
-                // Nếu đã có đủ 7 ngày trong tuần
                 if (currentWeekData.size() == 7) {
                     weekDataMap.put(weekKey, new ArrayList<>(currentWeekData));
                     currentWeekData.clear();
@@ -84,7 +83,6 @@ public class StepsDataHelper {
             }
         }
 
-        // Xử lý tuần cuối cùng nếu còn lại ngày chưa đủ
         if (!currentWeekData.isEmpty()) {
             for (int i = currentWeekData.size(); i < 7; i++) {
                 Calendar weekStart = Calendar.getInstance();
@@ -111,4 +109,24 @@ public class StepsDataHelper {
             default: return "";
         }
     }
+
+    public StepsDataResponse readRawStepsDataFromFile() {
+        File file = new File(context.getFilesDir(), "activity_data.json");
+        if (!file.exists()) return null;
+
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+
+            String json = new String(buffer, "UTF-8");
+            Gson gson = new Gson();
+            return gson.fromJson(json, StepsDataResponse.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
