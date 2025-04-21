@@ -57,4 +57,8 @@ dependencies {
 
     // CircleImageView for circular profile images
     implementation(libs.circleimageview)
+
+    implementation(libs.mpandroidchart)
+    implementation(libs.gson)
+
 }

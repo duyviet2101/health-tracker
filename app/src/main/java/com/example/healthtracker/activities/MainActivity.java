@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.card.MaterialCardView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -76,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
             // Show a logout option when the avatar is clicked
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
+        });
+
+        // Set up click listener for stats card
+        MaterialCardView stepsCard = findViewById(R.id.stepsCard);
+        stepsCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DetailsChartActivity.class);
+                startActivity(intent);
+            }
         });
     }
 
