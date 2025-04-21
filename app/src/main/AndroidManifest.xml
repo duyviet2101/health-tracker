@@ -35,9 +35,13 @@
             android:name=".activities.RegisterInfo"
             android:exported="false" />
         <activity
+            android:name=".activities.DetailsStatisticsActivity"
+            android:exported="true"/>
+        <activity
             android:name=".activities.FirebaseUIActivity"
             android:exported="false"
             android:launchMode="singleTask" />
+
         <activity
             android:name=".activities.MainActivity"
             android:exported="true"
