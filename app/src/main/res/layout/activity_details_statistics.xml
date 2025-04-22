@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <!-- TabLayout dạng thanh trượt -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:tabTextColor="@color/tab_unselected"
+            app:tabSelectedTextColor="@color/tab_selected"
+            app:tabIndicatorColor="@color/tab_indicator"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabGravity="fill" />
+
+        <!-- Khối tổng -->
+        <LinearLayout
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_total_card"
+            android:padding="5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginHorizontal="8dp"
+            android:elevation="4dp">
+
+            <TextView
+                android:id="@+id/tvTotalLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TỔNG"
+                android:textColor="@android:color/white"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSteps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5.756 bước"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:paddingHorizontal="8dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ngày 2 tháng 4, 2025"
+                android:textColor="@android:color/white"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <!-- Biểu đồ -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/WeekViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="8dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
