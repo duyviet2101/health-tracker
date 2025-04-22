@@ -19,6 +19,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.healthtracker.activities.MainActivity;
 import com.example.healthtracker.models.StepActivityEntry;
@@ -446,7 +447,8 @@ public class StepCounterService extends Service implements SensorEventListener {
             
             // Gửi broadcast
             sendBroadcast(intent);
-            
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
             // Log chi tiết để debug
             Log.d(TAG, "Đã gửi broadcast với FLAG_RECEIVER_FOREGROUND và setPackage");
             Log.d(TAG, "Nội dung broadcast: Bước=" + currentSteps + ", khoảng cách=" + 
@@ -586,43 +588,7 @@ public class StepCounterService extends Service implements SensorEventListener {
                 todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
             }
 
-            if (todayActivities.isEmpty()) {
-                int steps = currentSteps - stepsAtSessionStart;
-                if (steps > 0) {
-                    long now = System.currentTimeMillis();
-                    long durationMillis = now - sessionStartTimeMillis;
-                    String startTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(sessionStartTimeMillis));
-                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d", (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
-                    double distance = stepData.calculateDistance(steps);
-                    double calories = stepData.calculateCalories(steps);
 
-                    StepActivityEntry entry = new StepActivityEntry(startTime, durationStr, steps, distance, calories);
-                    todayActivities.add(entry);
-
-                    Log.d(TAG, "Thêm fallback activity vào danh sách: " + steps + " bước");
-                }
-            }
-
-
-            // Fallback nếu chưa ghi activity nào
-            if (todayActivities.isEmpty()) {
-                int stepsInSession = currentSteps - stepsAtSessionStart;
-                if (stepsInSession > 0) {
-                    long now = System.currentTimeMillis();
-                    long durationMillis = now - sessionStartTimeMillis;
-
-                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
-                            (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
-                    String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                            .format(new Date(sessionStartTimeMillis));
-
-                    double distance = stepData.calculateDistance(stepsInSession);
-                    double calories = stepData.calculateCalories(stepsInSession);
-
-                    todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
-                    Log.d(TAG, "Fallback: Ghi session cuối vào activities");
-                }
-            }
 
             JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
 

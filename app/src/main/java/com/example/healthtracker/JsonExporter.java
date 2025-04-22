@@ -48,17 +48,21 @@ public class JsonExporter {
 
             // Kiểm tra xem đã có dữ liệu cho ngày này chưa để thực hiện ghi đè
             boolean updated = false;
+
+            // Nếu ngày hôm nay chưa có trong file data thì add ngày hôm nay vào file data
+            if (!updated) {
+                allData.add(todayData);
+            }
+
             for (int i = 0; i < allData.size(); i++) {
                 if (allData.get(i).date.equals(todayData.date)) {
-                    allData.set(i, todayData); // Ghi đè
+                    // Nối thêm activities mới vào danh sách cũ
+                    allData.get(i).activities.addAll(activityList);
                     updated = true;
                     break;
                 }
             }
 
-            if (!updated) {
-                allData.add(todayData);
-            }
 
             // Ghi lại toàn bộ vào file
             Map<String, Object> exportMap = new HashMap<>();
