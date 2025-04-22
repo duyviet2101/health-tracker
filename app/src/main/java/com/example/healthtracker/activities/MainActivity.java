@@ -71,6 +71,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        View statistic = findViewById(R.id.statistic);
+        statistic.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, DetailsStatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Khởi tạo các view đếm bước chân
         initStepCountViews();
 

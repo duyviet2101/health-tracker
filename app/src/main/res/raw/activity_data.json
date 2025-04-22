@@ -479,26 +479,6 @@
           "calories": 200
         }
       ]
-    },
-    {
-      "date": "2025-04-24",
-      "dayOfWeek": "T5",
-      "activities": [
-        {
-          "startTime": "07:00",
-          "duration": "25:00",
-          "steps": 1800,
-          "distance": 1.5,
-          "calories": 100
-        },
-        {
-          "startTime": "16:00",
-          "duration": "40:00",
-          "steps": 3000,
-          "distance": 2.5,
-          "calories": 200
-        }
-      ]
     }
   ]
 }
