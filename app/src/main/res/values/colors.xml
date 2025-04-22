@@ -18,6 +18,9 @@
     <color name="gray_darkest">#333333</color>
     <color name="gray">#808080</color>
     
+    <!-- App colors -->
+    <color name="stats_card_dark">#1A1A1A</color>
+    
     <!-- Text colors -->
     <color name="text_primary">#000000</color>
     <color name="text_secondary">#666666</color>

@@ -373,20 +373,38 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center">
 
-                    <!-- Background Glass Shape -->
+                    <!-- Water Drop Mask View -->
                     <ImageView
+                        android:id="@+id/waterDropMask"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:src="@drawable/water_glass_outline"
-                        android:alpha="0.2" />
+                        android:src="@drawable/water_drop_shape"
+                        android:alpha="0.2"
+                        android:scaleType="fitCenter"
+                        android:layout_gravity="center" />
 
-                    <!-- Water Level - will be animated using Java -->
-                    <View
-                        android:id="@+id/waterLevelView"
+                    <!-- Water Level Container with ClipToOutline -->
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_gravity="center|bottom"
-                        android:background="@drawable/water_drop_shape" />
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center">
+
+                        <!-- Water Level - will be animated using Java -->
+                        <View
+                            android:id="@+id/waterLevelView"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_gravity="center|bottom"
+                            android:background="@drawable/water_gradient_background" />
+                        
+                        <!-- Water Drop Outline (masked) -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/water_drop_outline"
+                            android:scaleType="fitCenter"
+                            android:layout_gravity="center" />
+                    </FrameLayout>
                 </FrameLayout>
             </FrameLayout>
 
