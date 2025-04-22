@@ -129,4 +129,64 @@ public class StepsDataHelper {
         }
     }
 
+    public List<Map<Integer, Integer>> getStepsDataPerMonthList() {
+        List<Map<Integer, Integer>> listPerMonth = new ArrayList<>();
+        Map<String, Map<Integer, Integer>> groupedByMonth = new LinkedHashMap<>();
+
+        File file = new File(context.getFilesDir(), "activity_data.json");
+        if (!file.exists()) return listPerMonth;
+
+        try {
+            InputStream inputStream = new FileInputStream(file);
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+
+            String json = new String(buffer, "UTF-8");
+            Gson gson = new Gson();
+            StepsDataResponse response = gson.fromJson(json, StepsDataResponse.class);
+
+            for (StepsDataResponse.DayData dayData : response.getStepsData()) {
+                String[] parts = dayData.getDate().split("-");
+                if (parts.length != 3) continue;
+
+                String yearMonthKey = parts[0] + "-" + parts[1];
+                int year = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+                int day = Integer.parseInt(parts[2]);
+
+                int steps = dayData.getActivities().stream().mapToInt(a -> a.getSteps()).sum();
+
+                groupedByMonth.putIfAbsent(yearMonthKey, new TreeMap<>());
+                groupedByMonth.get(yearMonthKey).put(day, steps);
+            }
+
+            for (String key : groupedByMonth.keySet()) {
+                Map<Integer, Integer> monthData = groupedByMonth.get(key);
+
+                String[] parts = key.split("-");
+                int year = Integer.parseInt(parts[0]);
+                int month = Integer.parseInt(parts[1]);
+
+                Calendar cal = Calendar.getInstance();
+                cal.set(year, month - 1, 1); // Calendar month starts from 0
+                int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+                for (int i = 1; i <= maxDay; i++) {
+                    monthData.putIfAbsent(i, 0);
+                }
+
+                listPerMonth.add(monthData);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return listPerMonth;
+    }
+
+
+
+
 }

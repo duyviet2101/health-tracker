@@ -1,87 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/black"
         android:orientation="vertical"
         android:padding="8dp">
 
-        <!-- Dãy button hiển thị cố định -->
-        <LinearLayout
+        <!-- TabLayout dạng thanh trượt -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="4">
+            android:background="@android:color/white"
+            app:tabTextColor="@color/tab_unselected"
+            app:tabSelectedTextColor="@color/tab_selected"
+            app:tabIndicatorColor="@color/tab_indicator"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorFullWidth="false"
+            app:tabMode="fixed"
+            app:tabGravity="fill" />
 
-            <!-- Button "Tuần" (được chọn) -->
-            <Button
-                android:id="@+id/btnWeek"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:minHeight="48dp"
-                android:textSize="14sp"
-                android:text="Tuần"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_background_selected"/>
-
-            <!-- Button "Tháng" -->
-            <Button
-                android:id="@+id/btnMonth"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:minHeight="48dp"
-                android:textSize="14sp"
-                android:text="Tháng"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_background"/>
-
-            <!-- Button "6 Tháng" -->
-            <Button
-                android:id="@+id/btn6Month"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginEnd="4dp"
-                android:minHeight="48dp"
-                android:textSize="14sp"
-                android:text="6 Tháng"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_background"/>
-
-            <!-- Button "Năm" -->
-            <Button
-                android:id="@+id/btnYear"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:minHeight="48dp"
-                android:textSize="14sp"
-                android:text="Năm"
-                android:textColor="@android:color/white"
-                android:background="@drawable/button_background"/>
-
-        </LinearLayout>
-
+        <!-- Khối tổng -->
         <LinearLayout
             android:id="@+id/total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="#333333"
+            android:background="#4A4A4A"
             android:padding="16dp"
             android:layout_marginTop="8dp"
             android:layout_gravity="end">
 
-            <!-- Dòng chữ "TỔNG" -->
             <TextView
                 android:id="@+id/tvTotalLabel"
                 android:layout_width="wrap_content"
@@ -91,7 +46,6 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <!-- Số bước (có thể thay đổi) -->
             <TextView
                 android:id="@+id/tvSteps"
                 android:layout_width="wrap_content"
@@ -102,7 +56,6 @@
                 android:textStyle="bold"
                 android:layout_marginTop="8dp" />
 
-            <!-- Ngày tháng (có thể thay đổi) -->
             <TextView
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
@@ -120,10 +73,5 @@
             android:layout_height="500dp"
             android:layout_marginTop="8dp"/>
 
-
-
-
-
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>

@@ -82,7 +82,7 @@ public class WeekChartFragment extends Fragment {
         }
 
         BarDataSet dataSet = new BarDataSet(entries, weekData.weekLabel);
-        dataSet.setColor(Color.parseColor("#4CAF50"));
+        dataSet.setColor(Color.parseColor("#FB8C00"));
         dataSet.setValueTextSize(14f);
         dataSet.setValueTextColor(Color.WHITE);
         dataSet.setDrawValues(true);
@@ -97,7 +97,7 @@ public class WeekChartFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setTextSize(12f);
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.BLACK);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
