@@ -26,6 +26,7 @@ import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.card.MaterialCardView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -105,7 +106,16 @@ public class MainActivity extends AppCompatActivity {
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
 
-
+//<<<<<<< HEAD
+        // Setup water card
+        MaterialCardView waterCard = findViewById(R.id.waterCard);
+        waterCard.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, WaterTrackingActivity.class);
+            startActivity(intent);
+        });
+//=======
+//
+//>>>>>>> origin/main
     }
 
     private void initStepCountViews() {

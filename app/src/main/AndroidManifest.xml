@@ -12,6 +12,8 @@
         android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"
         android:minSdkVersion="33" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> <!-- Declare that the app uses step sensors but they're not required -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-feature
         android:name="android.hardware.sensor.stepcounter"
         android:required="false" />
@@ -40,6 +42,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity
+            android:name=".activities.WaterGoalSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.WaterTrackingActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
@@ -88,6 +96,27 @@
             android:exported="false">
             <intent-filter>
                 <action android:name="com.example.healthtracker.STEPS_UPDATED" />
+            </intent-filter>
+        </receiver>
+        
+        <!-- Water Reminder Receiver -->
+        <receiver
+            android:name=".services.WaterReminderService$WaterReminderReceiver"
+            android:enabled="true"
+            android:exported="false">
+        </receiver>
+        
+        <!-- Boot Receiver for Water Reminders -->
+        <receiver
+            android:name=".services.WaterReminderBootReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
     </application>
