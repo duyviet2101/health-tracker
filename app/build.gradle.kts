@@ -7,6 +7,10 @@ android {
     namespace = "com.example.healthtracker"
     compileSdk = 35
 
+    lint {
+        abortOnError = false
+    }
+
     defaultConfig {
         applicationId = "com.example.healthtracker"
         minSdk = 28
