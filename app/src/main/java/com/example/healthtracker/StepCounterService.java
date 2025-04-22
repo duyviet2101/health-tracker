@@ -19,13 +19,21 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import androidx.core.content.ContextCompat;
 
 import com.example.healthtracker.activities.MainActivity;
+import com.example.healthtracker.models.StepActivityEntry;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class StepCounterService extends Service implements SensorEventListener {
     private static final String TAG = "StepCounterService";
@@ -42,6 +50,11 @@ public class StepCounterService extends Service implements SensorEventListener {
     private int currentSteps = 0;
     private int initialSteps = 0;
     private boolean isInitialized = false;
+
+    private long sessionStartTimeMillis = 0;
+    private int stepsAtSessionStart = 0;
+    private List<StepActivityEntry> todayActivities = new ArrayList<>();
+
 
     // Mô phỏng đếm bước cho máy ảo
     private boolean isEmulatorMode = false;
@@ -241,7 +254,7 @@ public class StepCounterService extends Service implements SensorEventListener {
                 Log.d(TAG, "Người dùng chưa đăng nhập, không bắt đầu đếm bước");
                 return START_NOT_STICKY; // Không khởi động lại service tự động
             }
-            
+
             // Tạo notification channel (chỉ cho Android 8.0+)
             createNotificationChannel();
             
@@ -250,7 +263,14 @@ public class StepCounterService extends Service implements SensorEventListener {
             if (notification != null) {
                 startForeground(NOTIFICATION_ID, notification);
             }
-            
+
+            if (sessionStartTimeMillis == 0) {
+                sessionStartTimeMillis = System.currentTimeMillis();
+                stepsAtSessionStart = currentSteps;
+                Log.d(TAG, "Session mới bắt đầu: start=" + sessionStartTimeMillis + ", steps=" + stepsAtSessionStart);
+            }
+
+
             // Bắt đầu đếm bước
             if (isStepSensorPresent && sensorManager != null && stepSensor != null) {
                 // CHẾ ĐỘ MÁY THẬT: Đăng ký lắng nghe sự kiện từ cảm biến bước chân
@@ -438,7 +458,8 @@ public class StepCounterService extends Service implements SensorEventListener {
             
             // Gửi broadcast
             sendBroadcast(intent);
-            
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
             // Log chi tiết để debug
             Log.d(TAG, "Đã gửi broadcast với FLAG_RECEIVER_FOREGROUND và setPackage");
             Log.d(TAG, "Nội dung broadcast: Bước=" + currentSteps + ", khoảng cách=" + 
@@ -467,6 +488,66 @@ public class StepCounterService extends Service implements SensorEventListener {
             // Lưu số bước chân hiện tại khi ứng dụng bị đóng
             stepData.saveSteps(currentSteps);
             Log.d(TAG, "Ứng dụng bị đóng, đã lưu số bước: " + currentSteps);
+
+            // Ghi session cuối nếu đang hoạt động
+            if (sessionStartTimeMillis > 0 && stepsAtSessionStart != currentSteps) {
+                long now = System.currentTimeMillis();
+                long durationMillis = now - sessionStartTimeMillis;
+                String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
+                        (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
+
+                String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        .format(new Date(sessionStartTimeMillis));
+
+                int stepsInSession = currentSteps - stepsAtSessionStart;
+                double distance = stepData.calculateDistance(stepsInSession);
+                double calories = stepData.calculateCalories(stepsInSession);
+
+                todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
+            }
+
+            if (todayActivities.isEmpty()) {
+                int steps = currentSteps - stepsAtSessionStart;
+                if (steps > 0) {
+                    long now = System.currentTimeMillis();
+                    long durationMillis = now - sessionStartTimeMillis;
+                    String startTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(sessionStartTimeMillis));
+                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d", (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
+                    double distance = stepData.calculateDistance(steps);
+                    double calories = stepData.calculateCalories(steps);
+
+                    StepActivityEntry entry = new StepActivityEntry(startTime, durationStr, steps, distance, calories);
+                    todayActivities.add(entry);
+
+                    Log.d(TAG, "Thêm fallback activity vào danh sách: " + steps + " bước");
+                }
+            }
+
+
+            // Fallback nếu chưa ghi activity nào
+            if (todayActivities.isEmpty()) {
+                int stepsInSession = currentSteps - stepsAtSessionStart;
+                if (stepsInSession > 0) {
+                    long now = System.currentTimeMillis();
+                    long durationMillis = now - sessionStartTimeMillis;
+
+                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
+                            (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
+                    String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                            .format(new Date(sessionStartTimeMillis));
+
+                    double distance = stepData.calculateDistance(stepsInSession);
+                    double calories = stepData.calculateCalories(stepsInSession);
+
+                    todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
+                    Log.d(TAG, "Fallback: Ghi session cuối vào activities");
+                }
+            }
+
+            // xuất data theo định dạng json
+            JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
+
+            Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
             
             // Đảm bảo service sẽ được khởi động lại khi ứng dụng bị đóng
             Intent restartIntent = new Intent(getApplicationContext(), this.getClass());
@@ -500,7 +581,30 @@ public class StepCounterService extends Service implements SensorEventListener {
             
             // Lưu số bước hiện tại
             stepData.saveSteps(currentSteps);
-            
+
+            // Ghi session cuối nếu đang hoạt động
+            if (sessionStartTimeMillis > 0 && stepsAtSessionStart != currentSteps) {
+                long now = System.currentTimeMillis();
+                long durationMillis = now - sessionStartTimeMillis;
+                String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
+                        (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
+
+                String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        .format(new Date(sessionStartTimeMillis));
+
+                int stepsInSession = currentSteps - stepsAtSessionStart;
+                double distance = stepData.calculateDistance(stepsInSession);
+                double calories = stepData.calculateCalories(stepsInSession);
+
+                todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
+            }
+
+
+
+            JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
+
+            Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
+
             // Hủy đăng ký lắng nghe sự kiện từ cảm biến
             if (sensorManager != null && stepSensor != null) {
                 sensorManager.unregisterListener(this);
