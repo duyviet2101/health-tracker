@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,8 @@ import com.example.healthtracker.R;
 import com.example.healthtracker.StepCounterData;
 import com.example.healthtracker.StepCounterService;
 import com.example.healthtracker.fragments.MenuAccountFragment;
+import com.example.healthtracker.models.ScreenshotSharer;
+import com.example.healthtracker.models.StepsDataHelper;
 import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,8 +61,32 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
 
+        new StepsDataHelper(this).copyJsonIfNotExists();
+
         // Khởi tạo quản lý dữ liệu bước chân
         stepData = StepCounterData.getInstance(this);
+
+        View outerRing2 = findViewById(R.id.outerRing2);
+        outerRing2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Chuyển đến activity chi tiết thống kê
+                Intent intent = new Intent(MainActivity.this, DetailsStatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        View statistic = findViewById(R.id.statistic);
+        statistic.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, DetailsStatisticsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.shareButton).setOnClickListener(v -> ScreenshotSharer.captureAndShareScreen(MainActivity.this));
+
 
         // Khởi tạo các view đếm bước chân
         initStepCountViews();
@@ -79,12 +106,16 @@ public class MainActivity extends AppCompatActivity {
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
 
+//<<<<<<< HEAD
         // Setup water card
         MaterialCardView waterCard = findViewById(R.id.waterCard);
         waterCard.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, WaterTrackingActivity.class);
             startActivity(intent);
         });
+//=======
+//
+//>>>>>>> origin/main
     }
 
     private void initStepCountViews() {
@@ -262,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             userService.getUser(currentUser.getUid())
                     .addOnSuccessListener(user -> {
                         if (user != null) {
-                            txtName.setText(user.getDisplayName());
+//                            txtName.setText(user.getDisplayName());
                         } else {
                             Log.w(TAG, "User document does not exist");
                         }

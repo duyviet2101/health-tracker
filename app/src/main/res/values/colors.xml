@@ -31,4 +31,10 @@
     <color name="background_primary">#FFFFFF</color>
     <color name="background_secondary">#F5F5F5</color>
     <color name="background_dark">#121212</color>
+
+    <color name="tab_selected">#FF9800</color>  <!-- cam -->
+    <color name="tab_unselected">#AAAAAA</color> <!-- xám nhạt -->
+    <color name="tab_indicator">#FF9800</color>
+
+
 </resources>

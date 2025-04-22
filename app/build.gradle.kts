@@ -7,6 +7,11 @@ android {
     namespace = "com.example.healthtracker"
     compileSdk = 35
 
+    lint {
+        abortOnError = false
+        disable += "NotificationPermission"
+    }
+
     defaultConfig {
         applicationId = "com.example.healthtracker"
         minSdk = 28
@@ -30,6 +35,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src\\main\\assets", "src\\main\\assets")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -52,9 +64,15 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.firebase.ui.auth)
     implementation(libs.glide)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
+    implementation ("com.google.android.material:material:1.12.0")
     annotationProcessor(libs.lombok)
     compileOnly(libs.lombok)
 
     // CircleImageView for circular profile images
     implementation(libs.circleimageview)
+
+
 }

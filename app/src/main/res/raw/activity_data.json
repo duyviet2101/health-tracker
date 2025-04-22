@@ -1,0 +1,484 @@
+{
+  "stepsData": [
+    {
+      "date": "2025-03-31",
+      "dayOfWeek": "T2",
+      "activities": [
+        {
+          "startTime": "06:30",
+          "duration": "20:00",
+          "steps": 500,
+          "distance": 1.2,
+          "calories": 80
+        },
+        {
+          "startTime": "14:00",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.8,
+          "calories": 120
+        }
+      ]
+    },
+    {
+      "date": "2025-04-01",
+      "dayOfWeek": "T3",
+      "activities": [
+        {
+          "startTime": "06:30",
+          "duration": "20:00",
+          "steps": 1500,
+          "distance": 1.2,
+          "calories": 80
+        },
+        {
+          "startTime": "14:00",
+          "duration": "30:00",
+          "steps": 2200,
+          "distance": 1.8,
+          "calories": 120
+        }
+      ]
+    },
+    {
+      "date": "2025-04-02",
+      "dayOfWeek": "T4",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "25:00",
+          "steps": 1800,
+          "distance": 1.5,
+          "calories": 100
+        },
+        {
+          "startTime": "16:00",
+          "duration": "40:00",
+          "steps": 3000,
+          "distance": 2.5,
+          "calories": 200
+        }
+      ]
+    },
+    {
+      "date": "2025-04-03",
+      "dayOfWeek": "T5",
+      "activities": [
+        {
+          "startTime": "09:00",
+          "duration": "15:00",
+          "steps": 1000,
+          "distance": 0.8,
+          "calories": 60
+        },
+        {
+          "startTime": "18:30",
+          "duration": "35:00",
+          "steps": 2500,
+          "distance": 2.0,
+          "calories": 150
+        }
+      ]
+    },
+    {
+      "date": "2025-04-04",
+      "dayOfWeek": "T6",
+      "activities": [
+        {
+          "startTime": "06:15",
+          "duration": "20:00",
+          "steps": 1600,
+          "distance": 1.3,
+          "calories": 90
+        },
+        {
+          "startTime": "13:45",
+          "duration": "25:00",
+          "steps": 2100,
+          "distance": 1.7,
+          "calories": 110
+        }
+      ]
+    },
+    {
+      "date": "2025-04-05",
+      "dayOfWeek": "T7",
+      "activities": [
+        {
+          "startTime": "10:00",
+          "duration": "30:00",
+          "steps": 2300,
+          "distance": 1.9,
+          "calories": 130
+        },
+        {
+          "startTime": "17:00",
+          "duration": "45:00",
+          "steps": 3500,
+          "distance": 3.0,
+          "calories": 250
+        }
+      ]
+    },
+    {
+      "date": "2025-04-06",
+      "dayOfWeek": "CN",
+      "activities": [
+        {
+          "startTime": "08:30",
+          "duration": "25:00",
+          "steps": 1800,
+          "distance": 1.6,
+          "calories": 100
+        },
+        {
+          "startTime": "15:30",
+          "duration": "40:00",
+          "steps": 2800,
+          "distance": 2.3,
+          "calories": 180
+        }
+      ]
+    },
+    {
+      "date": "2025-04-07",
+      "dayOfWeek": "T2",
+      "activities": [
+        {
+          "startTime": "07:15",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "13:30",
+          "duration": "20:00",
+          "steps": 1600,
+          "distance": 1.3,
+          "calories": 90
+        }
+      ]
+    },
+    {
+      "date": "2025-04-08",
+      "dayOfWeek": "T3",
+      "activities": [
+        {
+          "startTime": "10:00",
+          "duration": "15:00",
+          "steps": 1100,
+          "distance": 1.0,
+          "calories": 70
+        },
+        {
+          "startTime": "16:30",
+          "duration": "25:00",
+          "steps": 2100,
+          "distance": 1.8,
+          "calories": 130
+        }
+      ]
+    },
+    {
+      "date": "2025-04-09",
+      "dayOfWeek": "T4",
+      "activities": [
+        {
+          "startTime": "07:30",
+          "duration": "35:00",
+          "steps": 2700,
+          "distance": 2.2,
+          "calories": 160
+        },
+        {
+          "startTime": "14:00",
+          "duration": "25:00",
+          "steps": 2100,
+          "distance": 1.7,
+          "calories": 130
+        }
+      ]
+    },
+    {
+      "date": "2025-04-10",
+      "dayOfWeek": "T5",
+      "activities": [
+        {
+          "startTime": "08:45",
+          "duration": "20:00",
+          "steps": 1800,
+          "distance": 1.5,
+          "calories": 100
+        },
+        {
+          "startTime": "17:30",
+          "duration": "40:00",
+          "steps": 3200,
+          "distance": 2.6,
+          "calories": 200
+        }
+      ]
+    },
+    {
+      "date": "2025-04-11",
+      "dayOfWeek": "T6",
+      "activities": [
+        {
+          "startTime": "06:00",
+          "duration": "30:00",
+          "steps": 2300,
+          "distance": 1.9,
+          "calories": 130
+        },
+        {
+          "startTime": "15:30",
+          "duration": "35:00",
+          "steps": 2700,
+          "distance": 2.3,
+          "calories": 170
+        }
+      ]
+    },
+    {
+      "date": "2025-04-12",
+      "dayOfWeek": "T7",
+      "activities": [
+        {
+          "startTime": "09:00",
+          "duration": "25:00",
+          "steps": 2100,
+          "distance": 1.8,
+          "calories": 120
+        },
+        {
+          "startTime": "18:00",
+          "duration": "30:00",
+          "steps": 2600,
+          "distance": 2.2,
+          "calories": 150
+        }
+      ]
+    },
+    {
+      "date": "2025-04-13",
+      "dayOfWeek": "CN",
+      "activities": [
+        {
+          "startTime": "08:00",
+          "duration": "20:00",
+          "steps": 1600,
+          "distance": 1.3,
+          "calories": 90
+        },
+        {
+          "startTime": "17:00",
+          "duration": "45:00",
+          "steps": 3500,
+          "distance": 3.0,
+          "calories": 250
+        }
+      ]
+    },
+    {
+      "date": "2025-04-14",
+      "dayOfWeek": "T2",
+      "activities": [
+        {
+          "startTime": "06:30",
+          "duration": "30:00",
+          "steps": 2200,
+          "distance": 1.8,
+          "calories": 130
+        },
+        {
+          "startTime": "16:00",
+          "duration": "30:00",
+          "steps": 2400,
+          "distance": 2.0,
+          "calories": 140
+        }
+      ]
+    },
+    {
+      "date": "2025-04-15",
+      "dayOfWeek": "T3",
+      "activities": [
+        {
+          "startTime": "08:15",
+          "duration": "35:00",
+          "steps": 2500,
+          "distance": 2.1,
+          "calories": 160
+        },
+        {
+          "startTime": "17:30",
+          "duration": "25:00",
+          "steps": 2100,
+          "distance": 1.7,
+          "calories": 130
+        }
+      ]
+    },
+    {
+      "date": "2025-04-16",
+      "dayOfWeek": "T4",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 1700,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-17",
+      "dayOfWeek": "T5",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 1700,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-18",
+      "dayOfWeek": "T6",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 1000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 1700,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-19",
+      "dayOfWeek": "T7",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 1500,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 300,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-20",
+      "dayOfWeek": "CN",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 1700,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-21",
+      "dayOfWeek": "T2",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "30:00",
+          "steps": 2000,
+          "distance": 1.7,
+          "calories": 120
+        },
+        {
+          "startTime": "14:00",
+          "duration": "20:00",
+          "steps": 1700,
+          "distance": 1.5,
+          "calories": 100
+        }
+      ]
+    },
+    {
+      "date": "2025-04-22",
+      "dayOfWeek": "T3",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "25:00",
+          "steps": 1000,
+          "distance": 1.5,
+          "calories": 100
+        },
+        {
+          "startTime": "16:00",
+          "duration": "40:00",
+          "steps": 1000,
+          "distance": 2.5,
+          "calories": 200
+        }
+      ]
+    },
+    {
+      "date": "2025-04-23",
+      "dayOfWeek": "T4",
+      "activities": [
+        {
+          "startTime": "07:00",
+          "duration": "25:00",
+          "steps": 1800,
+          "distance": 1.5,
+          "calories": 100
+        },
+        {
+          "startTime": "16:00",
+          "duration": "40:00",
+          "steps": 3000,
+          "distance": 2.5,
+          "calories": 200
+        }
+      ]
+    }
+  ]
+}
