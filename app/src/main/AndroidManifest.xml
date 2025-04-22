@@ -29,6 +29,9 @@
         android:theme="@style/Theme.HealthTracker"
         tools:targetApi="31">
         <activity
+            android:name=".activities.WaterTrackingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileActivity"
             android:exported="false" />
         <activity

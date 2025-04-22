@@ -16,6 +16,7 @@
     <color name="gray_dark">#AAAAAA</color>
     <color name="gray_darker">#666666</color>
     <color name="gray_darkest">#333333</color>
+    <color name="gray">#808080</color>
     
     <!-- Text colors -->
     <color name="text_primary">#000000</color>
