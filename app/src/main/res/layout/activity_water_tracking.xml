@@ -256,7 +256,7 @@
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:text="20"
-                        android:textColor="#FF0000"
+                        android:textColor="@color/gray"
                         android:textSize="14sp" />
                 </LinearLayout>
                 
@@ -276,14 +276,15 @@
                         android:textColor="#AAAAAA" />
                         
                     <TextView
+                        android:id="@+id/currentDateText"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:text="21"
                         android:textSize="14sp"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:background="@drawable/circle_background" />
+                        android:textColor="#333333"
+                        android:background="@drawable/date_circle_background" />
                 </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
