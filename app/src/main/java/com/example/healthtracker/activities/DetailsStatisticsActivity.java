@@ -25,6 +25,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
     private TextView tvTotalLabel;
     private TabLayout tabLayout;
 
+    private ViewPager2.OnPageChangeCallback monthPageChangeCallback;
+
     private WeekPagerAdapter weekAdapter;
     private MonthPagerAdapter monthAdapter;
 
@@ -76,6 +78,13 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
     private void showWeekChart() {
         tvTotalLabel.setText("TỔNG");
+
+        // Gỡ bỏ callback tháng nếu có
+        if (monthPageChangeCallback != null) {
+            chartViewPager.unregisterOnPageChangeCallback(monthPageChangeCallback);
+            monthPageChangeCallback = null;
+        }
+
         StepsDataHelper helper = new StepsDataHelper(this);
         Map<String, List<String>> rawWeekData = helper.getStepsDataPerWeek();
 
@@ -99,6 +108,7 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         }
 
         weekAdapter = new WeekPagerAdapter(this, allWeekData, (date, steps) -> {
+            tvTotalLabel.setText("TỔNG");
             tvSteps.setText(steps + " bước");
             tvDate.setText(formatDate(date));
         });
@@ -107,6 +117,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         chartViewPager.setCurrentItem(allWeekData.size() - 1, false);
         updateTodaySummary(allWeekData);
     }
+
+
 
     private void showMonthChartViewPager() {
         StepsDataHelper helper = new StepsDataHelper(this);
@@ -132,7 +144,6 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
             Map<Integer, Integer> stepsMap = fullMonthData.get(key);
             stepsList.add(stepsMap);
 
-            // Sự kiện click vào chấm trong biểu đồ
             listeners.add((day, steps) -> {
                 tvTotalLabel.setText("TỔNG");
                 tvSteps.setText(steps + " bước");
@@ -142,10 +153,15 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
         monthAdapter = new MonthPagerAdapter(this, yearList, monthList, stepsList, listeners);
         chartViewPager.setAdapter(monthAdapter);
-
-        // Lưu ý: phần dưới này đã đúng
         chartViewPager.setCurrentItem(monthList.size() - 1, false);
-        chartViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+
+        // Gỡ callback cũ nếu có
+        if (monthPageChangeCallback != null) {
+            chartViewPager.unregisterOnPageChangeCallback(monthPageChangeCallback);
+        }
+
+        // Tạo mới callback
+        monthPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
@@ -168,7 +184,25 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
                     tvDate.setText("tháng " + month + ", " + year);
                 }
             }
-        });
+        };
+
+        chartViewPager.registerOnPageChangeCallback(monthPageChangeCallback);
+        updateAverageDisplay(monthList.size() - 1);
+
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Mỗi lần quay lại activity, cập nhật lại dữ liệu
+        if (tabLayout.getSelectedTabPosition() == 0) {
+            showWeekChart();
+        } else if (tabLayout.getSelectedTabPosition() == 1) {
+            showMonthChartViewPager();
+        }
     }
 
 
@@ -200,4 +234,26 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         }
         return date;
     }
+
+    private void updateAverageDisplay(int position) {
+        if (position >= 0 && position < stepsList.size()) {
+            Map<Integer, Integer> selectedMonthData = stepsList.get(position);
+            int year = yearList.get(position);
+            int month = monthList.get(position);
+
+            int total = 0;
+            int count = 0;
+            for (int val : selectedMonthData.values()) {
+                total += val;
+                count++;
+            }
+
+            int avg = count == 0 ? 0 : total / count;
+
+            tvTotalLabel.setText("Trung bình");
+            tvSteps.setText(avg + " bước/ngày");
+            tvDate.setText("tháng " + month + ", " + year);
+        }
+    }
+
 }
