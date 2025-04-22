@@ -16,6 +16,10 @@
     <color name="gray_dark">#AAAAAA</color>
     <color name="gray_darker">#666666</color>
     <color name="gray_darkest">#333333</color>
+    <color name="gray">#808080</color>
+    
+    <!-- App colors -->
+    <color name="stats_card_dark">#1A1A1A</color>
     
     <!-- Text colors -->
     <color name="text_primary">#000000</color>
@@ -27,4 +31,10 @@
     <color name="background_primary">#FFFFFF</color>
     <color name="background_secondary">#F5F5F5</color>
     <color name="background_dark">#121212</color>
+
+    <color name="tab_selected">#FF9800</color>  <!-- cam -->
+    <color name="tab_unselected">#AAAAAA</color> <!-- xám nhạt -->
+    <color name="tab_indicator">#FF9800</color>
+
+
 </resources>

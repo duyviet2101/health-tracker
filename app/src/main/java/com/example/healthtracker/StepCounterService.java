@@ -21,6 +21,10 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.content.ContextCompat;
+
 import com.example.healthtracker.activities.MainActivity;
 import com.example.healthtracker.models.StepActivityEntry;
 import com.google.firebase.auth.FirebaseAuth;
@@ -414,13 +418,20 @@ public class StepCounterService extends Service implements SensorEventListener {
             if (notificationManager != null) {
                 Notification notification = buildNotification();
                 if (notification != null) {
-                    notificationManager.notify(NOTIFICATION_ID, notification);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                                    == PackageManager.PERMISSION_GRANTED) {
+                        notificationManager.notify(NOTIFICATION_ID, notification);
+                    } else {
+                        Log.w(TAG, "Thiếu quyền POST_NOTIFICATIONS trên Android 13+, không hiển thị notification");
+                    }
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, "Error updating notification: ", e);
         }
     }
+
 
     private void broadcastStepCount() {
         try {
