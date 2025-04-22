@@ -84,7 +84,7 @@ public class WeekChartFragment extends Fragment {
         BarDataSet dataSet = new BarDataSet(entries, weekData.weekLabel);
         dataSet.setColor(Color.parseColor("#FB8C00"));
         dataSet.setValueTextSize(14f);
-        dataSet.setValueTextColor(Color.WHITE);
+        dataSet.setValueTextColor(Color.BLACK);
         dataSet.setDrawValues(true);
 
         BarData barData = new BarData(dataSet);

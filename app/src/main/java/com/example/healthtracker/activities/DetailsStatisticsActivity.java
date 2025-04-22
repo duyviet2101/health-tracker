@@ -117,9 +117,9 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
             return;
         }
 
-        List<Integer> yearList = new ArrayList<>();
-        List<Integer> monthList = new ArrayList<>();
-        List<Map<Integer, Integer>> stepsList = new ArrayList<>();
+        yearList = new ArrayList<>();
+        monthList = new ArrayList<>();
+        stepsList = new ArrayList<>();
         List<MonthChartFragment.OnDaySelectedListener> listeners = new ArrayList<>();
 
         for (String key : fullMonthData.keySet()) {
@@ -142,51 +142,35 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
         monthAdapter = new MonthPagerAdapter(this, yearList, monthList, stepsList, listeners);
         chartViewPager.setAdapter(monthAdapter);
-        chartViewPager.setCurrentItem(monthList.size() - 1, false);
 
-        // Cập nhật trung bình khi vuốt
+        // Lưu ý: phần dưới này đã đúng
+        chartViewPager.setCurrentItem(monthList.size() - 1, false);
         chartViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                if (position >= 0 && position < stepsList.size()) {
+                    Map<Integer, Integer> selectedMonthData = stepsList.get(position);
+                    int year = yearList.get(position);
+                    int month = monthList.get(position);
 
-                Map<Integer, Integer> selectedMonthData = stepsList.get(position);
-                int year = yearList.get(position);
-                int month = monthList.get(position);
+                    int total = 0;
+                    int count = 0;
+                    for (int val : selectedMonthData.values()) {
+                        total += val;
+                        count++;
+                    }
 
-                int total = 0;
-                int count = 0;
-                for (int val : selectedMonthData.values()) {
-                    total += val;
-                    count++;
+                    int avg = count == 0 ? 0 : total / count;
+
+                    tvTotalLabel.setText("Trung bình");
+                    tvSteps.setText(avg + " bước/ngày");
+                    tvDate.setText("tháng " + month + ", " + year);
                 }
-
-                int avg = count == 0 ? 0 : total / count;
-
-                tvTotalLabel.setText("Trung bình");
-                tvSteps.setText(avg + " bước/ngày");
-                tvDate.setText("tháng " + month + ", " + year);
             }
         });
-
-        // Hiển thị ngay tháng mới nhất
-        int latestIndex = monthList.size() - 1;
-        Map<Integer, Integer> latestMonthData = stepsList.get(latestIndex);
-        int year = yearList.get(latestIndex);
-        int month = monthList.get(latestIndex);
-
-        int total = 0;
-        int count = 0;
-        for (int val : latestMonthData.values()) {
-            total += val;
-            count++;
-        }
-        int avg = count == 0 ? 0 : total / count;
-
-        tvTotalLabel.setText("Trung bình");
-        tvSteps.setText(avg + " bước/ngày");
-        tvDate.setText("tháng " + month + ", " + year);
     }
+
 
 
 
