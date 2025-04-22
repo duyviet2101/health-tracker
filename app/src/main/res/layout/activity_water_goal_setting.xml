@@ -132,23 +132,178 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="24dp"
-                    android:gravity="center_vertical">
+                    android:orientation="vertical"
+                    android:padding="24dp">
 
-                    <TextView
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Nhận nhắc nhở để uống nước"
-                        android:textColor="@color/black"
-                        android:textSize="16sp" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
 
-                    <Switch
-                        android:id="@+id/reminderSwitch"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Nhận nhắc nhở để uống nước"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
 
+                        <Switch
+                            android:id="@+id/reminderSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <!-- Reminder Config - Hidden initially -->
+                    <LinearLayout
+                        android:id="@+id/reminderConfigLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="24dp"
+                        android:visibility="gone">
+
+                        <!-- Day Selector -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:layout_marginBottom="24dp">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButtonC"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="C"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton2"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="2"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton3"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="3"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton4"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="4"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton5"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="5"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton6"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="6"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/dayButton7"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:text="7"
+                                android:textSize="12sp"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                android:layout_margin="4dp"
+                                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                        </LinearLayout>
+
+                        <!-- Time Range -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Thời gian"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="24dp">
+
+                            <TextView
+                                android:id="@+id/timeRangeText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="8:00 - 23:00"
+                                android:textColor="#2196F3"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <!-- Reminder Frequency -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nhắc tôi mỗi"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/reminderFrequencyText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 giờ"
+                                android:textColor="#2196F3"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
