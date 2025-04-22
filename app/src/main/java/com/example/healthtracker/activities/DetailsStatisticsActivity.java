@@ -11,12 +11,9 @@ import com.example.healthtracker.R;
 import com.example.healthtracker.adapters.MonthPagerAdapter;
 import com.example.healthtracker.adapters.WeekPagerAdapter;
 import com.example.healthtracker.fragments.MonthChartFragment;
-import com.example.healthtracker.fragments.WeekChartFragment;
 import com.example.healthtracker.models.StepsDataHelper;
-import com.example.healthtracker.models.StepsDataResponse;
 import com.example.healthtracker.models.WeekStepData;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -25,10 +22,15 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
     private ViewPager2 chartViewPager;
     private TextView tvSteps, tvDate;
+    private TextView tvTotalLabel;
     private TabLayout tabLayout;
 
     private WeekPagerAdapter weekAdapter;
     private MonthPagerAdapter monthAdapter;
+
+    private List<Integer> yearList;
+    private List<Integer> monthList;
+    private List<Map<Integer, Integer>> stepsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,15 +40,15 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         chartViewPager = findViewById(R.id.WeekViewPager);
         tvSteps = findViewById(R.id.tvSteps);
         tvDate = findViewById(R.id.tvDate);
+        tvTotalLabel = findViewById(R.id.tvTotalLabel);
         tabLayout = findViewById(R.id.tabLayout);
 
         setupTabLayout();
-        showWeekChart(); // mặc định
+        showWeekChart(); // Mặc định
     }
 
     private void setupTabLayout() {
         String[] tabs = {"Tuần", "Tháng", "6 Tháng", "Năm"};
-
         for (String title : tabs) {
             tabLayout.addTab(tabLayout.newTab().setText(title));
         }
@@ -61,10 +63,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
                         showMonthChartViewPager();
                         break;
                     case 2:
-                        Toast.makeText(DetailsStatisticsActivity.this, "Chưa hỗ trợ hiển thị 6 tháng", Toast.LENGTH_SHORT).show();
-                        break;
                     case 3:
-                        Toast.makeText(DetailsStatisticsActivity.this, "Chưa hỗ trợ hiển thị theo năm", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailsStatisticsActivity.this, "Chưa hỗ trợ hiển thị", Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -75,6 +75,7 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
     }
 
     private void showWeekChart() {
+        tvTotalLabel.setText("TỔNG");
         StepsDataHelper helper = new StepsDataHelper(this);
         Map<String, List<String>> rawWeekData = helper.getStepsDataPerWeek();
 
@@ -109,26 +110,85 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
     private void showMonthChartViewPager() {
         StepsDataHelper helper = new StepsDataHelper(this);
-        List<Map<Integer, Integer>> monthDataList = helper.getStepsDataPerMonthList();
+        Map<String, Map<Integer, Integer>> fullMonthData = helper.getStepsDataPerMonth();
 
-        if (monthDataList.isEmpty()) {
+        if (fullMonthData.isEmpty()) {
             Toast.makeText(this, "Không có dữ liệu tháng", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        List<Integer> yearList = new ArrayList<>();
+        List<Integer> monthList = new ArrayList<>();
+        List<Map<Integer, Integer>> stepsList = new ArrayList<>();
         List<MonthChartFragment.OnDaySelectedListener> listeners = new ArrayList<>();
-        for (Map<Integer, Integer> monthData : monthDataList) {
+
+        for (String key : fullMonthData.keySet()) {
+            String[] parts = key.split("-");
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]);
+
+            yearList.add(year);
+            monthList.add(month);
+            Map<Integer, Integer> stepsMap = fullMonthData.get(key);
+            stepsList.add(stepsMap);
+
+            // Sự kiện click vào chấm trong biểu đồ
             listeners.add((day, steps) -> {
+                tvTotalLabel.setText("TỔNG");
                 tvSteps.setText(steps + " bước");
-                Calendar calendar = Calendar.getInstance();
-                tvDate.setText("ngày " + day + " tháng " + (calendar.get(Calendar.MONTH) + 1) + ", " + calendar.get(Calendar.YEAR));
+                tvDate.setText("ngày " + day + " tháng " + month + ", " + year);
             });
         }
 
-        monthAdapter = new MonthPagerAdapter(this, monthDataList, listeners);
+        monthAdapter = new MonthPagerAdapter(this, yearList, monthList, stepsList, listeners);
         chartViewPager.setAdapter(monthAdapter);
-        chartViewPager.setCurrentItem(monthDataList.size() - 1, false);
+        chartViewPager.setCurrentItem(monthList.size() - 1, false);
+
+        // Cập nhật trung bình khi vuốt
+        chartViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                Map<Integer, Integer> selectedMonthData = stepsList.get(position);
+                int year = yearList.get(position);
+                int month = monthList.get(position);
+
+                int total = 0;
+                int count = 0;
+                for (int val : selectedMonthData.values()) {
+                    total += val;
+                    count++;
+                }
+
+                int avg = count == 0 ? 0 : total / count;
+
+                tvTotalLabel.setText("Trung bình");
+                tvSteps.setText(avg + " bước/ngày");
+                tvDate.setText("tháng " + month + ", " + year);
+            }
+        });
+
+        // Hiển thị ngay tháng mới nhất
+        int latestIndex = monthList.size() - 1;
+        Map<Integer, Integer> latestMonthData = stepsList.get(latestIndex);
+        int year = yearList.get(latestIndex);
+        int month = monthList.get(latestIndex);
+
+        int total = 0;
+        int count = 0;
+        for (int val : latestMonthData.values()) {
+            total += val;
+            count++;
+        }
+        int avg = count == 0 ? 0 : total / count;
+
+        tvTotalLabel.setText("Trung bình");
+        tvSteps.setText(avg + " bước/ngày");
+        tvDate.setText("tháng " + month + ", " + year);
     }
+
+
 
     private void updateTodaySummary(List<WeekStepData> dataList) {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());

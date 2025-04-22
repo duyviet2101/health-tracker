@@ -186,6 +186,27 @@ public class StepsDataHelper {
         return listPerMonth;
     }
 
+    public Map<String, Map<Integer, Integer>> getStepsDataPerMonth() {
+        Map<String, Map<Integer, Integer>> result = new LinkedHashMap<>();
+        StepsDataResponse response = readRawStepsDataFromFile();
+        if (response == null || response.getStepsData() == null) return result;
+
+        for (StepsDataResponse.DayData dayData : response.getStepsData()) {
+            String[] parts = dayData.getDate().split("-");
+            if (parts.length != 3) continue;
+
+            String monthKey = parts[0] + "-" + parts[1]; // ví dụ: 2025-04
+            int day = Integer.parseInt(parts[2]);
+            int steps = dayData.getActivities().stream().mapToInt(a -> a.getSteps()).sum();
+
+            result.putIfAbsent(monthKey, new LinkedHashMap<>());
+            result.get(monthKey).put(day, steps);
+        }
+
+        return result;
+    }
+
+
 
 
 

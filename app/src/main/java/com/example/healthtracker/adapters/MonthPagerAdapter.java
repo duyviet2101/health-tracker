@@ -1,4 +1,3 @@
-// MonthPagerAdapter.java
 package com.example.healthtracker.adapters;
 
 import androidx.annotation.NonNull;
@@ -13,29 +12,36 @@ import java.util.Map;
 
 public class MonthPagerAdapter extends FragmentStateAdapter {
 
-    private List<Map<Integer, Integer>> listOfStepsPerMonth;
-    private List<MonthChartFragment.OnDaySelectedListener> listeners;
+    private final List<Integer> yearList;
+    private final List<Integer> monthList;
+    private final List<Map<Integer, Integer>> stepsList;
+    private final List<MonthChartFragment.OnDaySelectedListener> listeners;
 
-    public MonthPagerAdapter(@NonNull FragmentActivity fa,
-                             List<Map<Integer, Integer>> monthDataList,
-                             List<MonthChartFragment.OnDaySelectedListener> listenerList) {
-        super(fa);
-        this.listOfStepsPerMonth = monthDataList;
-        this.listeners = listenerList;
+    public MonthPagerAdapter(@NonNull FragmentActivity fragmentActivity,
+                             List<Integer> yearList,
+                             List<Integer> monthList,
+                             List<Map<Integer, Integer>> stepsList,
+                             List<MonthChartFragment.OnDaySelectedListener> listeners) {
+        super(fragmentActivity);
+        this.yearList = yearList;
+        this.monthList = monthList;
+        this.stepsList = stepsList;
+        this.listeners = listeners;
     }
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        MonthChartFragment fragment = MonthChartFragment.newInstance(listOfStepsPerMonth.get(position));
-        if (listeners != null && position < listeners.size()) {
-            fragment.setOnDaySelectedListener(listeners.get(position));
-        }
+        int year = yearList.get(position);
+        int month = monthList.get(position);
+        Map<Integer, Integer> stepsMap = stepsList.get(position);
+        MonthChartFragment fragment = MonthChartFragment.newInstance(year, month, stepsMap);
+        fragment.setOnDaySelectedListener(listeners.get(position));
         return fragment;
     }
 
     @Override
     public int getItemCount() {
-        return listOfStepsPerMonth.size();
+        return stepsList.size();
     }
 }

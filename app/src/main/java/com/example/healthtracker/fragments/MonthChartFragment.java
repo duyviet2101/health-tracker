@@ -2,13 +2,14 @@ package com.example.healthtracker.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.healthtracker.R;
 import com.github.mikephil.charting.charts.LineChart;
@@ -17,17 +18,24 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 public class MonthChartFragment extends Fragment {
 
+    private static final String ARG_YEAR = "year";
+    private static final String ARG_MONTH = "month";
     private static final String ARG_STEPS_MAP = "steps_map";
+
+    private int year;
+    private int month;
     private Map<Integer, Integer> stepsMap;
     private OnDaySelectedListener listener;
 
@@ -39,10 +47,12 @@ public class MonthChartFragment extends Fragment {
         this.listener = listener;
     }
 
-    public static MonthChartFragment newInstance(Map<Integer, Integer> stepsMap) {
+    public static MonthChartFragment newInstance(int year, int month, Map<Integer, Integer> stepsMap) {
         MonthChartFragment fragment = new MonthChartFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_STEPS_MAP, (java.io.Serializable) stepsMap);
+        args.putInt(ARG_YEAR, year);
+        args.putInt(ARG_MONTH, month);
+        args.putSerializable(ARG_STEPS_MAP, (Serializable) stepsMap);
         fragment.setArguments(args);
         return fragment;
     }
@@ -51,6 +61,8 @@ public class MonthChartFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            year = getArguments().getInt(ARG_YEAR);
+            month = getArguments().getInt(ARG_MONTH);
             stepsMap = (Map<Integer, Integer>) getArguments().getSerializable(ARG_STEPS_MAP);
         }
     }
@@ -67,65 +79,64 @@ public class MonthChartFragment extends Fragment {
         LineChart lineChart = view.findViewById(R.id.lineChart);
 
         List<Entry> entries = new ArrayList<>();
-        int maxSteps = 0;
-        int totalDays = 31; // Hiển thị đầy đủ 31 ngày
 
-        for (int i = 1; i <= totalDays; i++) {
-            int steps = stepsMap.containsKey(i) ? stepsMap.get(i) : 0;
+        // 🔢 Tính số ngày chính xác của tháng đó
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month - 1); // Lưu ý: Calendar.MONTH bắt đầu từ 0
+        int maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        int maxSteps = 0;
+
+        for (int i = 1; i <= maxDay; i++) {
+            int steps = stepsMap.getOrDefault(i, 0);
             entries.add(new Entry(i, steps));
             if (steps > maxSteps) maxSteps = steps;
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Bước theo ngày");
         dataSet.setCircleRadius(5f);
-        dataSet.setCircleColor(Color.parseColor("#FF4081")); // màu chấm
-        dataSet.setColor(Color.parseColor("#3F51B5"));       // màu đường
-        dataSet.setLineWidth(2f);
+        dataSet.setDrawCircleHole(false); // Chấm tròn đặc
+        dataSet.setCircleColor(Color.rgb(255, 111, 0)); // Cam
+        dataSet.setColor(Color.rgb(255, 171, 64)); // Đường cam nhạt
+        dataSet.setValueTextSize(10f);
+        dataSet.setLineWidth(2.5f);
         dataSet.setDrawValues(false);
-        dataSet.setDrawCircleHole(false); // chấm đặc
 
         LineData lineData = new LineData(dataSet);
         lineChart.setData(lineData);
 
-        // Trục Y trái
+        lineChart.getAxisRight().setEnabled(false);
+
         YAxis yAxis = lineChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);
-        yAxis.setGranularity(1000f);
         yAxis.setTextColor(Color.BLACK);
-        yAxis.setTextSize(12f);
+        yAxis.setGranularity(1000f);
 
         if (maxSteps > 0) {
             float roundedMax = ((maxSteps + 499) / 500) * 500;
             yAxis.setAxisMaximum(roundedMax + 500f);
         }
 
-        // Trục Y phải
-        lineChart.getAxisRight().setEnabled(false);
-
-        // Trục X
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
         xAxis.setTextSize(12f);
         xAxis.setTextColor(Color.BLACK);
-        xAxis.setLabelCount(7, true);
+        xAxis.setLabelRotationAngle(0);
         xAxis.setDrawGridLines(false);
         xAxis.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
                 int day = (int) value;
-                return (day == 1 || day == 6 || day == 11 || day == 16 || day == 21 || day == 26 || day == 31)
-                        ? String.valueOf(day) : "";
+                return (day == 1 || day == 6 || day == 11 || day == 16 || day == 21 || day == 26 || day == 31) ? String.valueOf(day) : "";
             }
         });
 
-        // Tối ưu giao diện
         lineChart.setExtraBottomOffset(16f);
         lineChart.getDescription().setEnabled(false);
         lineChart.getLegend().setEnabled(false);
-        lineChart.setBackgroundColor(Color.WHITE);
 
-        // Xử lý khi bấm vào chấm
         lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -135,8 +146,7 @@ public class MonthChartFragment extends Fragment {
             }
 
             @Override
-            public void onNothingSelected() {
-            }
+            public void onNothingSelected() {}
         });
 
         lineChart.invalidate();
