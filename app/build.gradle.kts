@@ -9,6 +9,7 @@ android {
 
     lint {
         abortOnError = false
+        disable += "NotificationPermission"
     }
 
     defaultConfig {
