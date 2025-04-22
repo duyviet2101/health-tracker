@@ -1,11 +1,11 @@
 package com.example.healthtracker.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,11 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.healthtracker.R;
 import com.example.healthtracker.utils.WaterTracker;
 import com.google.android.material.button.MaterialButton;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class WaterTrackingActivity extends AppCompatActivity {
 
@@ -27,25 +25,30 @@ public class WaterTrackingActivity extends AppCompatActivity {
     private MaterialButton addWaterButton;
     private TextView waterAmountText;
     private TextView goalReachedMessage;
+    private TextView waterGoalText;
     private View waterLevelView;
     private int currentWaterAmount = 0;
-    private final int WATER_GOAL = 2000; // 2000ml goal
+    private int waterGoal = 2000; // Default 2000ml goal
     private final int WATER_INCREMENT = 250; // 250ml per click
 
     // Water tracker
     private WaterTracker waterTracker;
-    
-    // Date display
-    private TextView currentDateText;
-    private Handler timeHandler;
-    private LinearLayout datesContainer;
-    private final SimpleDateFormat dayFormat = new SimpleDateFormat("d", Locale.getDefault());
-    private final SimpleDateFormat weekdayFormat = new SimpleDateFormat("E", Locale.getDefault());
+    private FirebaseFirestore db;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_water_tracking);
+
+        // Initialize Firestore
+        db = FirebaseFirestore.getInstance();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            userId = currentUser.getUid();
+        } else {
+            userId = "anonymous";
+        }
 
         // Initialize water tracker
         waterTracker = new WaterTracker(this);
@@ -55,14 +58,7 @@ public class WaterTrackingActivity extends AppCompatActivity {
         waterAmountText = findViewById(R.id.waterAmount);
         waterLevelView = findViewById(R.id.waterLevelView);
         goalReachedMessage = findViewById(R.id.goalReachedMessage);
-        currentDateText = findViewById(R.id.currentDateText);
-        datesContainer = findViewById(R.id.datesContainer);
-
-        // Setup time updater
-        setupDateTimeUpdater();
-
-        // Load saved water amount
-        loadWaterAmount();
+        waterGoalText = findViewById(R.id.waterGoal);
 
         // Setup back button
         ImageButton backButton = findViewById(R.id.backButton);
@@ -73,57 +69,93 @@ public class WaterTrackingActivity extends AppCompatActivity {
             }
         });
 
+        // Setup menu button
+        ImageButton menuButton = findViewById(R.id.menuButton);
+        menuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopupMenu(v);
+            }
+        });
+
         // Setup add water button
         addWaterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentWaterAmount < WATER_GOAL) {
+                if (currentWaterAmount < waterGoal) {
                     addWater(WATER_INCREMENT);
                 } else {
                     Toast.makeText(WaterTrackingActivity.this, "Đã đạt mục tiêu!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        // Load water goal and data
+        loadWaterGoal();
     }
 
-    private void setupDateTimeUpdater() {
-        // Initialize date display
-        updateDateDisplay();
+    private void loadWaterGoal() {
+        // First try to load from Firestore
+        if (!"anonymous".equals(userId)) {
+            db.collection("users").document(userId)
+                    .collection("settings").document("water")
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists() && documentSnapshot.contains("goal")) {
+                            Long goal = documentSnapshot.getLong("goal");
+                            if (goal != null) {
+                                waterGoal = goal.intValue();
+                                updateWaterGoalDisplay();
+                            }
+                        }
+                        // After loading goal, load water amount
+                        loadWaterAmount();
+                    })
+                    .addOnFailureListener(e -> {
+                        // On failure, just load water amount with default goal
+                        loadWaterAmount();
+                    });
+        } else {
+            // If not logged in, just load water amount with default goal
+            loadWaterAmount();
+        }
+    }
+
+    private void updateWaterGoalDisplay() {
+        // Update the waterGoal TextView
+        waterGoalText.setText("/" + waterGoal + " ml");
+    }
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(this, view);
+        popupMenu.getMenuInflater().inflate(R.menu.water_tracking_menu, popupMenu.getMenu());
         
-        // Setup periodic update every minute
-        timeHandler = new Handler(Looper.getMainLooper());
-        timeHandler.postDelayed(new Runnable() {
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
-            public void run() {
-                updateDateDisplay();
-                timeHandler.postDelayed(this, 60000); // Update every minute
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.menu_set_goal) {
+                    // Open goal setting activity
+                    openGoalSettingScreen();
+                    return true;
+                }
+                return false;
             }
-        }, 60000);
+        });
+        
+        popupMenu.show();
     }
     
-    private void updateDateDisplay() {
-        // Get the current date
-        Calendar calendar = Calendar.getInstance();
-        Date today = calendar.getTime();
-        
-        // Set the current date text
-        currentDateText.setText(dayFormat.format(today));
-        
-        // Find any date change
-        String currentDay = dayFormat.format(today);
-        if (!currentDay.equals(currentDateText.getText().toString())) {
-            // If date changed, reset water tracking for the new day
-            currentWaterAmount = 0;
-            updateUI();
-            saveWaterAmount();
-        }
+    private void openGoalSettingScreen() {
+        Intent intent = new Intent(this, WaterGoalSettingActivity.class);
+        intent.putExtra("current_goal", waterGoal);
+        startActivity(intent);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Update date display when activity resumes
-        updateDateDisplay();
+        // Reload water goal and amount when returning to this screen
+        loadWaterGoal();
     }
 
     @Override
@@ -131,15 +163,6 @@ public class WaterTrackingActivity extends AppCompatActivity {
         super.onPause();
         // Save water amount when app is paused
         saveWaterAmount();
-    }
-    
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Remove handler callbacks to prevent leaks
-        if (timeHandler != null) {
-            timeHandler.removeCallbacksAndMessages(null);
-        }
     }
 
     private void loadWaterAmount() {
@@ -155,7 +178,7 @@ public class WaterTrackingActivity extends AppCompatActivity {
 
     private void saveWaterAmount() {
         // Save water amount using the water tracker
-        waterTracker.saveWaterAmount(currentWaterAmount, WATER_GOAL);
+        waterTracker.saveWaterAmount(currentWaterAmount, waterGoal);
     }
 
     private void updateUI() {
@@ -166,7 +189,7 @@ public class WaterTrackingActivity extends AppCompatActivity {
         updateWaterLevel();
         
         // Check if goal is reached
-        if (currentWaterAmount >= WATER_GOAL) {
+        if (currentWaterAmount >= waterGoal) {
             goalReached();
         } else {
             // Re-enable button if below goal
@@ -186,7 +209,7 @@ public class WaterTrackingActivity extends AppCompatActivity {
     
     private void updateWaterLevel() {
         // Calculate height percentage based on current amount vs goal
-        float percentage = Math.min(1.0f, (float) currentWaterAmount / WATER_GOAL);
+        float percentage = Math.min(1.0f, (float) currentWaterAmount / waterGoal);
         
         // Get parent view height to calculate actual height
         View chartContainer = findViewById(R.id.chartContainer);

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:gravity="center">
+    
+    <TextView
+        android:id="@+id/weekdayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="T2"
+        android:textSize="10sp"
+        android:textColor="#AAAAAA" />
+        
+    <TextView
+        android:id="@+id/dayText"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="14"
+        android:textColor="@color/gray"
+        android:textSize="14sp" />
+</LinearLayout> 
