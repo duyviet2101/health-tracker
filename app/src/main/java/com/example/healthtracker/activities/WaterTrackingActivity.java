@@ -14,9 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.healthtracker.R;
 import com.example.healthtracker.utils.WaterTracker;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import android.widget.EditText;
 
 public class WaterTrackingActivity extends AppCompatActivity {
 
@@ -29,12 +31,14 @@ public class WaterTrackingActivity extends AppCompatActivity {
     private View waterLevelView;
     private int currentWaterAmount = 0;
     private int waterGoal = 2000; // Default 2000ml goal
-    private final int WATER_INCREMENT = 250; // 250ml per click
 
     // Water tracker
     private WaterTracker waterTracker;
     private FirebaseFirestore db;
     private String userId;
+
+    // New variable for the input field
+    private EditText waterAmountInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,8 @@ public class WaterTrackingActivity extends AppCompatActivity {
         waterLevelView = findViewById(R.id.waterLevelView);
         goalReachedMessage = findViewById(R.id.goalReachedMessage);
         waterGoalText = findViewById(R.id.waterGoal);
+        waterAmountInput = findViewById(R.id.waterAmountInput);
+        waterAmountInput.setText("0"); // Đặt giá trị mặc định là 0
 
         // Setup back button
         ImageButton backButton = findViewById(R.id.backButton);
@@ -83,7 +89,34 @@ public class WaterTrackingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (currentWaterAmount < waterGoal) {
-                    addWater(WATER_INCREMENT);
+                    // Lấy giá trị từ EditText
+                    String inputText = waterAmountInput.getText().toString().trim();
+                    int waterAmount = 0;
+                    
+                    // Parse giá trị đầu vào hoặc sử dụng 0 nếu trống/không hợp lệ
+                    if (!inputText.isEmpty()) {
+                        try {
+                            waterAmount = Integer.parseInt(inputText);
+                        } catch (NumberFormatException e) {
+                            // Không cần thông báo lỗi, chỉ cần sử dụng giá trị 0
+                            waterAmountInput.setText("0");
+                        }
+                    } else {
+                        // Nếu trống, sử dụng giá trị mặc định 0 và cập nhật UI
+                        waterAmountInput.setText("0");
+                    }
+                    
+                    if (waterAmount <= 0) {
+                        // Hiển thị thông báo lỗi cho số lượng không hợp lệ
+                        Toast.makeText(WaterTrackingActivity.this, "Vui lòng nhập số lượng lớn hơn 0", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    // Thêm lượng nước đã nhập
+                    addWater(waterAmount);
+                    
+                    // KHÔNG xóa giá trị trong input field sau khi thêm
+                    // Giữ nguyên giá trị cho đến khi người dùng thay đổi
                 } else {
                     Toast.makeText(WaterTrackingActivity.this, "Đã đạt mục tiêu!", Toast.LENGTH_SHORT).show();
                 }
