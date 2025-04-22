@@ -43,7 +43,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Share"
+        android:contentDescription="@string/share_button_desc"
         android:src="@drawable/ic_share"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topBarLayout" />
@@ -148,7 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:text="steps"
+                    android:text="@string/steps"
                     android:textColor="@color/text_tertiary"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Time"
+                android:text="@string/time_label"
                 android:textSize="16sp" />
 
             <TextView
@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Calories"
+                android:text="@string/calories_label"
                 android:textSize="16sp" />
 
             <TextView
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
-                android:text="Distance"
+                android:text="@string/distance_label"
                 android:textSize="16sp" />
 
             <TextView
@@ -297,14 +297,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thống kê"
+                        android:text="@string/statistics"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="steps"
+                        android:text="@string/steps"
                         android:textColor="#B0FFFFFF"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -346,14 +346,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Thêm"
+                        android:text="@string/add"
                         android:textColor="#000000"
                         android:textSize="16sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="water"
+                        android:text="@string/water"
                         android:textColor="#707070"
                         android:textSize="12sp" />
                 </LinearLayout>

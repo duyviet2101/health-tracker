@@ -20,7 +20,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@null"
-            android:contentDescription="Back"
+            android:contentDescription="@string/back_button_desc"
             android:src="@drawable/ic_back" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:text="Đặt mục tiêu"
+            android:text="@string/set_goal"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -60,7 +60,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sức khỏe tốt bắt đầu từ việc uống nước!"
+                android:text="@string/water_health_header"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:layout_marginBottom="8dp" />
@@ -68,7 +68,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Hãy đặt mục tiêu lượng nước uống vào hàng ngày để theo dõi."
+                android:text="@string/water_goal_subheader"
                 android:textColor="@color/gray"
                 android:textSize="16sp"
                 android:layout_marginBottom="32dp" />
@@ -90,7 +90,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Lượng nước uống hàng ngày (ml)"
+                        android:text="@string/daily_water_intake"
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="32dp" />
@@ -115,7 +115,7 @@
                             android:gravity="center"
                             android:background="@null"
                             android:layout_marginVertical="16dp"
-                            android:hint="Nhập lượng nước"/>
+                            android:hint="@string/enter_amount"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -145,7 +145,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Nhận nhắc nhở để uống nước"
+                            android:text="@string/water_reminder"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
@@ -176,7 +176,7 @@
                                 android:id="@+id/dayButtonC"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="C"
+                                android:text="@string/sunday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -188,7 +188,7 @@
                                 android:id="@+id/dayButton2"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="2"
+                                android:text="@string/monday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -200,7 +200,7 @@
                                 android:id="@+id/dayButton3"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="3"
+                                android:text="@string/tuesday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -212,7 +212,7 @@
                                 android:id="@+id/dayButton4"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="4"
+                                android:text="@string/wednesday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -224,7 +224,7 @@
                                 android:id="@+id/dayButton5"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="5"
+                                android:text="@string/thursday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -236,7 +236,7 @@
                                 android:id="@+id/dayButton6"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="6"
+                                android:text="@string/friday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -248,7 +248,7 @@
                                 android:id="@+id/dayButton7"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:text="7"
+                                android:text="@string/saturday_letter"
                                 android:textSize="12sp"
                                 android:insetTop="0dp"
                                 android:insetBottom="0dp"
@@ -261,7 +261,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Thời gian"
+                            android:text="@string/time_range_label"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:layout_marginBottom="8dp" />
@@ -276,7 +276,7 @@
                                 android:id="@+id/timeRangeText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="8:00 - 23:00"
+                                android:text="@string/time_range_value"
                                 android:textColor="#2196F3"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -285,7 +285,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Nhắc tôi mỗi"
+                            android:text="@string/remind_me_every"
                             android:textColor="@color/black"
                             android:textSize="14sp"
                             android:layout_marginBottom="8dp" />
@@ -299,7 +299,7 @@
                                 android:id="@+id/reminderFrequencyText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2 giờ"
+                                android:text="@string/hours_value"
                                 android:textColor="#2196F3"
                                 android:textSize="14sp" />
                         </LinearLayout>
@@ -312,7 +312,7 @@
                 android:id="@+id/saveButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Lưu"
+                android:text="@string/save"
                 android:textAllCaps="false"
                 android:textSize="16sp"
                 android:paddingVertical="12dp"

@@ -47,7 +47,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Profile icon"
+                    android:contentDescription="@string/profile_icon_desc"
                     android:src="@drawable/manage_accounts_24px" />
 
                 <TextView
@@ -71,17 +71,19 @@
                 android:padding="16dp">
 
                 <ImageView
+                    android:id="@+id/languageIcon"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Language icon"
+                    android:contentDescription="@string/language_icon_desc"
                     android:src="@drawable/vietnam" />
 
                 <TextView
+                    android:id="@+id/languageText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
-                    android:text="Vietnamese"
+                    android:text="@string/language_vietnamese"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -104,7 +106,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Sign out icon"
+                    android:contentDescription="@string/sign_out_icon_desc"
                     android:src="@drawable/logout_24px" />
 
                 <TextView

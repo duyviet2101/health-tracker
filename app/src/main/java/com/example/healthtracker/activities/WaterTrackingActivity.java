@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import android.widget.EditText;
 
-public class WaterTrackingActivity extends AppCompatActivity {
+public class WaterTrackingActivity extends BaseActivity {
 
     private static final String TAG = "WaterTrackingActivity";
 

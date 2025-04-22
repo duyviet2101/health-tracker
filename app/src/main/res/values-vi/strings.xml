@@ -17,4 +17,110 @@
     <string name="weight_hint">Cân nặng (kg)</string>
     <string name="height_hint">Height (cm)</string>
     <string name="save">Lưu</string>
+    
+    <!-- Language selection strings -->
+    <string name="select_language">Chọn ngôn ngữ</string>
+    <string name="language_english">Tiếng Anh</string>
+    <string name="language_vietnamese">Tiếng Việt</string>
+    <string name="language_indonesian">Tiếng Indonesia</string>
+    <string name="cancel">Huỷ</string>
+    
+    <!-- Main activity strings -->
+    <string name="steps">bước</string>
+    <string name="time_label">Thời gian</string>
+    <string name="calories_label">Calo</string>
+    <string name="distance_label">Khoảng cách</string>
+    <string name="statistics">Thống kê</string>
+    <string name="add">Thêm</string>
+    <string name="water">nước</string>
+    
+    <!-- Water tracking activity -->
+    <string name="water_title">Nước</string>
+    
+    <!-- Day abbreviations -->
+    <string name="monday_short">T2</string>
+    <string name="tuesday_short">T3</string>
+    <string name="wednesday_short">T4</string>
+    <string name="thursday_short">T5</string>
+    <string name="friday_short">T6</string>
+    <string name="saturday_short">T7</string>
+    <string name="sunday_short">CN</string>
+    
+    <!-- Water tracking more strings -->
+    <string name="ml_unit">ml</string>
+    <string name="thousand_marker">1.000</string>
+    <string name="two_thousand_marker">2.000</string>
+    <string name="zero_marker">0</string>
+    <string name="water_goal_format">/2.000 ml</string>
+    <string name="goal_reached">Đã đạt mục tiêu!</string>
+    <string name="add_water">Thêm</string>
+    
+    <!-- Profile activity -->
+    <string name="edit_profile">Chỉnh sửa hồ sơ</string>
+    <string name="personal_info">Thông tin cá nhân</string>
+    <string name="gender">Giới tính</string>
+    <string name="male">Nam</string>
+    <string name="female">Nữ</string>
+    <string name="height">Chiều cao</string>
+    <string name="weight">Cân nặng</string>
+    <string name="cm_unit">cm</string>
+    <string name="kg_unit">kg</string>
+    <string name="update_profile">Cập nhật hồ sơ</string>
+    <string name="email">Email</string>
+    
+    <!-- Water goal setting -->
+    <string name="water_goal_setting">Mục tiêu nước</string>
+    <string name="daily_goal">Mục tiêu hàng ngày</string>
+    <string name="set_goal">Đặt mục tiêu</string>
+    <string name="reminder">Nhắc nhở</string>
+    <string name="reminder_interval">Khoảng thời gian nhắc nhở</string>
+    <string name="custom">Tùy chỉnh</string>
+    <string name="hour">giờ</string>
+    <string name="minute">phút</string>
+    <string name="start_time">Thời gian bắt đầu</string>
+    <string name="end_time">Thời gian kết thúc</string>
+    <string name="water_health_header">Sức khỏe tốt bắt đầu từ việc uống nước!</string>
+    <string name="water_goal_subheader">Hãy đặt mục tiêu lượng nước uống vào hàng ngày để theo dõi.</string>
+    <string name="daily_water_intake">Lượng nước uống hàng ngày (ml)</string>
+    <string name="enter_amount">Nhập lượng nước</string>
+    <string name="water_reminder">Nhận nhắc nhở để uống nước</string>
+    <string name="monday_letter">2</string>
+    <string name="tuesday_letter">3</string>
+    <string name="wednesday_letter">4</string>
+    <string name="thursday_letter">5</string>
+    <string name="friday_letter">6</string>
+    <string name="saturday_letter">7</string>
+    <string name="sunday_letter">C</string>
+    
+    <!-- Custom interval dialog -->
+    <string name="custom_interval_title">Nhập thời gian tùy chỉnh</string>
+    <string name="hours_label">Giờ:</string>
+    <string name="minutes_label">Phút:</string>
+    <string name="zero_hint">0</string>
+    <string name="interval_example">*Ví dụ: 1 giờ 30 phút</string>
+    
+    <!-- Water goal setting additional strings -->
+    <string name="time_range_label">Thời gian</string>
+    <string name="time_range_value">8:00 - 23:00</string>
+    <string name="remind_me_every">Nhắc tôi mỗi</string>
+    <string name="hours_value">2 giờ</string>
+    
+    <!-- Water tracking menu -->
+    <string name="menu_set_goal">Đặt mục tiêu</string>
+    
+    <!-- Statistics Activity -->
+    <string name="tab_week">Tuần</string>
+    <string name="tab_month">Tháng</string>
+    <string name="tab_six_months">6 Tháng</string>
+    <string name="tab_year">Năm</string>
+    <string name="not_supported">Chưa hỗ trợ hiển thị</string>
+    <string name="total_label">TỔNG</string>
+    <string name="average_label">Trung bình</string>
+    <string name="steps_count">%d bước</string>
+    <string name="steps_per_day">%d bước/ngày</string>
+    <string name="day_format">ngày %d</string>
+    <string name="month_format">tháng %d</string>
+    <string name="year_format">%d</string>
+    <string name="date_format">ngày %d tháng %d, %d</string>
+    <string name="month_year_format">tháng %d, %d</string>
 </resources>
