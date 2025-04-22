@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
             MenuAccountFragment menuAccountFragment = new MenuAccountFragment();
             menuAccountFragment.show(getSupportFragmentManager(), "MenuAccountFragment");
         });
+
+        checkAndRequestPermission();
+        setupStepUpdateReceiver();
     }
 
     private void checkAndRequestPermission() {
