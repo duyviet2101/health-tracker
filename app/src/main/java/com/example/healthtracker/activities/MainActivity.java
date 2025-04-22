@@ -20,6 +20,7 @@ import com.example.healthtracker.R;
 import com.example.healthtracker.StepCounterData;
 import com.example.healthtracker.StepCounterService;
 import com.example.healthtracker.fragments.MenuAccountFragment;
+import com.example.healthtracker.models.StepsDataHelper;
 import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
+
+        new StepsDataHelper(this).copyJsonIfNotExists();
 
         // Khởi tạo quản lý dữ liệu bước chân
         stepData = StepCounterData.getInstance(this);

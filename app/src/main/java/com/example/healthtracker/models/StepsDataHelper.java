@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -206,6 +207,25 @@ public class StepsDataHelper {
         return result;
     }
 
+
+    public void copyJsonIfNotExists() {
+        File file = new File(context.getFilesDir(), "activity_data.json");
+        if (file.exists()) return; // Đã có rồi thì không cần sao chép nữa
+
+        try {
+            InputStream inputStream = context.getResources().openRawResource(
+                    context.getResources().getIdentifier("activity_data", "raw", context.getPackageName()));
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(buffer);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 
