@@ -20,6 +20,7 @@ import com.example.healthtracker.R;
 import com.example.healthtracker.StepCounterData;
 import com.example.healthtracker.StepCounterService;
 import com.example.healthtracker.fragments.MenuAccountFragment;
+import com.example.healthtracker.models.ScreenshotSharer;
 import com.example.healthtracker.models.StepsDataHelper;
 import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.shareButton).setOnClickListener(v -> ScreenshotSharer.captureAndShareScreen(MainActivity.this));
+
 
         // Khởi tạo các view đếm bước chân
         initStepCountViews();
