@@ -18,7 +18,7 @@ import java.util.*;
 
 public class JsonExporter {
     private static final String TAG = "JsonExporter";
-    private static final String FILE_NAME = "all_steps_data.json";
+    private static final String FILE_NAME = "activity_data.json";
 
     public static void exportDailySteps(Context context, List<StepActivityEntry> activityList) {
         try {
@@ -32,7 +32,7 @@ public class JsonExporter {
             DailyStepsData todayData = new DailyStepsData(date, dayOfWeek, activityList);
 
             // File lưu trữ chính
-            File file = new File(context.getExternalFilesDir(null), FILE_NAME);
+            File file = new File(context.getFilesDir(), FILE_NAME);
             List<DailyStepsData> allData = new ArrayList<>();
 
             // Nếu file đã tồn tại, đọc dữ liệu cũ
@@ -49,10 +49,6 @@ public class JsonExporter {
             // Kiểm tra xem đã có dữ liệu cho ngày này chưa để thực hiện ghi đè
             boolean updated = false;
 
-            // Nếu ngày hôm nay chưa có trong file data thì add ngày hôm nay vào file data
-            if (!updated) {
-                allData.add(todayData);
-            }
 
             for (int i = 0; i < allData.size(); i++) {
                 if (allData.get(i).date.equals(todayData.date)) {
@@ -61,6 +57,11 @@ public class JsonExporter {
                     updated = true;
                     break;
                 }
+            }
+
+            // Nếu ngày hôm nay chưa có trong file data thì add ngày hôm nay vào file data
+            if (!updated) {
+                allData.add(todayData);
             }
 
 
