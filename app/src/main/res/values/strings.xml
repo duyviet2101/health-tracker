@@ -21,4 +21,118 @@
     <string name="name">Name</string>
     <string name="dob">Date of Birth</string>
     <string name="save">Save</string>
+    
+    <!-- Language selection strings -->
+    <string name="select_language">Select Language</string>
+    <string name="language_english">English</string>
+    <string name="language_vietnamese">Vietnamese</string>
+    <string name="language_indonesian">Indonesian</string>
+    <string name="cancel">Cancel</string>
+    
+    <!-- Content descriptions -->
+    <string name="profile_icon_desc" translatable="false">Profile icon</string>
+    <string name="language_icon_desc" translatable="false">Language icon</string>
+    <string name="sign_out_icon_desc" translatable="false">Sign out icon</string>
+    <string name="share_button_desc" translatable="false">Share</string>
+    
+    <!-- Main activity strings -->
+    <string name="steps">steps</string>
+    <string name="time_label">Time</string>
+    <string name="calories_label">Calories</string>
+    <string name="distance_label">Distance</string>
+    <string name="statistics">Statistics</string>
+    <string name="add">Add</string>
+    <string name="water">water</string>
+    
+    <!-- Water tracking activity -->
+    <string name="water_title">Water</string>
+    <string name="back_button_desc" translatable="false">Back</string>
+    <string name="menu_button_desc" translatable="false">Menu</string>
+    
+    <!-- Day abbreviations -->
+    <string name="monday_short">Mon</string>
+    <string name="tuesday_short">Tue</string>
+    <string name="wednesday_short">Wed</string>
+    <string name="thursday_short">Thu</string>
+    <string name="friday_short">Fri</string>
+    <string name="saturday_short">Sat</string>
+    <string name="sunday_short">Sun</string>
+    
+    <!-- Water tracking more strings -->
+    <string name="ml_unit">ml</string>
+    <string name="thousand_marker">1,000</string>
+    <string name="two_thousand_marker">2,000</string>
+    <string name="zero_marker">0</string>
+    <string name="water_goal_format">/2,000 ml</string>
+    <string name="goal_reached">Goal reached!</string>
+    <string name="add_water">Add</string>
+    
+    <!-- Profile activity -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="cm_unit">cm</string>
+    <string name="kg_unit">kg</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="email">Email</string>
+    
+    <!-- Water goal setting -->
+    <string name="water_goal_setting">Water Goal</string>
+    <string name="daily_goal">Daily Goal</string>
+    <string name="set_goal">Set Goal</string>
+    <string name="reminder">Reminder</string>
+    <string name="reminder_interval">Reminder Interval</string>
+    <string name="custom">Custom</string>
+    <string name="hour">hour</string>
+    <string name="minute">minute</string>
+    <string name="start_time">Start Time</string>
+    <string name="end_time">End Time</string>
+    <string name="water_health_header">Good health starts with drinking water!</string>
+    <string name="water_goal_subheader">Set your daily water intake goal to track.</string>
+    <string name="daily_water_intake">Daily water intake (ml)</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="water_reminder">Get water reminders</string>
+    <string name="monday_letter">M</string>
+    <string name="tuesday_letter">T</string>
+    <string name="wednesday_letter">W</string>
+    <string name="thursday_letter">T</string>
+    <string name="friday_letter">F</string>
+    <string name="saturday_letter">S</string>
+    <string name="sunday_letter">S</string>
+    
+    <!-- Custom interval dialog -->
+    <string name="custom_interval_title">Enter custom time</string>
+    <string name="hours_label">Hours:</string>
+    <string name="minutes_label">Minutes:</string>
+    <string name="zero_hint">0</string>
+    <string name="interval_example">*Example: 1 hour 30 minutes</string>
+    
+    <!-- Water goal setting additional strings -->
+    <string name="time_range_label">Time</string>
+    <string name="time_range_value">8:00 - 23:00</string>
+    <string name="remind_me_every">Remind me every</string>
+    <string name="hours_value">2 hours</string>
+    
+    <!-- Water tracking menu -->
+    <string name="menu_set_goal">Set Goal</string>
+    
+    <!-- Statistics Activity -->
+    <string name="tab_week">Week</string>
+    <string name="tab_month">Month</string>
+    <string name="tab_six_months">6 Months</string>
+    <string name="tab_year">Year</string>
+    <string name="not_supported">Not supported yet</string>
+    <string name="total_label">TOTAL</string>
+    <string name="average_label">Average</string>
+    <string name="steps_count">%d steps</string>
+    <string name="steps_per_day">%d steps/day</string>
+    <string name="day_format">day %d</string>
+    <string name="month_format">month %d</string>
+    <string name="year_format">%d</string>
+    <string name="date_format">day %d month %d, %d</string>
+    <string name="month_year_format">month %d, %d</string>
 </resources>

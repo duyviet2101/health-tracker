@@ -29,7 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class FirebaseUIActivity extends AppCompatActivity {
+public class FirebaseUIActivity extends BaseActivity {
 
     private static final String TAG = "FirebaseUIActivity";
     CardView googleLoginButton;

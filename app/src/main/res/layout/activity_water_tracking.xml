@@ -20,7 +20,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@null"
-            android:contentDescription="Back"
+            android:contentDescription="@string/back_button_desc"
             android:src="@drawable/ic_back" />
 
         <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="16dp"
-            android:text="Nước"
+            android:text="@string/water_title"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -38,7 +38,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@null"
-            android:contentDescription="Menu"
+            android:contentDescription="@string/menu_button_desc"
             android:src="@drawable/ic_more" />
 
     </LinearLayout>
@@ -103,7 +103,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T2"
+                        android:text="@string/monday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -127,7 +127,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T3"
+                        android:text="@string/tuesday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -151,7 +151,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T4"
+                        android:text="@string/wednesday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -175,7 +175,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T5"
+                        android:text="@string/thursday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -199,7 +199,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T6"
+                        android:text="@string/friday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -223,7 +223,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T7"
+                        android:text="@string/saturday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -247,7 +247,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="CN"
+                        android:text="@string/sunday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -271,7 +271,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T2"
+                        android:text="@string/monday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -295,7 +295,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="T3"
+                        android:text="@string/tuesday_short"
                         android:textSize="10sp"
                         android:textColor="#AAAAAA" />
                         
@@ -347,7 +347,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="56dp"
-                        android:text="2.000 —"
+                        android:text="@string/two_thousand_marker"
                         android:textColor="#BBBBBB"
                         android:textSize="12sp" />
 
@@ -355,14 +355,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="56dp"
-                        android:text="1.000 —"
+                        android:text="@string/thousand_marker"
                         android:textColor="#BBBBBB"
                         android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0 —"
+                        android:text="@string/zero_marker"
                         android:textColor="#BBBBBB"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -426,7 +426,7 @@
                 android:id="@+id/waterGoal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="/2.000 ml"
+                android:text="@string/water_goal_format"
                 android:textColor="@color/gray"
                 android:textSize="16sp"
                 android:layout_marginTop="4dp"
@@ -439,7 +439,7 @@
                 android:id="@+id/goalReachedMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Đã đạt mục tiêu!"
+                android:text="@string/goal_reached"
                 android:textColor="#4CAF50"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -486,7 +486,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ml"
+                        android:text="@string/ml_unit"
                         android:textSize="16sp"
                         android:textColor="#AAAAAA"
                         android:layout_gravity="bottom|end"
@@ -506,7 +506,7 @@
                     android:id="@+id/addWaterButton"
                     android:layout_width="wrap_content"
                     android:layout_height="48dp"
-                    android:text="Thêm"
+                    android:text="@string/add_water"
                     android:textAllCaps="false"
                     android:textSize="16sp"
                     android:paddingHorizontal="24dp"

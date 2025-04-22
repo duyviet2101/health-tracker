@@ -37,7 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class WaterGoalSettingActivity extends AppCompatActivity {
+public class WaterGoalSettingActivity extends BaseActivity {
 
     private static final String TAG = "WaterGoalSetting";
     private static final int MIN_WATER_GOAL = 40; // Giá trị tối thiểu 40ml

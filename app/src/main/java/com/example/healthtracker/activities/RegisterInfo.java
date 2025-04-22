@@ -16,7 +16,7 @@ import com.example.healthtracker.fragments.WeightRegisterInfo;
 
 import lombok.Setter;
 
-public class RegisterInfo extends AppCompatActivity {
+public class RegisterInfo extends BaseActivity {
 
     private ViewPager2 viewPager;
     // Method to set user weight from WeightRegisterInfo fragment

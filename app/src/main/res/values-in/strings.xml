@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pelacak Kesehatan</string>
+    <string name="txtGreeting">halo,</string>
+    <string name="title_activity_login">Masuk</string>
+    <string name="txtGoogleLogin">Masuk dengan Google</string>
+    <string name="sign_out">Keluar</string>
+    <string name="tell_weight">Beri tahu kami berat badan Anda?</string>
+    <string name="register_info_note">Memberikan informasi lebih banyak tentang diri Anda akan membantu kami memahami kesehatan Anda.</string>
+    <string name="continue_button">Lanjutkan</string>
+    <string name="tell_height">Beri tahu kami tinggi badan Anda?</string>
+    <string name="save_button">Simpan</string>
+    <string name="profile">Profil</string>
+    <string name="back">Kembali</string>
+    <string name="name">Nama</string>
+    <string name="dob">Tanggal Lahir</string>
+    <string name="weight_hint">Berat (kg)</string>
+    <string name="height_hint">Tinggi (cm)</string>
+    <string name="save">Simpan</string>
+
+    <!-- Language selection strings -->
+    <string name="select_language">Pilih Bahasa</string>
+    <string name="language_english">Bahasa Inggris</string>
+    <string name="language_vietnamese">Bahasa Vietnam</string>
+    <string name="language_indonesian">Bahasa Indonesia</string>
+    <string name="cancel">Batal</string>
+
+    <!-- Main activity strings -->
+    <string name="steps">langkah</string>
+    <string name="time_label">Waktu</string>
+    <string name="calories_label">Kalori</string>
+    <string name="distance_label">Jarak</string>
+    <string name="statistics">Statistik</string>
+    <string name="add">Tambah</string>
+    <string name="water">air</string>
+
+    <!-- Water tracking activity -->
+    <string name="water_title">Air</string>
+
+    <!-- Day abbreviations -->
+    <string name="monday_short">Sen</string>
+    <string name="tuesday_short">Sel</string>
+    <string name="wednesday_short">Rab</string>
+    <string name="thursday_short">Kam</string>
+    <string name="friday_short">Jum</string>
+    <string name="saturday_short">Sab</string>
+    <string name="sunday_short">Min</string>
+
+    <!-- Water tracking more strings -->
+    <string name="ml_unit">ml</string>
+    <string name="thousand_marker">1.000</string>
+    <string name="two_thousand_marker">2.000</string>
+    <string name="zero_marker">0</string>
+    <string name="water_goal_format">/2.000 ml</string>
+    <string name="goal_reached">Target tercapai!</string>
+    <string name="add_water">Tambah</string>
+
+    <!-- Profile activity -->
+    <string name="edit_profile">Edit Profil</string>
+    <string name="personal_info">Informasi Pribadi</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="male">Pria</string>
+    <string name="female">Wanita</string>
+    <string name="height">Tinggi</string>
+    <string name="weight">Berat</string>
+    <string name="cm_unit">cm</string>
+    <string name="kg_unit">kg</string>
+    <string name="update_profile">Perbarui Profil</string>
+    <string name="email">Email</string>
+
+    <!-- Water goal setting -->
+    <string name="water_goal_setting">Target Air</string>
+    <string name="daily_goal">Target Harian</string>
+    <string name="set_goal">Tetapkan Target</string>
+    <string name="reminder">Pengingat</string>
+    <string name="reminder_interval">Interval Pengingat</string>
+    <string name="custom">Kustom</string>
+    <string name="hour">jam</string>
+    <string name="minute">menit</string>
+    <string name="start_time">Waktu Mulai</string>
+    <string name="end_time">Waktu Selesai</string>
+    <string name="water_health_header">Kesehatan yang baik dimulai dengan minum air!</string>
+    <string name="water_goal_subheader">Atur target konsumsi air harian Anda untuk melacak.</string>
+    <string name="daily_water_intake">Konsumsi air harian (ml)</string>
+    <string name="enter_amount">Masukkan jumlah</string>
+    <string name="water_reminder">Dapatkan pengingat minum air</string>
+    <string name="monday_letter">S</string>
+    <string name="tuesday_letter">S</string>
+    <string name="wednesday_letter">R</string>
+    <string name="thursday_letter">K</string>
+    <string name="friday_letter">J</string>
+    <string name="saturday_letter">S</string>
+    <string name="sunday_letter">M</string>
+
+    <!-- Custom interval dialog -->
+    <string name="custom_interval_title">Masukkan waktu kustom</string>
+    <string name="hours_label">Jam:</string>
+    <string name="minutes_label">Menit:</string>
+    <string name="zero_hint">0</string>
+    <string name="interval_example">*Contoh: 1 jam 30 menit</string>
+
+    <!-- Water goal setting additional strings -->
+    <string name="time_range_label">Waktu</string>
+    <string name="time_range_value">8:00 - 23:00</string>
+    <string name="remind_me_every">Ingatkan saya setiap</string>
+    <string name="hours_value">2 jam</string>
+
+    <!-- Water tracking menu -->
+    <string name="menu_set_goal">Tetapkan Target</string>
+
+    <!-- Statistics Activity -->
+    <string name="tab_week">Minggu</string>
+    <string name="tab_month">Bulan</string>
+    <string name="tab_six_months">6 Bulan</string>
+    <string name="tab_year">Tahun</string>
+    <string name="not_supported">Belum didukung</string>
+    <string name="total_label">TOTAL</string>
+    <string name="average_label">Rata-rata</string>
+    <string name="steps_count">%d langkah</string>
+    <string name="steps_per_day">%d langkah/hari</string>
+    <string name="day_format">hari %d</string>
+    <string name="month_format">bulan %d</string>
+    <string name="year_format">%d</string>
+    <string name="date_format">hari %d bulan %d, %d</string>
+    <string name="month_year_format">bulan %d, %d</string>
+</resources>

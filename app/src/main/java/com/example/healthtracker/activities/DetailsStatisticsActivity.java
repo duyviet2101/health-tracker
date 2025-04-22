@@ -18,7 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class DetailsStatisticsActivity extends AppCompatActivity {
+public class DetailsStatisticsActivity extends BaseActivity {
 
     private ViewPager2 chartViewPager;
     private TextView tvSteps, tvDate;
@@ -46,11 +46,17 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
 
         setupTabLayout();
-        showWeekChart(); // Mặc định
+        showWeekChart(); // Default
     }
 
     private void setupTabLayout() {
-        String[] tabs = {"Tuần", "Tháng", "6 Tháng", "Năm"};
+        String[] tabs = {
+            getString(R.string.tab_week),
+            getString(R.string.tab_month),
+            getString(R.string.tab_six_months),
+            getString(R.string.tab_year)
+        };
+        
         for (String title : tabs) {
             tabLayout.addTab(tabLayout.newTab().setText(title));
         }
@@ -66,7 +72,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
                         break;
                     case 2:
                     case 3:
-                        Toast.makeText(DetailsStatisticsActivity.this, "Chưa hỗ trợ hiển thị", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailsStatisticsActivity.this, 
+                            getString(R.string.not_supported), Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
@@ -77,9 +84,9 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
     }
 
     private void showWeekChart() {
-        tvTotalLabel.setText("TỔNG");
+        tvTotalLabel.setText(getString(R.string.total_label));
 
-        // Gỡ bỏ callback tháng nếu có
+        // Remove month callback if exists
         if (monthPageChangeCallback != null) {
             chartViewPager.unregisterOnPageChangeCallback(monthPageChangeCallback);
             monthPageChangeCallback = null;
@@ -108,8 +115,8 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         }
 
         weekAdapter = new WeekPagerAdapter(this, allWeekData, (date, steps) -> {
-            tvTotalLabel.setText("TỔNG");
-            tvSteps.setText(steps + " bước");
+            tvTotalLabel.setText(getString(R.string.total_label));
+            tvSteps.setText(getString(R.string.steps_count, steps));
             tvDate.setText(formatDate(date));
         });
 
@@ -117,8 +124,6 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         chartViewPager.setCurrentItem(allWeekData.size() - 1, false);
         updateTodaySummary(allWeekData);
     }
-
-
 
     private void showMonthChartViewPager() {
         StepsDataHelper helper = new StepsDataHelper(this);
@@ -145,9 +150,9 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
             stepsList.add(stepsMap);
 
             listeners.add((day, steps) -> {
-                tvTotalLabel.setText("TỔNG");
-                tvSteps.setText(steps + " bước");
-                tvDate.setText("ngày " + day + " tháng " + month + ", " + year);
+                tvTotalLabel.setText(getString(R.string.total_label));
+                tvSteps.setText(getString(R.string.steps_count, steps));
+                tvDate.setText(getString(R.string.date_format, day, month, year));
             });
         }
 
@@ -155,58 +160,36 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
         chartViewPager.setAdapter(monthAdapter);
         chartViewPager.setCurrentItem(monthList.size() - 1, false);
 
-        // Gỡ callback cũ nếu có
+        // Remove old callback if exists
         if (monthPageChangeCallback != null) {
             chartViewPager.unregisterOnPageChangeCallback(monthPageChangeCallback);
         }
 
-        // Tạo mới callback
+        // Create new callback
         monthPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 if (position >= 0 && position < stepsList.size()) {
-                    Map<Integer, Integer> selectedMonthData = stepsList.get(position);
-                    int year = yearList.get(position);
-                    int month = monthList.get(position);
-
-                    int total = 0;
-                    int count = 0;
-                    for (int val : selectedMonthData.values()) {
-                        total += val;
-                        count++;
-                    }
-
-                    int avg = count == 0 ? 0 : total / count;
-
-                    tvTotalLabel.setText("Trung bình");
-                    tvSteps.setText(avg + " bước/ngày");
-                    tvDate.setText("tháng " + month + ", " + year);
+                    updateAverageDisplay(position);
                 }
             }
         };
 
         chartViewPager.registerOnPageChangeCallback(monthPageChangeCallback);
         updateAverageDisplay(monthList.size() - 1);
-
-
-
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Mỗi lần quay lại activity, cập nhật lại dữ liệu
+        // Update data each time we return to activity
         if (tabLayout.getSelectedTabPosition() == 0) {
             showWeekChart();
         } else if (tabLayout.getSelectedTabPosition() == 1) {
             showMonthChartViewPager();
         }
     }
-
-
-
 
     private void updateTodaySummary(List<WeekStepData> dataList) {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -215,22 +198,24 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
             for (Map.Entry<String, Integer> entry : week.stepsPerDay.entrySet()) {
                 String[] parts = entry.getKey().split(" ");
                 if (parts.length == 2 && parts[1].equals(today)) {
-                    tvSteps.setText(entry.getValue() + " bước");
+                    tvSteps.setText(getString(R.string.steps_count, entry.getValue()));
                     tvDate.setText(formatDate(today));
                     return;
                 }
             }
         }
 
-        tvSteps.setText("0 bước");
+        tvSteps.setText(getString(R.string.steps_count, 0));
         tvDate.setText(formatDate(today));
     }
 
     private String formatDate(String date) {
         String[] parts = date.split("-");
         if (parts.length == 3) {
-            return "ngày " + Integer.parseInt(parts[2]) +
-                    " tháng " + Integer.parseInt(parts[1]) + ", " + parts[0];
+            return getString(R.string.date_format, 
+                    Integer.parseInt(parts[2]), 
+                    Integer.parseInt(parts[1]), 
+                    Integer.parseInt(parts[0]));
         }
         return date;
     }
@@ -250,10 +235,9 @@ public class DetailsStatisticsActivity extends AppCompatActivity {
 
             int avg = count == 0 ? 0 : total / count;
 
-            tvTotalLabel.setText("Trung bình");
-            tvSteps.setText(avg + " bước/ngày");
-            tvDate.setText("tháng " + month + ", " + year);
+            tvTotalLabel.setText(getString(R.string.average_label));
+            tvSteps.setText(getString(R.string.steps_per_day, avg));
+            tvDate.setText(getString(R.string.month_year_format, month, year));
         }
     }
-
 }
