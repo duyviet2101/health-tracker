@@ -474,7 +474,7 @@
         {
           "startTime": "16:00",
           "duration": "40:00",
-          "steps": 3000,
+          "steps": 1000,
           "distance": 2.5,
           "calories": 200
         }

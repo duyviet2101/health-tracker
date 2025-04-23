@@ -208,24 +208,30 @@ public class StepsDataHelper {
     }
 
 
-    public void copyJsonIfNotExists() {
-        File file = new File(context.getFilesDir(), "activity_data.json");
-        if (file.exists()) return; // Đã có rồi thì không cần sao chép nữa
-
+    public void copyJsonToInternalStorage() {
         try {
+            File internalDir = context.getFilesDir();  // Tương đương: /data/data/your.package.name/files/
+            File destFile = new File(internalDir, "activity_data.json");  // hoặc "activity_data.json"
+
+            // Ghi đè file (hoặc kiểm tra nếu chưa tồn tại)
             InputStream inputStream = context.getResources().openRawResource(
                     context.getResources().getIdentifier("activity_data", "raw", context.getPackageName()));
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
             inputStream.close();
 
-            FileOutputStream fos = new FileOutputStream(file);
+            FileOutputStream fos = new FileOutputStream(destFile);
             fos.write(buffer);
             fos.close();
+
+            Log.i("StepsDataHelper", "File JSON đã được ghi vào: " + destFile.getAbsolutePath());
+
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("StepsDataHelper", "Lỗi ghi file JSON vào internal storage", e);
         }
     }
+
+
 
 
 
