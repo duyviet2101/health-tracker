@@ -12,11 +12,13 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class WeekPagerAdapter extends FragmentStateAdapter {
 
     private final List<WeekStepData> weekDataList;
     private final WeekChartFragment.OnBarSelectedListener barSelectedListener;
+    private final Consumer<WeekChartFragment> fragmentInitializer;
 
     public WeekPagerAdapter(@NonNull FragmentActivity fragmentActivity,
                             List<WeekStepData> weekDataList,
@@ -24,6 +26,17 @@ public class WeekPagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
         this.weekDataList = weekDataList;
         this.barSelectedListener = listener;
+        this.fragmentInitializer = null;
+    }
+    
+    public WeekPagerAdapter(@NonNull FragmentActivity fragmentActivity,
+                            List<WeekStepData> weekDataList,
+                            WeekChartFragment.OnBarSelectedListener listener,
+                            Consumer<WeekChartFragment> fragmentInitializer) {
+        super(fragmentActivity);
+        this.weekDataList = weekDataList;
+        this.barSelectedListener = listener;
+        this.fragmentInitializer = fragmentInitializer;
     }
 
     @NonNull
@@ -39,6 +52,12 @@ public class WeekPagerAdapter extends FragmentStateAdapter {
         // Tạo fragment và gắn orderedKeys
         WeekChartFragment fragment = WeekChartFragment.newInstance(currentWeek, orderedKeys);
         fragment.setOnBarSelectedListener(barSelectedListener);
+        
+        // Gọi consumer để khởi tạo fragment nếu có
+        if (fragmentInitializer != null) {
+            fragmentInitializer.accept(fragment);
+        }
+        
         return fragment;
     }
 

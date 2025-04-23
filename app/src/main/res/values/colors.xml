@@ -36,5 +36,9 @@
     <color name="tab_unselected">#AAAAAA</color> <!-- xám nhạt -->
     <color name="tab_indicator">#FF9800</color>
 
+    <!-- Chart colors -->
+    <color name="steps_color">#4CAF50</color>
+    <color name="time_color">#2196F3</color>
+    <color name="calories_color">#FF4081</color>
 
 </resources>

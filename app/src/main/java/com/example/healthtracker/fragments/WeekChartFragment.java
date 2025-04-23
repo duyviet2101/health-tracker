@@ -1,5 +1,6 @@
 package com.example.healthtracker.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -8,8 +9,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.healthtracker.R;
+import com.example.healthtracker.activities.DailyDetailsActivity;
 import com.example.healthtracker.models.WeekStepData;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -24,6 +28,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class WeekChartFragment extends Fragment {
 
@@ -33,13 +38,22 @@ public class WeekChartFragment extends Fragment {
     private WeekStepData weekData;
     private List<String> orderedDayKeys;
     private OnBarSelectedListener listener;
+    private OnDailyDetailRequestListener detailListener;
 
     public interface OnBarSelectedListener {
         void onBarSelected(String date, int steps);
     }
+    
+    public interface OnDailyDetailRequestListener {
+        void onDailyDetailRequested(String date, int steps);
+    }
 
     public void setOnBarSelectedListener(OnBarSelectedListener listener) {
         this.listener = listener;
+    }
+    
+    public void setOnDailyDetailRequestListener(OnDailyDetailRequestListener listener) {
+        this.detailListener = listener;
     }
 
     public static WeekChartFragment newInstance(WeekStepData weekData, List<String> orderedKeys) {
@@ -138,6 +152,11 @@ public class WeekChartFragment extends Fragment {
                     String[] split = fullKey.split(" ");
                     if (split.length == 2 && listener != null) {
                         listener.onBarSelected(split[1], steps);
+                        
+                        // Thay vì mở activity mới, gọi callback để hiển thị chi tiết ngay tại màn hình này
+                        if (detailListener != null) {
+                            detailListener.onDailyDetailRequested(split[1], steps);
+                        }
                     }
                 }
             }
@@ -147,5 +166,47 @@ public class WeekChartFragment extends Fragment {
         });
 
         barChart.invalidate();
+    }
+    
+    public List<BarEntry> generateHourlyData(int totalValue) {
+        List<BarEntry> entries = new ArrayList<>();
+        Random random = new Random(System.currentTimeMillis());
+        
+        // Phân phối ngẫu nhiên tổng giá trị vào các giờ trong ngày, tập trung chủ yếu vào giờ hoạt động
+        float[] hourlyDistribution = new float[24];
+        float sum = 0;
+        
+        // Tạo điểm cao nhất tại 1-2 thời điểm
+        int peak1 = 7 + random.nextInt(3); // 7-9h sáng
+        int peak2 = 17 + random.nextInt(3); // 17-19h chiều
+        
+        for (int i = 0; i < 24; i++) {
+            if (i < 5) {
+                // Rất ít hoạt động 0-5h sáng
+                hourlyDistribution[i] = random.nextFloat() * 0.01f;
+            } else if (i == peak1 || i == peak2) {
+                // Thời điểm cao điểm
+                hourlyDistribution[i] = random.nextFloat() * 0.3f + 0.2f;
+            } else if ((i > 7 && i < 11) || (i > 16 && i < 20)) {
+                // Hoạt động nhiều buổi sáng và chiều
+                hourlyDistribution[i] = random.nextFloat() * 0.15f + 0.05f;
+            } else if (i >= 23 || i <= 5) {
+                // Rất ít hoạt động đêm
+                hourlyDistribution[i] = random.nextFloat() * 0.01f;
+            } else {
+                // Hoạt động bình thường các thời điểm khác
+                hourlyDistribution[i] = random.nextFloat() * 0.07f + 0.03f;
+            }
+            sum += hourlyDistribution[i];
+        }
+        
+        // Chuẩn hóa tổng phân phối thành 1
+        for (int i = 0; i < 24; i++) {
+            hourlyDistribution[i] /= sum;
+            int value = (int)(totalValue * hourlyDistribution[i]);
+            entries.add(new BarEntry(i, value));
+        }
+        
+        return entries;
     }
 }
