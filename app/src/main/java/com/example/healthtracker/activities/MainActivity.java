@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
         userService = new UserService();
 
-        new StepsDataHelper(this).copyJsonIfNotExists();
+        new StepsDataHelper(this).copyJsonToInternalStorage();
 
         // Khởi tạo quản lý dữ liệu bước chân
         stepData = StepCounterData.getInstance(this);

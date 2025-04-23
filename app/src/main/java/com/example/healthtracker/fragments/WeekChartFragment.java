@@ -1,4 +1,3 @@
-// WeekChartFragment.java
 package com.example.healthtracker.fragments;
 
 import android.graphics.Color;
@@ -23,26 +22,33 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class WeekChartFragment extends Fragment {
 
     private static final String ARG_WEEK_DATA = "week_data";
+    private static final String ARG_ORDERED_KEYS = "ordered_keys";
+
     private WeekStepData weekData;
+    private List<String> orderedDayKeys;
     private OnBarSelectedListener listener;
 
-    public static WeekChartFragment newInstance(WeekStepData weekData) {
-        WeekChartFragment fragment = new WeekChartFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_WEEK_DATA, weekData);
-        fragment.setArguments(args);
-        return fragment;
+    public interface OnBarSelectedListener {
+        void onBarSelected(String date, int steps);
     }
 
     public void setOnBarSelectedListener(OnBarSelectedListener listener) {
         this.listener = listener;
+    }
+
+    public static WeekChartFragment newInstance(WeekStepData weekData, List<String> orderedKeys) {
+        WeekChartFragment fragment = new WeekChartFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_WEEK_DATA, weekData);
+        args.putStringArrayList(ARG_ORDERED_KEYS, new ArrayList<>(orderedKeys));
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -50,6 +56,7 @@ public class WeekChartFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             weekData = (WeekStepData) getArguments().getSerializable(ARG_WEEK_DATA);
+            orderedDayKeys = getArguments().getStringArrayList(ARG_ORDERED_KEYS);
         }
     }
 
@@ -60,23 +67,15 @@ public class WeekChartFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (weekData == null) return;
+        if (weekData == null || orderedDayKeys == null || orderedDayKeys.size() != 7) return;
 
         BarChart barChart = view.findViewById(R.id.barChart);
-        List<String> days = Arrays.asList("T2", "T3", "T4", "T5", "T6", "T7", "CN");
-
         List<BarEntry> entries = new ArrayList<>();
         int maxStep = 0;
 
-        for (int i = 0; i < days.size(); i++) {
-            String day = days.get(i);
-            int steps = 0;
-            for (Map.Entry<String, Integer> entry : weekData.stepsPerDay.entrySet()) {
-                if (String.valueOf(entry.getKey()).startsWith(day)) {
-                    steps = entry.getValue();
-                    break;
-                }
-            }
+        for (int i = 0; i < orderedDayKeys.size(); i++) {
+            String fullKey = orderedDayKeys.get(i); // Ví dụ: "T3 2025-04-22"
+            int steps = weekData.stepsPerDay.getOrDefault(fullKey, 0);
             entries.add(new BarEntry(i, steps));
             if (steps > maxStep) maxStep = steps;
         }
@@ -92,6 +91,7 @@ public class WeekChartFragment extends Fragment {
         barChart.setData(barData);
         barChart.setFitBars(true);
 
+        // Trục X
         XAxis xAxis = barChart.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -102,11 +102,14 @@ public class WeekChartFragment extends Fragment {
             @Override
             public String getFormattedValue(float value) {
                 int index = (int) value;
-                return index >= 0 && index < days.size() ? days.get(index) : "";
+                if (index >= 0 && index < orderedDayKeys.size()) {
+                    return orderedDayKeys.get(index).split(" ")[0]; // T2, T3, ...
+                }
+                return "";
             }
         });
-        barChart.setExtraBottomOffset(16f);
 
+        // Trục Y trái
         YAxis leftAxis = barChart.getAxisLeft();
         leftAxis.setAxisMinimum(0f);
         leftAxis.setGranularity(500f);
@@ -115,26 +118,26 @@ public class WeekChartFragment extends Fragment {
             leftAxis.setAxisMaximum(roundedMax + 500f);
         }
 
+        // Trục Y phải
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setEnabled(false);
 
+        // Tuỳ chỉnh khác
         barChart.getDescription().setEnabled(false);
         barChart.getLegend().setEnabled(false);
+        barChart.setExtraBottomOffset(16f);
         barChart.setExtraTopOffset(12f);
 
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(com.github.mikephil.charting.data.Entry e, Highlight h) {
                 int index = (int) e.getX();
-                String label = days.get(index);
-                for (String fullKey : weekData.stepsPerDay.keySet()) {
-                    if (String.valueOf(fullKey).startsWith(label)) {
-                        int value = weekData.stepsPerDay.get(fullKey);
-                        String[] split = fullKey.split(" ");
-                        if (split.length == 2 && listener != null) {
-                            listener.onBarSelected(split[1], value);
-                        }
-                        break;
+                if (index >= 0 && index < orderedDayKeys.size()) {
+                    String fullKey = orderedDayKeys.get(index);
+                    int steps = weekData.stepsPerDay.getOrDefault(fullKey, 0);
+                    String[] split = fullKey.split(" ");
+                    if (split.length == 2 && listener != null) {
+                        listener.onBarSelected(split[1], steps);
                     }
                 }
             }
@@ -144,9 +147,5 @@ public class WeekChartFragment extends Fragment {
         });
 
         barChart.invalidate();
-    }
-
-    public interface OnBarSelectedListener {
-        void onBarSelected(String date, int steps);
     }
 }
