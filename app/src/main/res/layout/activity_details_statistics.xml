@@ -42,7 +42,7 @@
                 android:id="@+id/tvTotalLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TỔNG"
+                android:text="@string/total_label"
                 android:textColor="@android:color/white"
                 android:textSize="13sp"
                 android:textStyle="bold" />
@@ -51,7 +51,7 @@
                 android:id="@+id/tvSteps"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5.756 bước"
+                android:text="@string/steps_format"
                 android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:paddingHorizontal="8dp"
@@ -61,7 +61,7 @@
                 android:id="@+id/tvDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ngày 2 tháng 4, 2025"
+                android:text="@string/date_format"
                 android:textColor="@android:color/white"
                 android:textSize="10sp" />
         </LinearLayout>
@@ -86,7 +86,7 @@
                 android:id="@+id/tvDailyDetailsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Chi tiết trong ngày"
+                android:text="@string/daily_details_header"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -117,7 +117,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số bước"
+                            android:text="@string/steps_title"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -127,7 +127,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="0 bước"
+                            android:text="@string/steps_format"
                             android:textColor="@color/steps_color"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -197,7 +197,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>
@@ -228,7 +228,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thời gian hoạt động"
+                            android:text="@string/activity_time_title"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -238,7 +238,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="0 phút"
+                            android:text="@string/minutes_format"
                             android:textColor="@color/time_color"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -308,7 +308,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>
@@ -339,7 +339,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Calo từ hoạt động"
+                            android:text="@string/calories_from_activity"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -349,7 +349,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="end"
-                            android:text="0 kcal"
+                            android:text="@string/calories_format"
                             android:textColor="@color/calories_color"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -419,7 +419,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>

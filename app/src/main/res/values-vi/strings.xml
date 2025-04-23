@@ -17,14 +17,14 @@
     <string name="weight_hint">Cân nặng (kg)</string>
     <string name="height_hint">Height (cm)</string>
     <string name="save">Lưu</string>
-    
+
     <!-- Language selection strings -->
     <string name="select_language">Chọn ngôn ngữ</string>
     <string name="language_english">Tiếng Anh</string>
     <string name="language_vietnamese">Tiếng Việt</string>
     <string name="language_indonesian">Tiếng Indonesia</string>
     <string name="cancel">Huỷ</string>
-    
+
     <!-- Main activity strings -->
     <string name="steps">bước</string>
     <string name="time_label">Thời gian</string>
@@ -33,10 +33,10 @@
     <string name="statistics">Thống kê</string>
     <string name="add">Thêm</string>
     <string name="water">nước</string>
-    
+
     <!-- Water tracking activity -->
     <string name="water_title">Nước</string>
-    
+
     <!-- Day abbreviations -->
     <string name="monday_short">T2</string>
     <string name="tuesday_short">T3</string>
@@ -45,7 +45,7 @@
     <string name="friday_short">T6</string>
     <string name="saturday_short">T7</string>
     <string name="sunday_short">CN</string>
-    
+
     <!-- Water tracking more strings -->
     <string name="ml_unit">ml</string>
     <string name="thousand_marker">1.000</string>
@@ -54,7 +54,7 @@
     <string name="water_goal_format">/2.000 ml</string>
     <string name="goal_reached">Đã đạt mục tiêu!</string>
     <string name="add_water">Thêm</string>
-    
+
     <!-- Profile activity -->
     <string name="edit_profile">Chỉnh sửa hồ sơ</string>
     <string name="personal_info">Thông tin cá nhân</string>
@@ -67,7 +67,7 @@
     <string name="kg_unit">kg</string>
     <string name="update_profile">Cập nhật hồ sơ</string>
     <string name="email">Email</string>
-    
+
     <!-- Water goal setting -->
     <string name="water_goal_setting">Mục tiêu nước</string>
     <string name="daily_goal">Mục tiêu hàng ngày</string>
@@ -91,23 +91,23 @@
     <string name="friday_letter">6</string>
     <string name="saturday_letter">7</string>
     <string name="sunday_letter">C</string>
-    
+
     <!-- Custom interval dialog -->
     <string name="custom_interval_title">Nhập thời gian tùy chỉnh</string>
     <string name="hours_label">Giờ:</string>
     <string name="minutes_label">Phút:</string>
     <string name="zero_hint">0</string>
     <string name="interval_example">*Ví dụ: 1 giờ 30 phút</string>
-    
+
     <!-- Water goal setting additional strings -->
     <string name="time_range_label">Thời gian</string>
     <string name="time_range_value">8:00 - 23:00</string>
     <string name="remind_me_every">Nhắc tôi mỗi</string>
     <string name="hours_value">2 giờ</string>
-    
+
     <!-- Water tracking menu -->
     <string name="menu_set_goal">Đặt mục tiêu</string>
-    
+
     <!-- Statistics Activity -->
     <string name="tab_week">Tuần</string>
     <string name="tab_month">Tháng</string>
@@ -123,11 +123,7 @@
     <string name="year_format">%d</string>
     <string name="date_format">ngày %d tháng %d, %d</string>
     <string name="month_year_format">tháng %d, %d</string>
-    
-    <string name="day_goal">Mục tiêu ngày</string>
-    <string name="week_goal">Mục tiêu tuần</string>
-    <string name="month_goal">Mục tiêu tháng</string>
-    
+
     <!-- App Guide strings -->
     <string name="app_guide_title">Hướng dẫn sử dụng</string>
     <string name="steps_guide_title">Theo dõi bước chân</string>
@@ -140,10 +136,21 @@
     <string name="profile_guide_desc">Cài đặt thông tin cá nhân, mục tiêu, và đồng bộ dữ liệu của bạn trong phần cài đặt.</string>
     <string name="share_guide_title">Chia sẻ thành tích</string>
     <string name="share_guide_desc">Bạn có thể chia sẻ thành tích hàng ngày của mình với bạn bè bằng cách nhấn vào nút chia sẻ.</string>
-    
+
     <!-- Daily Details Activity -->
     <string name="steps_title">Số bước</string>
     <string name="activity_time_title">Thời gian hoạt động</string>
     <string name="calories_from_activity">Calo từ hoạt động</string>
     <string name="hour_unit">(giờ)</string>
+    <string name="steps_format">%d bước</string>
+    <string name="minutes_format">%d phút</string>
+    <string name="calories_format">%d kcal</string>
+
+    <!-- Details Statistics Activity -->
+    <string name="daily_details_header">Chi tiết trong ngày</string>
+    <string name="hour_0">0</string>
+    <string name="hour_6">6</string>
+    <string name="hour_12">12</string>
+    <string name="hour_18">18</string>
+    <string name="hour_24">24</string>
 </resources>

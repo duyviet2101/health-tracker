@@ -142,6 +142,17 @@
     <string name="activity_time_title">Activity Time</string>
     <string name="calories_from_activity">Calories from Activity</string>
     <string name="hour_unit">(hour)</string>
+    <string name="steps_format">%d steps</string>
+    <string name="minutes_format">%d minutes</string>
+    <string name="calories_format">%d kcal</string>
+    
+    <!-- Details Statistics Activity -->
+    <string name="daily_details_header">Daily Details</string>
+    <string name="hour_0">0</string>
+    <string name="hour_6">6</string>
+    <string name="hour_12">12</string>
+    <string name="hour_18">18</string>
+    <string name="hour_24">24</string>
     
     <!-- App Guide strings -->
     <string name="app_guide_title">Hướng dẫn sử dụng</string>

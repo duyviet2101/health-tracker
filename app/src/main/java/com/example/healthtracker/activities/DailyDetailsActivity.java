@@ -88,15 +88,15 @@ public class DailyDetailsActivity extends AppCompatActivity {
         }
         
         // Thiết lập thông tin thống kê
-        tvStepsCount.setText(String.valueOf(stepsCount) + " bước");
+        tvStepsCount.setText(getString(R.string.steps_format, stepsCount));
         
         // Tính toán thời gian hoạt động (giả định 1000 bước ~ 10 phút)
         int timeInMinutes = (stepsCount * 10) / 1000;
-        tvTimeCount.setText(String.valueOf(timeInMinutes) + " phút");
+        tvTimeCount.setText(getString(R.string.minutes_format, timeInMinutes));
         
         // Tính toán lượng calo (giả định 1000 bước ~ 40 calo)
         int calories = (stepsCount * 40) / 1000;
-        tvCaloriesCount.setText(String.valueOf(calories) + " kcal");
+        tvCaloriesCount.setText(getString(R.string.calories_format, calories));
     }
     
     private void setupStepsChart() {
