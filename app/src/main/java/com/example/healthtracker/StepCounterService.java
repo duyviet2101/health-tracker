@@ -228,6 +228,12 @@ public class StepCounterService extends Service implements SensorEventListener {
                         stepData.resetIfNeeded();
                         // Cập nhật lại dữ liệu từ bộ nhớ
                         currentSteps = stepData.getSteps();
+                        // Cập nhật lại điểm bắt đầu session nếu đã reset
+                        if (currentSteps == 0) {
+                            sessionStartTimeMillis = System.currentTimeMillis();
+                            stepsAtSessionStart = 0;
+                            Log.d(TAG, "Đã đặt lại dữ liệu hàng ngày, cập nhật stepsAtSessionStart = 0");
+                        }
                         // Phát lại thông tin cập nhật
                         broadcastStepCount();
                         // Lên lịch kiểm tra tiếp theo (mỗi giờ)
@@ -296,6 +302,14 @@ public class StepCounterService extends Service implements SensorEventListener {
             
             // Nếu khởi động lại service do hệ thống, khôi phục dữ liệu đã lưu
             currentSteps = stepData.getSteps();
+            
+            // Kiểm tra xem stepsAtSessionStart có lớn hơn currentSteps không
+            if (stepsAtSessionStart > currentSteps) {
+                // Nếu có, cập nhật lại stepsAtSessionStart
+                stepsAtSessionStart = currentSteps;
+                Log.d(TAG, "Phát hiện stepsAtSessionStart > currentSteps, đã cập nhật stepsAtSessionStart = " + currentSteps);
+            }
+            
             Log.d(TAG, "Khôi phục số bước đã lưu: " + currentSteps);
             
             // Gửi broadcast ngay để cập nhật UI
@@ -388,8 +402,11 @@ public class StepCounterService extends Service implements SensorEventListener {
                     if (calculatedSteps < 0 || calculatedSteps > 100000) {
                         // Đặt lại giá trị ban đầu
                         initialSteps = (int) sensorValue;
+                        // Cập nhật lại stepsAtSessionStart để tránh lưu giá trị âm
+                        stepsAtSessionStart = currentSteps;
                         // Giữ lại số bước hiện tại để tránh mất dữ liệu
                         Log.d(TAG, "Phát hiện sự thiết lập lại cảm biến, điều chỉnh giá trị ban đầu mới: " + initialSteps);
+                        Log.d(TAG, "Đã cập nhật stepsAtSessionStart = " + stepsAtSessionStart);
                     } else {
                         // Cập nhật số bước hiện tại
                         currentSteps = calculatedSteps;
@@ -490,7 +507,7 @@ public class StepCounterService extends Service implements SensorEventListener {
             Log.d(TAG, "Ứng dụng bị đóng, đã lưu số bước: " + currentSteps);
 
             // Ghi session cuối nếu đang hoạt động
-            if (sessionStartTimeMillis > 0 && stepsAtSessionStart != currentSteps) {
+            if (sessionStartTimeMillis > 0) {
                 long now = System.currentTimeMillis();
                 long durationMillis = now - sessionStartTimeMillis;
                 String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
@@ -499,55 +516,22 @@ public class StepCounterService extends Service implements SensorEventListener {
                 String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                         .format(new Date(sessionStartTimeMillis));
 
-                int stepsInSession = currentSteps - stepsAtSessionStart;
-                double distance = stepData.calculateDistance(stepsInSession);
-                double calories = stepData.calculateCalories(stepsInSession);
-
-                todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
-            }
-
-            if (todayActivities.isEmpty()) {
-                int steps = currentSteps - stepsAtSessionStart;
-                if (steps > 0) {
-                    long now = System.currentTimeMillis();
-                    long durationMillis = now - sessionStartTimeMillis;
-                    String startTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date(sessionStartTimeMillis));
-                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d", (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
-                    double distance = stepData.calculateDistance(steps);
-                    double calories = stepData.calculateCalories(steps);
-
-                    StepActivityEntry entry = new StepActivityEntry(startTime, durationStr, steps, distance, calories);
-                    todayActivities.add(entry);
-
-                    Log.d(TAG, "Thêm fallback activity vào danh sách: " + steps + " bước");
-                }
-            }
-
-
-            // Fallback nếu chưa ghi activity nào
-            if (todayActivities.isEmpty()) {
-                int stepsInSession = currentSteps - stepsAtSessionStart;
+                int stepsInSession = Math.max(0, currentSteps - stepsAtSessionStart);
                 if (stepsInSession > 0) {
-                    long now = System.currentTimeMillis();
-                    long durationMillis = now - sessionStartTimeMillis;
-
-                    String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
-                            (durationMillis / 1000) / 60, (durationMillis / 1000) % 60);
-                    String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                            .format(new Date(sessionStartTimeMillis));
-
                     double distance = stepData.calculateDistance(stepsInSession);
                     double calories = stepData.calculateCalories(stepsInSession);
 
                     todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
-                    Log.d(TAG, "Fallback: Ghi session cuối vào activities");
+                    Log.d(TAG, "Thêm session vào danh sách: " + stepsInSession + " bước");
+                    Log.d(TAG, "Chi tiết Session: startTime=" + sessionStartTimeMillis + ", currentSteps=" + currentSteps + ", stepsAtSessionStart=" + stepsAtSessionStart);
                 }
             }
 
-            // xuất data theo định dạng json
-            JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
-
-            Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
+            // Xuất data theo định dạng json nếu có hoạt động
+            if (!todayActivities.isEmpty()) {
+                JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
+                Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
+            }
             
             // Đảm bảo service sẽ được khởi động lại khi ứng dụng bị đóng
             Intent restartIntent = new Intent(getApplicationContext(), this.getClass());
@@ -583,7 +567,7 @@ public class StepCounterService extends Service implements SensorEventListener {
             stepData.saveSteps(currentSteps);
 
             // Ghi session cuối nếu đang hoạt động
-            if (sessionStartTimeMillis > 0 && stepsAtSessionStart != currentSteps) {
+            if (sessionStartTimeMillis > 0) {
                 long now = System.currentTimeMillis();
                 long durationMillis = now - sessionStartTimeMillis;
                 String durationStr = String.format(Locale.getDefault(), "%02d:%02d",
@@ -592,18 +576,22 @@ public class StepCounterService extends Service implements SensorEventListener {
                 String startTimeStr = new SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                         .format(new Date(sessionStartTimeMillis));
 
-                int stepsInSession = currentSteps - stepsAtSessionStart;
-                double distance = stepData.calculateDistance(stepsInSession);
-                double calories = stepData.calculateCalories(stepsInSession);
+                int stepsInSession = Math.max(0, currentSteps - stepsAtSessionStart);
+                if (stepsInSession > 0) {
+                    double distance = stepData.calculateDistance(stepsInSession);
+                    double calories = stepData.calculateCalories(stepsInSession);
 
-                todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
+                    todayActivities.add(new StepActivityEntry(startTimeStr, durationStr, stepsInSession, distance, calories));
+                    Log.d(TAG, "Thêm session cuối vào danh sách: " + stepsInSession + " bước");
+                    Log.d(TAG, "Chi tiết Session: startTime=" + sessionStartTimeMillis + ", currentSteps=" + currentSteps + ", stepsAtSessionStart=" + stepsAtSessionStart);
+                }
             }
 
-
-
-            JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
-
-            Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
+            // Xuất data theo định dạng json nếu có hoạt động
+            if (!todayActivities.isEmpty()) {
+                JsonExporter.exportDailySteps(getApplicationContext(), todayActivities);
+                Log.d(TAG, "Số activity ghi ra JSON = " + todayActivities.size());
+            }
 
             // Hủy đăng ký lắng nghe sự kiện từ cảm biến
             if (sensorManager != null && stepSensor != null) {

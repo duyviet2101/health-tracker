@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -27,36 +26,31 @@ import com.example.healthtracker.models.ScreenshotSharer;
 import com.example.healthtracker.models.StepsDataHelper;
 import com.example.healthtracker.services.UserService;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.android.material.card.MaterialCardView;
 
 public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
     private static final int REQUEST_ACTIVITY_RECOGNITION = 1001;
-
-
+    private final int lastSteps = 0;
+    private final double lastDistance = 0.0;
+    private final double lastCalories = 0.0;
+    private final long lastActiveTime = 0;
     private FirebaseAuth mAuth;
     private CardView avatarCard;
     private FirebaseUser currentUser;
     private ImageView imgAvatar;
     private TextView txtName;
-
     private UserService userService;
-
     // Đếm bước chân
     private TextView stepCountText;
     private TextView timeValue;
     private TextView caloriesValue;
     private TextView distanceValue;
     private StepCounterData stepData;
-
     // Để nhận cập nhật từ StepCounterService
     private BroadcastReceiver stepUpdateReceiver;
-    private int lastSteps = 0;
-    private double lastDistance = 0.0;
-    private double lastCalories = 0.0;
-    private long lastActiveTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +76,9 @@ public class MainActivity extends BaseActivity {
         });
 
         View statistic = findViewById(R.id.statistic);
-        statistic.setOnClickListener(new View.OnClickListener(){
+        statistic.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DetailsStatisticsActivity.class);
                 startActivity(intent);
             }

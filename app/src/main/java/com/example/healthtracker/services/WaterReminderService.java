@@ -80,6 +80,12 @@ public class WaterReminderService {
      * Lên lịch thông báo dựa trên cài đặt người dùng
      */
     public void scheduleReminders() {
+        // Kiểm tra quyền trên Android 12+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !hasExactAlarmPermission()) {
+            Log.w(TAG, "Không có quyền SCHEDULE_EXACT_ALARM, không thể đặt báo thức chính xác");
+            return;
+        }
+
         // Tải cài đặt người dùng trước
         loadReminderSettings(() -> {
             // Sau khi tải xong, kiểm tra xem thông báo có được bật không
@@ -122,13 +128,33 @@ public class WaterReminderService {
                     PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
             );
             
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Kiểm tra quyền trên Android 12+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Android 12 trở lên
+                if (alarmManager.canScheduleExactAlarms()) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            nextReminderTime.getTimeInMillis(),
+                            pendingIntent
+                    );
+                } else {
+                    // Không có quyền đặt báo thức chính xác, dùng setAndAllowWhileIdle thay thế
+                    alarmManager.setAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            nextReminderTime.getTimeInMillis(),
+                            pendingIntent
+                    );
+                    Log.w(TAG, "Không có quyền SCHEDULE_EXACT_ALARM, sử dụng báo thức không chính xác");
+                }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // Android 6-11
                 alarmManager.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
                         nextReminderTime.getTimeInMillis(),
                         pendingIntent
                 );
             } else {
+                // Android 5 trở xuống
                 alarmManager.setExact(
                         AlarmManager.RTC_WAKEUP,
                         nextReminderTime.getTimeInMillis(),
@@ -277,6 +303,17 @@ public class WaterReminderService {
                     
                     onComplete.run();
                 });
+    }
+
+    /**
+     * Kiểm tra quyền đặt báo thức chính xác
+     * @return true nếu có quyền hoặc API dưới mức cần quyền
+     */
+    public boolean hasExactAlarmPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return alarmManager.canScheduleExactAlarms();
+        }
+        return true; // Android 11 trở xuống không cần quyền này
     }
 
     /**

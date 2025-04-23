@@ -15,6 +15,7 @@ import java.util.*;
 
 public class StepsDataHelper {
     private final Context context;
+    private static final String FILE_NAME = "activity_data.json";
 
     public StepsDataHelper(Context context) {
         this.context = context;
@@ -25,7 +26,7 @@ public class StepsDataHelper {
         List<StepsDataResponse.DayData> sortedList = new ArrayList<>();
 
         try {
-            File file = new File(context.getFilesDir(), "activity_data.json");
+            File file = new File(context.getFilesDir(), FILE_NAME);
             if (!file.exists()) {
                 Log.e("StepsDataHelper", "File activity_data.json không tồn tại trong internal storage!");
                 return new LinkedHashMap<>();
@@ -112,7 +113,7 @@ public class StepsDataHelper {
     }
 
     public StepsDataResponse readRawStepsDataFromFile() {
-        File file = new File(context.getFilesDir(), "activity_data.json");
+        File file = new File(context.getFilesDir(), FILE_NAME);
         if (!file.exists()) return null;
 
         try {
@@ -134,7 +135,7 @@ public class StepsDataHelper {
         List<Map<Integer, Integer>> listPerMonth = new ArrayList<>();
         Map<String, Map<Integer, Integer>> groupedByMonth = new LinkedHashMap<>();
 
-        File file = new File(context.getFilesDir(), "activity_data.json");
+        File file = new File(context.getFilesDir(), FILE_NAME);
         if (!file.exists()) return listPerMonth;
 
         try {
@@ -207,13 +208,18 @@ public class StepsDataHelper {
         return result;
     }
 
-
     public void copyJsonToInternalStorage() {
         try {
-            File internalDir = context.getFilesDir();  // Tương đương: /data/data/your.package.name/files/
-            File destFile = new File(internalDir, "activity_data.json");  // hoặc "activity_data.json"
+            File internalDir = context.getFilesDir();
+            File destFile = new File(internalDir, FILE_NAME);
+            
+            // Kiểm tra xem file đã tồn tại chưa
+            if (destFile.exists()) {
+                Log.i("StepsDataHelper", "File JSON đã tồn tại: " + destFile.getAbsolutePath());
+                return; // Không cần sao chép nếu file đã tồn tại
+            }
 
-            // Ghi đè file (hoặc kiểm tra nếu chưa tồn tại)
+            // Chỉ sao chép nếu file chưa tồn tại
             InputStream inputStream = context.getResources().openRawResource(
                     context.getResources().getIdentifier("activity_data", "raw", context.getPackageName()));
             byte[] buffer = new byte[inputStream.available()];
@@ -222,18 +228,13 @@ public class StepsDataHelper {
 
             FileOutputStream fos = new FileOutputStream(destFile);
             fos.write(buffer);
+            fos.flush();
             fos.close();
 
-            Log.i("StepsDataHelper", "File JSON đã được ghi vào: " + destFile.getAbsolutePath());
+            Log.i("StepsDataHelper", "File JSON đã được tạo mới tại: " + destFile.getAbsolutePath());
 
         } catch (Exception e) {
             Log.e("StepsDataHelper", "Lỗi ghi file JSON vào internal storage", e);
         }
     }
-
-
-
-
-
-
 }
