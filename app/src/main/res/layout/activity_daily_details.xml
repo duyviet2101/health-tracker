@@ -81,7 +81,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số bước"
+                            android:text="@string/steps_title"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -161,7 +161,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>
@@ -192,7 +192,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thời gian hoạt động"
+                            android:text="@string/activity_time_title"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -272,7 +272,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>
@@ -303,7 +303,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Calo từ hoạt động"
+                            android:text="@string/calories_from_activity"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -383,7 +383,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="(giờ)"
+                            android:text="@string/hour_unit"
                             android:textSize="12sp"
                             android:textColor="@color/gray" />
                     </LinearLayout>

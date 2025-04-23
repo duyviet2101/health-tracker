@@ -140,4 +140,10 @@
     <string name="profile_guide_desc">Cài đặt thông tin cá nhân, mục tiêu, và đồng bộ dữ liệu của bạn trong phần cài đặt.</string>
     <string name="share_guide_title">Chia sẻ thành tích</string>
     <string name="share_guide_desc">Bạn có thể chia sẻ thành tích hàng ngày của mình với bạn bè bằng cách nhấn vào nút chia sẻ.</string>
+    
+    <!-- Daily Details Activity -->
+    <string name="steps_title">Số bước</string>
+    <string name="activity_time_title">Thời gian hoạt động</string>
+    <string name="calories_from_activity">Calo từ hoạt động</string>
+    <string name="hour_unit">(giờ)</string>
 </resources>

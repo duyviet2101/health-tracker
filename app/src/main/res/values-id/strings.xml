@@ -1,0 +1,21 @@
+    <!-- Statistics Activity -->
+    <string name="tab_week">Minggu</string>
+    <string name="tab_month">Bulan</string>
+    <string name="tab_six_months">6 Bulan</string>
+    <string name="tab_year">Tahun</string>
+    <string name="not_supported">Belum didukung</string>
+    <string name="total_label">TOTAL</string>
+    <string name="average_label">Rata-rata</string>
+    <string name="steps_count">%d langkah</string>
+    <string name="steps_per_day">%d langkah/hari</string>
+    <string name="day_format">hari %d</string>
+    <string name="month_format">bulan %d</string>
+    <string name="year_format">%d</string>
+    <string name="date_format">hari %d bulan %d, %d</string>
+    <string name="month_year_format">bulan %d, %d</string>
+    
+    <!-- Daily Details Activity -->
+    <string name="steps_title">Langkah</string>
+    <string name="activity_time_title">Waktu Aktivitas</string>
+    <string name="calories_from_activity">Kalori dari Aktivitas</string>
+    <string name="hour_unit">(jam)</string> 

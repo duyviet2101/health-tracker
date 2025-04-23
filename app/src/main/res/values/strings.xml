@@ -137,6 +137,12 @@
     <string name="date_format">day %d month %d, %d</string>
     <string name="month_year_format">month %d, %d</string>
     
+    <!-- Daily Details Activity -->
+    <string name="steps_title">Steps</string>
+    <string name="activity_time_title">Activity Time</string>
+    <string name="calories_from_activity">Calories from Activity</string>
+    <string name="hour_unit">(hour)</string>
+    
     <!-- App Guide strings -->
     <string name="app_guide_title">Hướng dẫn sử dụng</string>
     <string name="steps_guide_title">Theo dõi bước chân</string>
