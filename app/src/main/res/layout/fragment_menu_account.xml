@@ -34,6 +34,7 @@
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceVariant" />
 
+            <!-- Profile Option -->
             <LinearLayout
                 android:id="@+id/profileOption"
                 android:layout_width="match_parent"
@@ -60,6 +61,7 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <!-- Language Option -->
             <LinearLayout
                 android:id="@+id/languageOption"
                 android:layout_width="match_parent"
@@ -88,11 +90,33 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
-            <View
+            <!-- App Guide Option -->
+            <LinearLayout
+                android:id="@+id/appGuideOption"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?attr/colorSurfaceVariant" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_help"
+                    android:contentDescription="@string/app_guide_icon_desc" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_guide_title"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:layout_marginStart="16dp"/>
+            </LinearLayout>
+
+            <!-- Sign Out Option -->
             <LinearLayout
                 android:id="@+id/signOutOption"
                 android:layout_width="match_parent"

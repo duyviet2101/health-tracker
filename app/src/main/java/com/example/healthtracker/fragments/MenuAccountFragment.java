@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.healthtracker.R;
 import com.example.healthtracker.activities.MainActivity;
 import com.example.healthtracker.activities.ProfileActivity;
+import com.example.healthtracker.activities.AppGuideActivity;
 import com.example.healthtracker.utils.LanguageUtils;
 
 public class MenuAccountFragment extends DialogFragment {
@@ -75,6 +76,14 @@ public class MenuAccountFragment extends DialogFragment {
         updateLanguageUI(view);
         languageOption.setOnClickListener(v -> {
             showLanguageSelectionDialog();
+        });
+
+        // App Guide option click listener
+        LinearLayout appGuideOption = view.findViewById(R.id.appGuideOption);
+        appGuideOption.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AppGuideActivity.class);
+            startActivity(intent);
+            dismiss(); // Close the dialog
         });
 
         return view;
