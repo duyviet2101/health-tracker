@@ -123,4 +123,21 @@
     <string name="year_format">%d</string>
     <string name="date_format">ngày %d tháng %d, %d</string>
     <string name="month_year_format">tháng %d, %d</string>
+    
+    <string name="day_goal">Mục tiêu ngày</string>
+    <string name="week_goal">Mục tiêu tuần</string>
+    <string name="month_goal">Mục tiêu tháng</string>
+    
+    <!-- App Guide strings -->
+    <string name="app_guide_title">Hướng dẫn sử dụng</string>
+    <string name="steps_guide_title">Theo dõi bước chân</string>
+    <string name="steps_guide_desc">Ứng dụng tự động đếm bước chân của bạn trong ngày. Nhấn vào biểu đồ tròn để xem thống kê chi tiết.</string>
+    <string name="water_guide_title">Theo dõi nước</string>
+    <string name="water_guide_desc">Nhấn vào biểu tượng ly nước để cập nhật lượng nước uống hàng ngày và theo dõi mục tiêu của bạn.</string>
+    <string name="stats_guide_title">Xem thống kê</string>
+    <string name="stats_guide_desc">Bạn có thể xem các số liệu thống kê chi tiết về các hoạt động hàng ngày như bước chân, calo, khoảng cách.</string>
+    <string name="profile_guide_title">Cài đặt tài khoản</string>
+    <string name="profile_guide_desc">Cài đặt thông tin cá nhân, mục tiêu, và đồng bộ dữ liệu của bạn trong phần cài đặt.</string>
+    <string name="share_guide_title">Chia sẻ thành tích</string>
+    <string name="share_guide_desc">Bạn có thể chia sẻ thành tích hàng ngày của mình với bạn bè bằng cách nhấn vào nút chia sẻ.</string>
 </resources>
